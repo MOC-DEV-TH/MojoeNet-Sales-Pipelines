@@ -8,6 +8,7 @@ class NLRStepSixController extends GetxController {
   final count = 0.obs;
   var potentialStatus = "Yes";
   var potentialYesStatus = "";
+  bool checkBoxValue = false;
   @override
   void onInit() {
     super.onInit();
@@ -37,6 +38,12 @@ class NLRStepSixController extends GetxController {
 
   void updatePotentialYesStatus(String status){
     potentialYesStatus = status;
+    update();
+  }
+
+  void updateCheckBoxValue(bool cbValue) {
+    debugPrint(cbValue.toString());
+    checkBoxValue = cbValue;
     update();
   }
 

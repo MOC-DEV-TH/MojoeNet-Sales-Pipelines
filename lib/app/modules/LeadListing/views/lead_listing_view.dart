@@ -20,7 +20,7 @@ class LeadListingView extends GetView<LeadListingController> {
       'Appointment',
       'Proposal Follow Up',
       'Contract Follow Up',
-      'Dead Lead',
+      'Dead Lead'
     ];
     return Scaffold(
         backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -69,7 +69,7 @@ class LeadListingView extends GetView<LeadListingController> {
                          */
                         Container(
                           width: 160,
-                          height: 30,
+                          height: 35,
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
@@ -79,10 +79,11 @@ class LeadListingView extends GetView<LeadListingController> {
                             children: [
                               Expanded(
                                 child: TextFieldComponent(
-                                    hintText: 'BusinessName',
-                                    errorText: '',
-                                    controller: controller.businessNameTextController,
-                                   ),
+                                  hintText: 'BusinessName',
+                                  errorText: '',
+                                  controller:
+                                      controller.businessNameTextController,
+                                ),
                               ),
                               Container(
                                   width: 35,
@@ -111,7 +112,7 @@ class LeadListingView extends GetView<LeadListingController> {
                           children: [
                             Container(
                               width: 160,
-                              height: 30,
+                              height: 35,
                               decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
@@ -122,10 +123,11 @@ class LeadListingView extends GetView<LeadListingController> {
                                 children: [
                                   Flexible(
                                     child: TextFieldComponent(
-                                        hintText: 'Contact No.',
-                                        errorText: '',
-                                        controller: controller.contactNoTextController,
-                                      ),
+                                      hintText: 'Contact No.',
+                                      errorText: '',
+                                      controller:
+                                          controller.contactNoTextController,
+                                    ),
                                   ),
                                   Container(
                                       width: 35,

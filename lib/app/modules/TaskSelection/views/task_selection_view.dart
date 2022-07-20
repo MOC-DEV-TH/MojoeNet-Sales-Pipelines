@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:sales_pipeline/app/utils/app_constants.dart';
 import 'package:sales_pipeline/res/colors.dart';
 
 import '../controllers/task_selection_controller.dart';
 
 class TaskSelectionView extends GetView<TaskSelectionController> {
-  @override
+  final readData = GetStorage();
   Widget build(BuildContext context) {
+    debugPrint('Get storage token${readData.read(TOKEN)}');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),

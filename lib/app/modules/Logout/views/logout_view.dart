@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ndialog/ndialog.dart';
 import 'package:sales_pipeline/res/colors.dart';
+import '../../../routes/app_pages.dart';
+import '../../../utils/app_utils.dart';
 import '../controllers/logout_controller.dart';
 
 class LogoutView extends GetView<LogoutController> {
@@ -48,7 +50,7 @@ class LogoutView extends GetView<LogoutController> {
                           child: MaterialButton(
                             minWidth: double.infinity,
                             height: 40,
-                            onPressed: () {},
+                            onPressed: () {handleOnPressLogout();},
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10)),
@@ -95,6 +97,12 @@ class LogoutView extends GetView<LogoutController> {
     );
   }
 
+  handleOnPressLogout(){
+    AppUtils.removeDataFromGetStorage()
+        .then((value) => Future.delayed(const Duration(seconds: 1), () {
+      Get.offAllNamed(Routes.LOGIN);
+    }));
+  }
   showBlurDialog(BuildContext context) {
     DialogBackground(
       dismissable: false,

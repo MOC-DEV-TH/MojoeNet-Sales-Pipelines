@@ -8,19 +8,17 @@ import '../controllers/login_controller.dart';
 class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(int.parse(AppColors.bgColor)),
-      body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: double.infinity,
-          margin: const EdgeInsets.only(top: 40),
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color(int.parse(AppColors.bgColor)),
+        body: SingleChildScrollView(
+          reverse: true,
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
+            padding: const EdgeInsets.only(top: 100, left: 24, right: 24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -29,6 +27,9 @@ class LoginView extends GetView<LoginController> {
                       height: 100,
                       fit: BoxFit.contain,
                       image: AssetImage('assets/images/header_logo.png')),
+                ),
+                const SizedBox(
+                  height: 60,
                 ),
                 Column(
                   children: [
@@ -43,16 +44,21 @@ class LoginView extends GetView<LoginController> {
                       height: 18,
                     ),
                     makeInput(
-                      label: "Email",
-                    ),
+                        label: "Email", controller: controller.emailController),
                     makeInput(
-                      label: "Password",
-                      obsureText: true,
-                    ),
+                        label: "Password",
+                        obsureText: true,
+                        controller: controller.passwordController),
                     const SizedBox(
                       height: 18,
                     ),
                     makeButton(),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            bottom: MediaQuery
+                                .of(context)
+                                .viewInsets
+                                .bottom))
                   ],
                 )
               ],
@@ -68,7 +74,10 @@ class LoginView extends GetView<LoginController> {
   }
 
   Widget makeButton() {
-    return MaterialButton(
+    return Obx(() =>
+    controller.isLoading.value ? const Center(
+      child: CircularProgressIndicator(),)
+        : MaterialButton(
       minWidth: double.infinity,
       height: 50,
       onPressed: () {
@@ -81,13 +90,10 @@ class LoginView extends GetView<LoginController> {
         style: TextStyle(
             fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
       ),
-    );
+    ));
   }
 
-  Widget makeInput({
-    label,
-    obsureText = false,
-  }) {
+  Widget makeInput({label, obsureText = false, controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,8 +106,9 @@ class LoginView extends GetView<LoginController> {
           height: 5,
         ),
         TextFormField(
-          controller: controller.emailController,
+          controller: controller,
           obscureText: obsureText,
+          scrollPadding: const EdgeInsets.only(bottom: 150),
           decoration: const InputDecoration(
             fillColor: Colors.white,
             filled: true,
@@ -112,7 +119,7 @@ class LoginView extends GetView<LoginController> {
               ),
             ),
             border:
-                OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
           ),
         ),
         const SizedBox(

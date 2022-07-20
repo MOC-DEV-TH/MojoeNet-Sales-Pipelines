@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/modules/Contracted/controllers/contracted_controller.dart';
+import 'package:sales_pipeline/app/widgets/contracted_list_table_items.dart';
 import 'package:sales_pipeline/components/text_field_component.dart';
 
 import 'package:sales_pipeline/res/colors.dart';
@@ -60,7 +61,7 @@ class ContractedView extends GetView<ContractedController> {
                          */
                         Container(
                           width: 160,
-                          height: 30,
+                          height: 35,
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
@@ -102,7 +103,7 @@ class ContractedView extends GetView<ContractedController> {
                           children: [
                             Container(
                               width: 160,
-                              height: 30,
+                              height: 35,
                               decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:
@@ -137,12 +138,12 @@ class ContractedView extends GetView<ContractedController> {
                           ],
                         ),
                         /**
-                         * Lead List table items
+                         * Contracted List table items
                          */
                         const SizedBox(
                           height: 20,
                         ),
-                        LeadListTableItems(),
+                        ContractedListTableItems(),
                       ],
                     )),
               ),

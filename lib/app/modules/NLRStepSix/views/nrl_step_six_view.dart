@@ -138,13 +138,9 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
           ],
         ),
         GetBuilder<NLRStepSixController>(
-            builder: (controller) => Expanded(
-                  child: Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: controller.potentialStatus == 'No'
-                          ? makeFooterContainer()
-                          : const SizedBox()),
-                )),
+            builder: (controller) => controller.potentialStatus == 'No'
+                ? Expanded(child: makeFooterContainer())
+                : const SizedBox()),
       ],
     );
   }
@@ -232,6 +228,33 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                   Icons.calendar_month,
                   color: Colors.white,
                 )),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GetBuilder<NLRStepSixController>(
+              builder: (controller) => Container(
+                height: 50,
+                width: 20,
+                child: Checkbox(
+                  side: const BorderSide(color: Colors.white),
+                  checkColor: Colors.grey,
+                  value: controller.checkBoxValue,
+                  activeColor: Colors.white,
+                  onChanged: (value) => controller
+                      .updateCheckBoxValue(value!), //  <-- leading Checkbox
+                ),
+              ),
+            ),
+          const Padding(
+             padding:  EdgeInsets.only(left: 10),
+             child:  Text('Notify me after 6 months',style: TextStyle(color: Colors.white,fontSize: 13),),
+           ),
           ],
         ),
       ],

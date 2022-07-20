@@ -62,7 +62,7 @@ class TargetView extends GetView<TargetController> {
                          */
                         Container(
                           width: 160,
-                          height: 30,
+                          height: 35,
                           decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius:
@@ -104,7 +104,7 @@ class TargetView extends GetView<TargetController> {
                           children: [
                             Container(
                               width: 160,
-                              height: 30,
+                              height: 35,
                               decoration: const BoxDecoration(
                                   color: Colors.white,
                                   borderRadius:

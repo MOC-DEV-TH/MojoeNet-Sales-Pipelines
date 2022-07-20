@@ -29,7 +29,6 @@ class TextFieldComponent extends StatelessWidget {
     return TextFormField(
       enabled: enable,
       keyboardType: TextInputType.multiline,
-      maxLength: null,
       maxLines: null,
       textInputAction: TextInputAction.next,
       controller: controller,
@@ -43,7 +42,7 @@ class TextFieldComponent extends StatelessWidget {
           fontSize: 12,
           color: Colors.black,
         ),
-        contentPadding: EdgeInsets.only(bottom: 16),
+        contentPadding: EdgeInsets.only(bottom: 12),
       ),
     );
   }
