@@ -20,7 +20,7 @@ class TaskSelectionController extends GetxController {
   void increment() => count.value++;
 
   void onPressViewDashboard(){
-    Get.offNamed(Routes.DASHBOARD);
+    Get.toNamed(Routes.DASHBOARD);
   }
 
   void onPressNewLeadForm(){

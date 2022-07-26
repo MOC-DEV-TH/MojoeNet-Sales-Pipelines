@@ -1,14 +1,24 @@
-import 'package:get/get.dart';
+import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+
+import '../../../models/dropDownVO.dart';
 import '../../../routes/app_pages.dart';
+import '../../../utils/app_constants.dart';
 
 class SMEController extends GetxController {
 
   var isSelected = -1;
+  var isSelectedValue = '';
   final count = 0.obs;
+  dynamic saleSmeData;
+  final dataStorage = GetStorage();
   @override
   void onInit() {
     super.onInit();
+    saleSmeData =
+        dropDownVoFromJson(json.decode(dataStorage.read(ALL_DDL_DATA).toString()));
   }
 
   @override
@@ -22,7 +32,8 @@ class SMEController extends GetxController {
 
   void updateSelectedItem(int value){
     isSelected = value;
-    update();
+    isSelectedValue = value.toString()
+;    update();
   }
 
   void onPressContinue(){

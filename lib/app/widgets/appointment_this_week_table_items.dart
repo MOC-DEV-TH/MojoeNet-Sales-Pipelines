@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../models/ActivityOverviewVO.dart';
+import '../routes/app_pages.dart';
+
 class AppointmentThisWeekTableItems extends StatelessWidget {
-  final List<Map> _books = [
-    {
-      'date': 1,
-      'business': 'ABC',
-      'status': 'Meeting follow up',
-      'followUpVia': 'phone'
-    },
-    {
-      'date': 2,
-      'business': 'ABC',
-      'status': 'Meeting follow up',
-      'followUpVia': 'phone'
-    },
-  ];
+  final List<ActivityVO>? weekly_appointment_data;
+
+  const AppointmentThisWeekTableItems(this.weekly_appointment_data, {Key? key})
+      : super(key: key);
 
   Widget build(BuildContext context) {
     return Table(
@@ -28,12 +21,13 @@ class AppointmentThisWeekTableItems extends StatelessWidget {
           _createTableTitleCell(label: 'Status'),
           _createTableTitleCell(label: 'Follow Up Via'),
         ]),
-        for (var item in _books)
+        if(weekly_appointment_data!=null)
+        for (var item in weekly_appointment_data!)
           TableRow(children: [
-            _createTableCell(label: item['date'].toString()),
-            _createBusinessTableCell(label: item['business']),
-            _createTableCell(label: item['status']),
-            _createTableCell(label: item['followUpVia']),
+            _createTableCell(label: item.followupDate.toString()),
+            _createBusinessTableCell(label: item.businessName.toString(),leadID: item.lid.toString()),
+            _createTableCell(label: item.status.toString()),
+            _createTableCell(label: item.followupVia.toString()),
           ])
       ],
     );
@@ -70,13 +64,13 @@ class AppointmentThisWeekTableItems extends StatelessWidget {
         ));
   }
 
-  Widget _createBusinessTableCell({label}) {
+  Widget _createBusinessTableCell({label,leadID}) {
     return TableCell(
         verticalAlignment: TableCellVerticalAlignment.middle,
         child: Center(
           child: TableRowInkWell(
             onTap: () {
-              debugPrint(label);
+              navigateToBusinessDetailView(leadID);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -91,5 +85,9 @@ class AppointmentThisWeekTableItems extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  void navigateToBusinessDetailView(leadID) {
+    Get.toNamed(Routes.BUSINESS_DETAIL,arguments: leadID);
   }
 }

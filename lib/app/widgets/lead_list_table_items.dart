@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/models/leadVO.dart';
+
+import '../routes/app_pages.dart';
 
 class LeadListTableItems extends StatelessWidget {
-  final List<Map> _books = [
-    {'id': 1, 'title': 'Basics', 'author': 'proposal follow up','edit':'Edit'},
-    {'id': 2, 'title': 'Basics', 'author': 'contract follow up','edit':'Edit'},
-    {'id': 3, 'title': 'GitHub', 'author': 'meeting follow up','edit':'Edit'},
-    {'id': 4, 'title': 'GitHub', 'author': 'appointment','edit':'Edit'}
-  ];
+  final List<Detail>? lead;
+  const LeadListTableItems(this.lead, {Key? key})
+      : super(key: key);
 
   Widget build(BuildContext context) {
     return Table(
@@ -26,24 +26,39 @@ class LeadListTableItems extends StatelessWidget {
           _createTableTitleCell(label: 'Status'),
           _createTableTitleCell(label: 'Action'),
         ]),
-        for (var item in _books)
+
+        for (var i = 0; i < lead!.length; i++)
           TableRow(children: [
-            _createTableCell(label: item['id'].toString()),
-            _createTableCell(label: item['title']),
-            _createTableCell(label: item['author']),
-            _createTableCell(label: item['edit']),
+            _createTableCell(label: i.toString()),
+            _createTableCell(label: lead![i].businessName),
+            _createTableCell(label: lead![i].status),
+            _createEditTableCell(label: 'Edit',leadID: lead![i].lid),
           ])
       ],
     );
   }
 
-  Widget _createTableCell({label}) {
+  Widget _createTableCell({label,leadID}) {
+    return TableCell(
+        verticalAlignment: TableCellVerticalAlignment.middle,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              label,
+              style: const TextStyle(color: Colors.white,fontSize: 12),
+            ),
+          ),
+        ));
+  }
+
+  Widget _createEditTableCell({label,leadID}) {
     return TableCell(
         verticalAlignment: TableCellVerticalAlignment.middle,
         child: Center(
           child: TableRowInkWell(
             onTap: () {
-              debugPrint(label);
+              navigateToBusinessDetailView(leadID);
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -69,5 +84,9 @@ class LeadListTableItems extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  void navigateToBusinessDetailView(leadID) {
+    Get.toNamed(Routes.BUSINESS_DETAIL,arguments: leadID);
   }
 }

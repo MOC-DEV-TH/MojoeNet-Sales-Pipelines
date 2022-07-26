@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-LoginVo loginVoFromJson(String str) =>
-    LoginVo.fromJson(json.decode(str));
+LoginVO loginVoFromJson(String str) =>
+    LoginVO.fromJson(json.decode(str));
 
-String loginVoToJson(LoginVo data) => json.encode(data.toJson());
+String loginVoToJson(LoginVO data) => json.encode(data.toJson());
 
-class LoginVo {
-  LoginVo({
+class LoginVO {
+  LoginVO({
     required this.status,
     required this.description,
     required this.token,
@@ -19,7 +19,7 @@ class LoginVo {
   String? token;
   String? uid;
 
-  factory LoginVo.fromJson(Map<String, dynamic> json) => LoginVo(
+  factory LoginVO.fromJson(Map<String, dynamic> json) => LoginVO(
         status: json["status"],
         description: json["description"],
         uid: json["uid"],

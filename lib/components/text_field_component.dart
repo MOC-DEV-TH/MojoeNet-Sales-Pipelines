@@ -10,6 +10,8 @@ class TextFieldComponent extends StatelessWidget {
     this.isVisible = false,
     this.suffixText,
     this.enable,
+    this.initialValue,
+    this.onTextDataChange,
    required this.controller,
     this.onPress,
   }) : super(key: key);
@@ -19,21 +21,27 @@ class TextFieldComponent extends StatelessWidget {
   final IconData? icon;
   final bool isVisible;
   final bool? enable;
+  String? initialValue;
   final Function()? onPress;
   final String? suffixText;
+  final  Function(String)? onTextDataChange;
   final TextInputType textInputType;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      enabled: enable,
       keyboardType: TextInputType.multiline,
       maxLines: null,
+      enabled: enable,
+      initialValue: initialValue,
       textInputAction: TextInputAction.next,
       controller: controller,
       textAlign: TextAlign.center,
       style:const TextStyle(fontSize:12),
+      onChanged: (String value){
+        onTextDataChange!(value);
+      },
       decoration: InputDecoration(
         hintText:  hintText,
         hintStyle:const TextStyle(fontSize: 12),

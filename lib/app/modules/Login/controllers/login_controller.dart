@@ -10,13 +10,16 @@ import '../../../utils/app_utils.dart';
 class LoginController extends GetxController {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-
+  var allDropDownData;
   final count = 0.obs;
   var isLoading = false.obs;
   final writeData = GetStorage();
 
+  static LoginController get to => Get.find();
+
   @override
   void onInit() {
+    firstTimeFetchAllDropDownDataFromNetwork();
     super.onInit();
   }
 
@@ -44,6 +47,7 @@ class LoginController extends GetxController {
             Future.delayed(Duration.zero, () {
               if (value.status == 'Success') {
                 writeData.write(TOKEN, value.token);
+                writeData.write(UID, value.uid);
                 isLoading(false);
                 Get.offNamed(Routes.TASK_SELECTION);
               } else {
@@ -55,5 +59,9 @@ class LoginController extends GetxController {
     } else {
       isLoading(false);
     }
+  }
+
+  void firstTimeFetchAllDropDownDataFromNetwork() {
+    RestApi.fetchAllDDlData();
   }
 }

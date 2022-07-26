@@ -6,6 +6,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/modules/Contracted/controllers/contracted_controller.dart';
 import 'package:sales_pipeline/app/modules/Contracted/views/contracted_view.dart';
+import 'package:sales_pipeline/app/modules/Home/controllers/home_controller.dart';
 import 'package:sales_pipeline/app/modules/Home/views/home_view.dart';
 import 'package:sales_pipeline/app/modules/LeadListing/views/lead_listing_view.dart';
 import 'package:sales_pipeline/app/modules/Logout/views/logout_view.dart';
@@ -26,7 +27,7 @@ class DashboardView extends GetView<DashboardController> {
     Get.put(LeadListingController());
     Get.put(TargetController());
     Get.put(ContractedController());
-
+    Get.put(HomeController());
     return GetBuilder<DashboardController>(builder: (controller) {
       return Scaffold(
         body: IndexedStack(

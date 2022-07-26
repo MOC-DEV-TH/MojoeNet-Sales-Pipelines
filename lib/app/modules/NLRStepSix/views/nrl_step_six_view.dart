@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/models/dropDownVO.dart';
 import 'package:sales_pipeline/app/modules/NLRStepSix/controllers/nlr_step_six_controller.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -10,17 +11,18 @@ import '../../../../components/label_text_component.dart';
 import '../../../../components/text_field_box_decoration_component.dart';
 
 class NLRStepSixView extends GetView<NLRStepSixController> {
-  final List<String> potentialList = <String>['Yes', 'No'];
-  final List<String> potentialListNoStatus = <String>['Dead Lead'];
-  final List<String> potentialListYesStatus = <String>[
-    'Keep Follow Up',
-    'Appointment',
-    'Send Proposal',
-    'Contracted'
+  List<SaleStatus> potentialList = [
+    SaleStatus(key: '1', value: 'Yes'),
+    SaleStatus(key: '0', value: 'No'),
+  ];
+  List<SaleStatus> potentialListNoStatus = [
+    SaleStatus(key: '2001', value: 'Dead Lead'),
   ];
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(controller.potentialStatusValue);
+    debugPrint(controller.statusValue);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -34,43 +36,91 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
           padding: const EdgeInsets.only(top: 20, bottom: 20),
           margin: const EdgeInsets.only(top: 40),
           child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                  height: 60,
-                  child: Column(
+              padding: const EdgeInsets.all(24.0),
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      DotsIndicator(
-                        dotsCount: 6,
-                        position: 5,
-                        decorator: const DotsDecorator(
-                          size: Size.square(15.0),
-                          activeSize: Size.square(15.0),
-                          color: Colors.white, // Inactive color
-                          activeColor: Colors.lightBlue,
+                      SizedBox(
+                        height: 60,
+                        child: Column(
+                          children: [
+                            DotsIndicator(
+                              dotsCount: 6,
+                              position: 5,
+                              decorator: const DotsDecorator(
+                                size: Size.square(15.0),
+                                activeSize: Size.square(15.0),
+                                color: Colors.white, // Inactive color
+                                activeColor: Colors.lightBlue,
+                              ),
+                            ),
+                            const Text(
+                              'Select Potential %.',
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                            )
+                          ],
                         ),
                       ),
-                      const Text(
-                        'Select Potential %.',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      )
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                    child: LabelTextComponent(
+                                        text: 'Potential',
+                                        color: Colors.white,
+                                        padding: 0.0)),
+                                Flexible(
+                                  flex: 2,
+                                  child: DropDownButtonComponent(
+                                    itemsList: potentialList,
+                                    onChangedData: (SaleStatus value) {
+                                      debugPrint('DropdownValue${value.value}');
+                                      controller.updatePotential(value);
+                                    },
+                                    hintText: 'Yes(Default)',
+                                    hintColor: Colors.grey,
+                                    color: Colors.white,
+                                    selectedItemColor: Colors.grey,
+                                    iconColor:
+                                        Color(int.parse(AppColors.bgColor)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GetBuilder<NLRStepSixController>(
+                              builder: (controller) =>
+                                  controller.potentialStatusValue == '0'
+                                      ? makeFooterContainer()
+                                      : makeDropDownContainer(),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 70, child: makeButton(context)),
                     ],
-                  ),
-                ),
-                Expanded(child: makeDropDownContainer()),
-                SizedBox(height: 70, child: makeButton()),
-              ],
-            ),
-          ),
+                  );
+                }
+              })),
         ),
       ),
     );
   }
 
-  void onPressContinue() {
-    controller.onPressContinue();
+  onPressContinue(BuildContext context) {
+    controller.statusValue != '' ? controller.onPressContinue(context) : null;
   }
 
   void onPressBack() {
@@ -78,74 +128,44 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
   }
 
   Widget makeDropDownContainer() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const SizedBox(
-          height: 40,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-                child: LabelTextComponent(
-                    text: 'Potential', color: Colors.white, padding: 0.0)),
-            Flexible(
-              flex: 2,
-              child: DropDownButtonComponent(
-                itemsList: potentialList,
-                onChangedData: (String value) {
-                  debugPrint('DropdownValue$value');
-                  controller.updatePotentialStatus(value.toString());
-                },
-                hintText: 'Yes(Default)',
-                hintColor: Colors.grey,
-                color: Colors.white,
-                selectedItemColor: Colors.grey,
-                iconColor: Color(int.parse(AppColors.bgColor)),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: LabelTextComponent(
-                    text: 'Status', color: Colors.white, padding: 0.0)),
-            Flexible(
-              flex: 2,
-              child: GetBuilder<NLRStepSixController>(
-                builder: (controller) => DropDownButtonComponent(
-                  itemsList: controller.potentialStatus == 'Yes'
-                      ? potentialListYesStatus
-                      : potentialListNoStatus,
-                  onChangedData: (String value) {
-                    debugPrint('DropdownValue$value');
-                    controller.updatePotentialYesStatus(value.toString());
-                  },
-                  hintText: 'Select status',
-                  hintColor: Colors.grey,
-                  color: Colors.white,
-                  selectedItemColor: Colors.grey,
-                  iconColor: Color(int.parse(AppColors.bgColor)),
+    return GetBuilder<NLRStepSixController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 30,
                 ),
-              ),
-            ),
-          ],
-        ),
-        GetBuilder<NLRStepSixController>(
-            builder: (controller) => controller.potentialStatus == 'No'
-                ? Expanded(child: makeFooterContainer())
-                : const SizedBox()),
-      ],
-    );
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: LabelTextComponent(
+                            text: 'Status', color: Colors.white, padding: 0.0)),
+                    Flexible(
+                      flex: 2,
+                      child: DropDownButtonComponent(
+                        itemsList: controller.saleStatusData.saleStatus
+                            .where((data) => (data.value != 'Dead Lead' &&
+                                data.value != 'New Lead'))
+                            .toList(),
+                        onChangedData: (SaleStatus value) {
+                          debugPrint('StatusValue${value.value}');
+                          controller.updateStatus(value.value.toString());
+                        },
+                        hintText: 'Select status',
+                        hintColor: Colors.grey,
+                        color: Colors.white,
+                        selectedItemColor: Colors.grey,
+                        iconColor: Color(int.parse(AppColors.bgColor)),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
   }
 
-  Widget makeButton() {
+  Widget makeButton(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -169,95 +189,148 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
         const SizedBox(
           width: 20,
         ),
-        Expanded(
-          child: MaterialButton(
-            minWidth: double.infinity,
-            height: 50,
-            onPressed: onPressContinue,
-            color: Color(int.parse(AppColors.buttonColor)),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: const Text(
-              "Continue",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white),
+        GetBuilder<NLRStepSixController>(
+          builder: (controller) => Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: controller.statusValue == ''
+                    ? Colors.grey
+                    : Color(int.parse(AppColors.buttonColor)),
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+              ),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: () {
+                  onPressContinue(context);
+                },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
 
   Widget makeFooterContainer() {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 40,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: LabelTextComponent(
-                    text: 'Reason', color: Colors.white, padding: 0.0)),
-            Flexible(
-              flex: 2,
-              child: TextFieldBoxDecorationComponent(
-                controller: controller.reasonTextController,
-                errorText: '',
-                hintText: 'Enter Reason',
-                label: '',
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          children: [
-            Expanded(
-                child: LabelTextComponent(
-                    text: 'Follow Up', color: Colors.white, padding: 0.0)),
-            const Flexible(
-                flex: 2,
-                child: Icon(
-                  size: 60,
-                  Icons.calendar_month,
-                  color: Colors.white,
-                )),
-          ],
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GetBuilder<NLRStepSixController>(
-              builder: (controller) => Container(
-                height: 50,
-                width: 20,
-                child: Checkbox(
-                  side: const BorderSide(color: Colors.white),
-                  checkColor: Colors.grey,
-                  value: controller.checkBoxValue,
-                  activeColor: Colors.white,
-                  onChanged: (value) => controller
-                      .updateCheckBoxValue(value!), //  <-- leading Checkbox
+    return GetBuilder<NLRStepSixController>(
+        builder: (controller) => Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                            child: LabelTextComponent(
+                                text: 'Status',
+                                color: Colors.white,
+                                padding: 0.0)),
+                        Flexible(
+                          flex: 2,
+                          child: DropDownButtonComponent(
+                            itemsList: potentialListNoStatus,
+                            onChangedData: (SaleStatus value) {
+                              debugPrint('StatusValue${value.value}');
+                              controller.updateStatus(value.value.toString());
+                            },
+                            hintText: 'Select status',
+                            hintColor: Colors.grey,
+                            color: Colors.white,
+                            selectedItemColor: Colors.grey,
+                            iconColor: Color(int.parse(AppColors.bgColor)),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          const Padding(
-             padding:  EdgeInsets.only(left: 10),
-             child:  Text('Notify me after 6 months',style: TextStyle(color: Colors.white,fontSize: 13),),
-           ),
-          ],
-        ),
-      ],
-    );
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: LabelTextComponent(
+                            text: 'Reason', color: Colors.white, padding: 0.0)),
+                    Flexible(
+                      flex: 2,
+                      child: TextFieldBoxDecorationComponent(
+                        controller: controller.reasonTextController,
+                        errorText: '',
+                        hintText: 'Enter Reason',
+                        label: '',
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: LabelTextComponent(
+                            text: 'Follow Up',
+                            color: Colors.white,
+                            padding: 0.0)),
+                     Flexible(
+                        flex: 2,
+                        child: InkWell(
+                          onTap: (){controller.selectDateTime();},
+                          child: Icon(
+                            size: 60,
+                            Icons.calendar_month,
+                            color: Colors.white,
+                          ),
+                        )),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GetBuilder<NLRStepSixController>(
+                      builder: (controller) => Container(
+                        height: 50,
+                        width: 20,
+                        child: Checkbox(
+                          side: const BorderSide(color: Colors.white),
+                          checkColor: Colors.grey,
+                          value: controller.checkBoxValue,
+                          activeColor: Colors.white,
+                          onChanged: (value) => controller.updateCheckBoxValue(
+                              value!), //  <-- leading Checkbox
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Notify me after 6 months',
+                        style: TextStyle(color: Colors.white, fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
   }
 }

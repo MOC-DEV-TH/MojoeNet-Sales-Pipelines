@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ContractedListTableItems extends StatelessWidget {
-  final List<Map> _books = [
-    {'id': 1, 'title': 'Basics', 'author': 'contracted',},
-    {'id': 2, 'title': 'Basics', 'author': 'contracted',},
-    {'id': 3, 'title': 'GitHub', 'author': 'contracted',},
-    {'id': 4, 'title': 'GitHub', 'author': 'contracted',}
-  ];
+import '../models/contracted_lead_vo.dart';
 
+class ContractedListTableItems extends StatelessWidget {
+  final List<Detail>? contractedLead;
+  const ContractedListTableItems(this.contractedLead, {Key? key})
+      : super(key: key);
   Widget build(BuildContext context) {
     return Table(
       columnWidths:  const {
         0: FlexColumnWidth(1.5),
         1: FlexColumnWidth(4),
-        2: FlexColumnWidth(5),
-        3: FlexColumnWidth(2.4),
+        2: FlexColumnWidth(4),
+        3: FlexColumnWidth(4),
       },
       border: TableBorder.all(
           color: Colors.white, style: BorderStyle.solid, width: 1),
@@ -24,12 +22,14 @@ class ContractedListTableItems extends StatelessWidget {
           _createTableTitleCell(label: 'SN'),
           _createTableTitleCell(label: 'Business Name'),
           _createTableTitleCell(label: 'Status'),
+          _createTableTitleCell(label: 'Contact Information'),
         ]),
-        for (var item in _books)
+        for (var i = 0; i < contractedLead!.length; i++)
           TableRow(children: [
-            _createTableCell(label: item['id'].toString()),
-            _createTableCell(label: item['title']),
-            _createTableCell(label: item['author']),
+            _createTableCell(label: i.toString()),
+            _createTableCell(label: contractedLead![i].businessName.toString()),
+            _createTableCell(label: contractedLead![i].status.toString()),
+            _createTableCell(label: contractedLead![i].contactInformation.toString()),
           ])
       ],
     );

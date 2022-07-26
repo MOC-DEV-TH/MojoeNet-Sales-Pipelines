@@ -60,7 +60,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
   }
 
   void onPressContinue() {
-    controller.onPressContinue();
+   controller.checkEmptyData()==false ? null : controller.onPressContinue();
   }
 
   void onPressBack() {
@@ -91,23 +91,32 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
         const SizedBox(
           width: 20,
         ),
-        Expanded(
-          child: MaterialButton(
-            minWidth: double.infinity,
-            height: 50,
-            onPressed: onPressContinue,
-            color: Color(int.parse(AppColors.buttonColor)),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: const Text(
-              "Continue",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white),
+        GetBuilder<NLRStepFiveController>(
+          builder: (controller) => Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: controller.checkEmptyData() == false
+                    ? Colors.grey
+                    : Color(int.parse(AppColors.buttonColor)),
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+              ),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: onPressContinue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }

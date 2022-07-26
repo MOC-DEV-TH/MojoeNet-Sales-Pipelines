@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/models/dropDownVO.dart';
 import 'package:sales_pipeline/app/modules/NLRStepThree/controllers/nlr_step_three_controller.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -9,10 +9,7 @@ import '../../../../components/drop_down_button_component.dart';
 import '../../../../components/label_text_component.dart';
 import '../../../../components/text_field_box_decoration_component.dart';
 
-
 class NLRStepThreeView extends GetView<NLRStepThreeController> {
-  final List<String> divisionList = <String>['Yangon', 'Mandalay'];
-  final List<String> townshipList = <String>['Dagon','Sanchaung','Hlaing','Kamayut','MingalarTaungNyut'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +61,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
   }
 
   void onPressContinue() {
-    controller.onPressContinue();
+    controller.checkEmptyData() == false ? null : controller.onPressContinue();
   }
 
   void onPressBack() {
@@ -82,7 +79,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
             onPressed: onPressBack,
             color: Color(int.parse(AppColors.buttonColor)),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             child: const Text(
               "Back",
               style: TextStyle(
@@ -95,23 +92,32 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
         const SizedBox(
           width: 20,
         ),
-        Expanded(
-          child: MaterialButton(
-            minWidth: double.infinity,
-            height: 50,
-            onPressed: onPressContinue,
-            color: Color(int.parse(AppColors.buttonColor)),
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: const Text(
-              "Continue",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white),
+        GetBuilder<NLRStepThreeController>(
+          builder: (controller) => Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: controller.checkEmptyData() == false
+                    ? Colors.grey
+                    : Color(int.parse(AppColors.buttonColor)),
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+              ),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: onPressContinue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -132,10 +138,10 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
             Flexible(
               flex: 2,
               child: DropDownButtonComponent(
-                itemsList: divisionList,
-                onChangedData: (String value) {
-                  debugPrint('DropdownValue$value');
-                  controller.updateDivisionStatus(value.toString());
+                itemsList: controller.townShipAndDivisionStatusData.division,
+                onChangedData: (Sale data) {
+                  debugPrint('TownshipValue${data.value}');
+                  controller.updateDivisionStatus(data.value.toString());
                 },
                 hintText: 'Yangon(Default)',
                 hintColor: Colors.grey,
@@ -158,10 +164,10 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
             Flexible(
               flex: 2,
               child: DropDownButtonComponent(
-                itemsList: townshipList,
-                onChangedData: (String value) {
-                  debugPrint('DropdownValue$value');
-                  controller.updateTownshipStatus(value.toString());
+                itemsList: controller.townShipAndDivisionStatusData.township,
+                onChangedData: (Sale data) {
+                  debugPrint('TownshipValue${data.value}');
+                  controller.updateTownshipStatus(data.value.toString());
                 },
                 hintText: 'Select Township',
                 hintColor: Colors.grey,
@@ -219,7 +225,6 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
             ),
           ],
         ),
-
         makeDropDownContainer()
       ],
     );

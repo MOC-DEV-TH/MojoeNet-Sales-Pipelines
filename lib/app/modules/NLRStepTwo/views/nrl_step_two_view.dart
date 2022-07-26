@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:sales_pipeline/app/utils/app_constants.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
 import '../controllers/nlr_step_two_controller.dart';
 
 class NLRStepTwoView extends GetView<NLRStepTwoController> {
-  final List<String> data = <String>[
-    'Company',
-    'SME',
-    'Condo',
-    'Hotel',
-    'Bar/Restaurant/KTV',
-    'Home'
-  ];
+  final dataStorage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +61,8 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
     );
   }
 
-  void onPressContinue() {
-    controller.onPressContinue();
+  onPressContinue() {
+    controller.isSelectedValue != '' ? controller.onPressContinue() : null;
   }
 
   void onPressBack() {
@@ -98,23 +93,32 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
         const SizedBox(
           width: 20,
         ),
-        Expanded(
-          child: MaterialButton(
-            minWidth: double.infinity,
-            height: 50,
-            onPressed: onPressContinue,
-            color: Color(int.parse(AppColors.buttonColor)),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: const Text(
-              "Continue",
-              style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  color: Colors.white),
+        GetBuilder<NLRStepTwoController>(
+          builder: (controller) => Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: controller.isSelectedValue == ''
+                    ? Colors.grey
+                    : Color(int.parse(AppColors.buttonColor)),
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+              ),
+              child: MaterialButton(
+                minWidth: double.infinity,
+                height: 50,
+                onPressed: onPressContinue,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                child: const Text(
+                  "Continue",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      color: Colors.white),
+                ),
+              ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
@@ -124,17 +128,24 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
       child: ListView.builder(
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 4, bottom: 8),
-          itemCount: data.length,
+          itemCount: controller.saleBusinessTypeData.saleBusinessType.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.only(top: 8, bottom: 8),
               child: GetBuilder<NLRStepTwoController>(
                   builder: (controller) => InkWell(
                         onTap: () {
-                          if (data[index] == 'SME') {
+                          if (controller.saleBusinessTypeData
+                                  .saleBusinessType[index].value ==
+                              'SME') {
+                            dataStorage.write(BUSINESS_TYPE, 'SME');
                             controller.navigateToSME();
                           } else {
                             controller.updateSelectedItem(index);
+                            dataStorage.write(
+                                BUSINESS_TYPE,
+                                controller.saleBusinessTypeData
+                                    .saleBusinessType[index].value);
                           }
                         },
                         child: Container(
@@ -146,7 +157,8 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                                   : Colors.white),
                           child: Center(
                               child: Text(
-                            data[index],
+                            controller.saleBusinessTypeData
+                                .saleBusinessType[index].value,
                             style: TextStyle(
                               color: controller.isSelected == index
                                   ? Colors.white
