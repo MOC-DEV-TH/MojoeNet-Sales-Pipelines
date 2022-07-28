@@ -49,23 +49,23 @@ class ContractedLeadVo {
 
 class Detail {
   Detail({
-    this.businessName,
+    this.firstName,
     this.status,
     this.contactInformation,
   });
 
-  String? businessName;
+  String? firstName;
   String? status;
   String? contactInformation;
 
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
-    businessName: json["business_name"] == null ? null : json["business_name"],
+    firstName: json["firstname"] == null ? null : json["firstname"],
     status: json["status"],
     contactInformation: json["contact_information"] == null ? null : json["contact_information"],
   );
 
   Map<String, dynamic> toJson() => {
-    "business_name": businessName == null ? null : businessName,
+    "firstname": firstName == null ? null : firstName,
     "status": status,
     "contact_information": contactInformation == null ? null : contactInformation,
   };

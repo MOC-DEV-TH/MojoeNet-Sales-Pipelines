@@ -7,6 +7,7 @@ import '../routes/app_pages.dart';
 import 'app_constants.dart';
 
 class AppUtils {
+  static var dataStorage =  GetStorage();
   static void showErrorSnackBar(String title, String message) {
     Get.snackbar(
       title,
@@ -17,11 +18,26 @@ class AppUtils {
       duration: Duration(seconds: 2),
     );
   }
+  static Future<void>  removeLeadDataFromGetStorage()  async {
+
+    dataStorage.remove(SOURCE);
+    dataStorage.remove(BUSINESS_TYPE);
+    dataStorage.remove(BUSINESS_NAME);
+    dataStorage.remove(DIVISION);
+    dataStorage.remove(TOWNSHIP);
+    dataStorage.remove(ADDRESS);
+    dataStorage.remove(DESIGNATION);
+    dataStorage.remove(CONTACT_NUMBER);
+    dataStorage.remove(CONTACT_PERSON);
+    dataStorage.remove(EMAIL);
+    dataStorage.remove(SOURCE_INDEX);
+    dataStorage.remove(BUSINESS_TYPE_INDEX);
+    dataStorage.remove(DESIGNATION_INDEX);
+  }
 
   static Future<void> removeDataFromGetStorage() async {
-    final box = GetStorage();
-    box.remove(TOKEN);
-    box.remove(UID);
+    dataStorage.remove(TOKEN);
+    dataStorage.remove(UID);
   }
 
   static void showSessionExpireDialog(

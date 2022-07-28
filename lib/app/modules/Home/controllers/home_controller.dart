@@ -12,6 +12,8 @@ class HomeController extends GetxController {
   var isLoading = false.obs;
   final activityOverviewDetailData = Details().obs;
   final readData = GetStorage();
+
+  static HomeController get to => Get.find();
   @override
   void onInit() {
     super.onInit();
@@ -26,7 +28,11 @@ class HomeController extends GetxController {
   void onClose() {}
   void increment() => count.value++;
 
-  void fetchActivityOverview(BuildContext context) {
+  void onPressBack(){
+    Get.back();
+  }
+
+  void fetchActivityOverview() {
       isLoading(true);
       RestApi.fetchActivityOverview(
           readData.read(TOKEN), readData.read(UID))
@@ -41,7 +47,7 @@ class HomeController extends GetxController {
           {
             isLoading(false),
             AppUtils.showSessionExpireDialog(
-                'Fail', 'Session Expired', context)
+                'Fail', 'Session Expired', Get.context!)
           }
         else
           {isLoading(false)}

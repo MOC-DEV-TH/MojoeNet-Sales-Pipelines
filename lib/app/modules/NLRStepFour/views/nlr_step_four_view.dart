@@ -12,6 +12,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
 
   @override
   Widget build(BuildContext context) {
+    checkSelectedItem();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -61,7 +62,11 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
   }
 
   void onPressContinue() {
-   controller.isSelectedValue != '' ? controller.onPressContinue() : null;
+    controller.isSelectedValue != ''
+        ? controller.onPressContinue()
+        : dataStorage.read(DESIGNATION) != null
+            ? controller.onPressContinue()
+            : null;
   }
 
   void onPressBack() {
@@ -96,7 +101,8 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.isSelectedValue == ''
+                color: controller.isSelectedValue == '' &&
+                    dataStorage.read(DESIGNATION) == null
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -139,6 +145,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                               DESIGNATION,
                               controller.saleDesignationData
                                   .saleDesignation[index].value);
+                          dataStorage.write(DESIGNATION_INDEX, index);
                         },
                         child: Container(
                           height: 50,
@@ -162,5 +169,11 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
             );
           }),
     );
+  }
+
+  void checkSelectedItem() {
+    dataStorage.read(DESIGNATION) != null
+        ? controller.isSelected = dataStorage.read(DESIGNATION_INDEX)
+        : controller.isSelected = -1;
   }
 }

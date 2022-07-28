@@ -9,6 +9,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import '../../../../components/drop_down_button_component.dart';
 import '../../../../components/label_text_component.dart';
 import '../../../../components/text_field_box_decoration_component.dart';
+import '../../../../components/text_field_component.dart';
 
 class NLRStepSixView extends GetView<NLRStepSixController> {
   List<SaleStatus> potentialList = [
@@ -145,8 +146,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                       flex: 2,
                       child: DropDownButtonComponent(
                         itemsList: controller.saleStatusData.saleStatus
-                            .where((data) => (data.value != 'Dead Lead' &&
-                                data.value != 'New Lead'))
+                            .where((data) => (data.value != 'Dead Lead'))
                             .toList(),
                         onChangedData: (SaleStatus value) {
                           debugPrint('StatusValue${value.value}');
@@ -161,8 +161,31 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                controller.statusValue == 'Contracted'
+                    ? makeContractedDate()
+                    : const SizedBox()
               ],
             ));
+  }
+
+  Widget makeContractedDate() {
+    return Row(
+      children: [
+        Expanded(
+            child: LabelTextComponent(
+                text: 'Contract Date', color: Colors.white, padding: 0.0)),
+        Flexible(
+            flex: 2,
+            child: InkWell(
+                onTap: () {
+                  controller.selectContractDateTime();
+                },
+                child: makeTextFormField(controller.contractDateTextController))),
+      ],
+    );
   }
 
   Widget makeButton(BuildContext context) {
@@ -288,15 +311,14 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                             text: 'Follow Up',
                             color: Colors.white,
                             padding: 0.0)),
-                     Flexible(
+                    Flexible(
                         flex: 2,
                         child: InkWell(
-                          onTap: (){controller.selectDateTime();},
-                          child: Icon(
-                            size: 60,
-                            Icons.calendar_month,
-                            color: Colors.white,
-                          ),
+                          onTap: () {
+                            controller.selectDateTime();
+                          },
+                          child: makeTextFormField(
+                              controller.followUpDateTextController),
                         )),
                   ],
                 ),
@@ -332,5 +354,28 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                 ),
               ],
             ));
+  }
+
+  Widget makeTextFormField(TextEditingController textEditingController) {
+    return Container(
+      height: 47,
+      decoration:const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(4))
+      ),
+      width: Get.width,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: TextFieldComponent(
+            hintText: '.....Select Date.....',
+            enable: false,
+            errorText: '',
+            controller: textEditingController,
+            onTextDataChange: (String value) {},
+          ),
+        ),
+      ),
+    );
   }
 }

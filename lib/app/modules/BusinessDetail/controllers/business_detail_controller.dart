@@ -5,8 +5,10 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sales_pipeline/app/models/business_detail_vo.dart';
+import 'package:sales_pipeline/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import '../../../models/dropDownVO.dart';
 import '../../../network/RestApi.dart';
+import '../../../routes/app_pages.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/app_utils.dart';
 
@@ -129,6 +131,7 @@ class BusinessDetailController extends GetxController {
     dateTimeTextController.text = data.followupDate.toString();
     weightTextController.text = data.weighted.toString();
     leadStatusName = data.status.toString();
+    followUpViaStatusName = data.followupVia.toString();
 
     data.estimateFlightdate.toString() == 'null'
         ? estimateFlightDateTextController.text = ''
@@ -137,13 +140,11 @@ class BusinessDetailController extends GetxController {
 
     (data.currentIsp.toString() == 'null' || data.currentIsp.toString() == '')
         ? currentISPTextController.text = 'xxxxxxxxxx'
-        : currentISPTextController.text =
-        data.currentIsp.toString();
+        : currentISPTextController.text = data.currentIsp.toString();
 
     data.followupDate.toString() == 'null'
         ? dateTimeTextController.text = ''
-        : dateTimeTextController.text =
-        data.followupDate.toString();
+        : dateTimeTextController.text = data.followupDate.toString();
   }
 
   void onPressSave() {

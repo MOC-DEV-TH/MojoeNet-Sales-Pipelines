@@ -12,6 +12,8 @@ import '../../../utils/app_utils.dart';
 
 class NLRStepSixController extends GetxController {
   var reasonTextController = TextEditingController();
+  var followUpDateTextController = TextEditingController();
+  var contractDateTextController = TextEditingController();
   final count = 0.obs;
   var potentialStatusValue = "1";
   var statusValue = "";
@@ -19,7 +21,6 @@ class NLRStepSixController extends GetxController {
   final dataStorage = GetStorage();
   dynamic saleStatusData;
   var isLoading = false.obs;
-  var followUpDateValue = "";
 
   @override
   void onInit() {
@@ -38,18 +39,7 @@ class NLRStepSixController extends GetxController {
 
   void increment() => count.value++;
 
-  void removeLeadDataFromGetStorage() {
-    dataStorage.remove(SOURCE);
-    dataStorage.remove(BUSINESS_TYPE);
-    dataStorage.remove(BUSINESS_NAME);
-    dataStorage.remove(DIVISION);
-    dataStorage.remove(TOWNSHIP);
-    dataStorage.remove(ADDRESS);
-    dataStorage.remove(DESIGNATION);
-    dataStorage.remove(CONTACT_NUMBER);
-    dataStorage.remove(CONTACT_PERSON);
-    dataStorage.remove(EMAIL);
-  }
+
 
   void onPressContinue(BuildContext context) {
     isLoading(true);
@@ -68,9 +58,10 @@ class NLRStepSixController extends GetxController {
       'emiail': dataStorage.read(EMAIL).toString(),
       'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
-      'followup_date': followUpDateValue.toString(),
+      'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
+      'contracted_date': contractDateTextController.text.toString(),
     };
     var smeDataMap = {
       'uid': dataStorage.read(UID),
@@ -88,9 +79,10 @@ class NLRStepSixController extends GetxController {
       'emiail': dataStorage.read(EMAIL).toString(),
       'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
-      'followup_date': followUpDateValue.toString(),
+      'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
+      'contracted_date': contractDateTextController.text.toString(),
     };
     RestApi.postLeadFormData(
             dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? smeDataMap : map,
@@ -98,7 +90,7 @@ class NLRStepSixController extends GetxController {
         .then((value) => Future.delayed(Duration.zero, () {
               if (value.status == 'Success') {
                 isLoading(false);
-                removeLeadDataFromGetStorage();
+                AppUtils.removeLeadDataFromGetStorage();
                 Get.offNamed(Routes.SUCCESS_LEAD_INFO);
               } else if (value.responseCode == "005") {
                 isLoading(false);
@@ -114,6 +106,20 @@ class NLRStepSixController extends GetxController {
     Get.offNamed(Routes.NLR_STEP_FIVE);
   }
 
+  selectContractDateTime() async {
+    final DateTime? selected = await showDatePicker(
+      initialDate: DateTime.now(),
+      context: Get.context!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (selected != null) {
+      String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
+      debugPrint("DateTimeFormat${dtFormat}");
+      contractDateTextController.text = dtFormat.toString();
+    }
+  }
    selectDateTime() async {
     final DateTime? selected = await showDatePicker(
       initialDate: DateTime.now(),
@@ -123,9 +129,9 @@ class NLRStepSixController extends GetxController {
     );
 
     if (selected != null) {
-      String dtFormat = DateFormat('dd-MM-yyyy').format(selected);
+      String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
       debugPrint("DateTimeFormat${dtFormat}");
-      followUpDateValue = dtFormat.toString();
+      followUpDateTextController.text = dtFormat.toString();
     }
   }
 

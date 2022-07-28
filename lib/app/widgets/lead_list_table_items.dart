@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/models/leadVO.dart';
+import 'package:sales_pipeline/app/modules/LeadListing/controllers/lead_listing_controller.dart';
 
 import '../routes/app_pages.dart';
 
@@ -45,7 +46,7 @@ class LeadListTableItems extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              label,
+              label.toString(),
               style: const TextStyle(color: Colors.white,fontSize: 12),
             ),
           ),
@@ -87,6 +88,7 @@ class LeadListTableItems extends StatelessWidget {
   }
 
   void navigateToBusinessDetailView(leadID) {
-    Get.toNamed(Routes.BUSINESS_DETAIL,arguments: leadID);
+    Get.toNamed(Routes.BUSINESS_DETAIL,arguments: leadID)!.then((value) => LeadListingController.to.fetchLeadList()
+    );
   }
 }

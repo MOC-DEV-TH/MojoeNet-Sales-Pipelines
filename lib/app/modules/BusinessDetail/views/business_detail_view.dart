@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:sales_pipeline/app/models/dropDownVO.dart';
 import 'package:sales_pipeline/app/models/lead_status.dart';
 import 'package:sales_pipeline/app/modules/BusinessDetail/controllers/business_detail_controller.dart';
+import 'package:sales_pipeline/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:sales_pipeline/components/drop_down_button_component.dart';
 import 'package:sales_pipeline/components/lead_status_drop_down_button_component.dart';
 import 'package:sales_pipeline/components/text_field_component.dart';
@@ -292,7 +293,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                         debugPrint('DropdownValue${value.value}');
                         controller.updateFollowUpViaStatus(value);
                       },
-                      hintText: 'Select here',
+                      hintText:controller.followUpViaStatusName=='null' ? 'Select here' : controller.followUpViaStatusName,
                       hintColor: Colors.grey,
                       color: Colors.white,
                       selectedItemColor: Colors.grey,

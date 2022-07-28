@@ -10,13 +10,11 @@ import '../../../utils/app_constants.dart';
 
 class NLRStepOneController extends GetxController {
   final count = 0.obs;
-  var isSelected = -1;
+  dynamic isSelected = -1;
   var isSelectedValue = '';
   dynamic saleSourceData;
   final dataStorage = GetStorage();
   var postLeadData = PostLeadVO();
-
-
 
   @override
   void onInit() {
@@ -35,7 +33,7 @@ class NLRStepOneController extends GetxController {
 
   void increment() => count.value++;
 
-  void updateSelectedItem(int value) {
+   updateSelectedItem(int value) {
     isSelected = value;
     isSelectedValue = value.toString();
     update();

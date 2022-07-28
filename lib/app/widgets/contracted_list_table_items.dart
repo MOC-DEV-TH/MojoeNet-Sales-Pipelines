@@ -27,7 +27,7 @@ class ContractedListTableItems extends StatelessWidget {
         for (var i = 0; i < contractedLead!.length; i++)
           TableRow(children: [
             _createTableCell(label: i.toString()),
-            _createTableCell(label: contractedLead![i].businessName.toString()),
+            _createTableCell(label: contractedLead![i].firstName.toString()),
             _createTableCell(label: contractedLead![i].status.toString()),
             _createTableCell(label: contractedLead![i].contactInformation.toString()),
           ])

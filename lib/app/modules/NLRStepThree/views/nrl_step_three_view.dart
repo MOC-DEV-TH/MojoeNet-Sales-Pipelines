@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sales_pipeline/app/models/dropDownVO.dart';
 import 'package:sales_pipeline/app/modules/NLRStepThree/controllers/nlr_step_three_controller.dart';
+import 'package:sales_pipeline/app/utils/app_constants.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -10,8 +12,16 @@ import '../../../../components/label_text_component.dart';
 import '../../../../components/text_field_box_decoration_component.dart';
 
 class NLRStepThreeView extends GetView<NLRStepThreeController> {
+  String currentUserId = "SME";
+  final dataStorage = GetStorage();
   @override
   Widget build(BuildContext context) {
+
+    debugPrint(dataStorage.read(BUSINESS_NAME));
+    debugPrint(dataStorage.read(ADDRESS));
+    debugPrint(controller.divisionStatus);
+    debugPrint(controller.townshipStatus);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -37,8 +47,6 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                         dotsCount: 6,
                         position: 2,
                         decorator: const DotsDecorator(
-                          size: Size.square(15.0),
-                          activeSize: Size.square(15.0),
                           color: Colors.white, // Inactive color
                           activeColor: Colors.lightBlue,
                         ),
@@ -59,9 +67,9 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
       ),
     );
   }
-
   void onPressContinue() {
-    controller.checkEmptyData() == false ? null : controller.onPressContinue();
+    (controller.checkEmptyData() == false) ? null :
+    controller.onPressContinue();
   }
 
   void onPressBack() {
@@ -96,7 +104,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.checkEmptyData() == false
+                color: controller.checkEmptyData()==false
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -133,17 +141,28 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-                child: LabelTextComponent(
-                    text: 'Division', color: Colors.white, padding: 0.0)),
+                child: Row(
+              children: [
+                LabelTextComponent(
+                    text: 'Division', color: Colors.white, padding: 0.0),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                )
+              ],
+            )),
             Flexible(
               flex: 2,
               child: DropDownButtonComponent(
                 itemsList: controller.townShipAndDivisionStatusData.division,
                 onChangedData: (Sale data) {
-                  debugPrint('TownshipValue${data.value}');
+                  debugPrint('DivisionValue${data.value}');
                   controller.updateDivisionStatus(data.value.toString());
                 },
-                hintText: 'Yangon(Default)',
+                hintText: dataStorage.read(DIVISION) ?? 'Yangon(Default)',
                 hintColor: Colors.grey,
                 color: Colors.white,
                 selectedItemColor: Colors.grey,
@@ -159,8 +178,19 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: LabelTextComponent(
-                    text: 'Township', color: Colors.white, padding: 0.0)),
+                child: Row(
+              children: [
+                LabelTextComponent(
+                    text: 'Township', color: Colors.white, padding: 0.0),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                )
+              ],
+            )),
             Flexible(
               flex: 2,
               child: DropDownButtonComponent(
@@ -169,7 +199,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   debugPrint('TownshipValue${data.value}');
                   controller.updateTownshipStatus(data.value.toString());
                 },
-                hintText: 'Select Township',
+                hintText:dataStorage.read(TOWNSHIP) ?? 'Select Township',
                 hintColor: Colors.grey,
                 color: Colors.white,
                 selectedItemColor: Colors.grey,
@@ -199,7 +229,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
               child: TextFieldBoxDecorationComponent(
                 controller: controller.businessNameTextController,
                 errorText: '',
-                hintText: 'Text',
+                hintText:'Text',
                 label: '',
               ),
             ),
@@ -212,8 +242,19 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: LabelTextComponent(
-                    text: 'Address', color: Colors.white, padding: 0.0)),
+                child: Row(
+              children: [
+                LabelTextComponent(
+                    text: 'Address', color: Colors.white, padding: 0.0),
+                const SizedBox(
+                  width: 5,
+                ),
+                const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                )
+              ],
+            )),
             Flexible(
               flex: 2,
               child: TextFieldBoxDecorationComponent(
@@ -221,6 +262,11 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                 errorText: '',
                 hintText: 'Text',
                 label: '',
+                onTextDataChange: (String value){
+                  if(value==""){
+                    controller.checkEmptyData();
+                  }
+                },
               ),
             ),
           ],

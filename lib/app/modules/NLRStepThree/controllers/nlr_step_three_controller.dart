@@ -12,7 +12,7 @@ class NLRStepThreeController extends GetxController {
   var businessNameTextController = TextEditingController();
   var addressTextController = TextEditingController();
   final count = 0.obs;
-  var divisionStatus = "Yangon";
+  var divisionStatus = "";
   var townshipStatus = "";
   dynamic townShipAndDivisionStatusData;
   final dataStorage = GetStorage();
@@ -22,6 +22,20 @@ class NLRStepThreeController extends GetxController {
     super.onInit();
     townShipAndDivisionStatusData = dropDownVoFromJson(
         json.decode(dataStorage.read(ALL_DDL_DATA).toString()));
+
+    if (dataStorage.read(BUSINESS_NAME) != null) {
+      businessNameTextController.text = dataStorage.read(BUSINESS_NAME);
+    }
+    if (dataStorage.read(ADDRESS) != null) {
+      addressTextController.text = dataStorage.read(ADDRESS);
+    }
+    if (dataStorage.read(DIVISION) != null) {
+      divisionStatus = dataStorage.read(DIVISION);
+    }
+
+    if (dataStorage.read(TOWNSHIP) != null) {
+      townshipStatus = dataStorage.read(TOWNSHIP);
+    }
   }
 
   @override
@@ -45,8 +59,7 @@ class NLRStepThreeController extends GetxController {
   }
 
   bool checkEmptyData() {
-    if (businessNameTextController.text == '' ||
-        addressTextController.text == '' ||
+    if (addressTextController.text == '' ||
         divisionStatus == '' ||
         townshipStatus == '') {
       return false;
@@ -60,7 +73,6 @@ class NLRStepThreeController extends GetxController {
     dataStorage.write(ADDRESS, addressTextController.text);
     dataStorage.write(DIVISION, divisionStatus);
     dataStorage.write(TOWNSHIP, townshipStatus);
-
     Get.offNamed(Routes.NLR_STEP_FOUR);
   }
 

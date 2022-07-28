@@ -15,6 +15,17 @@ class NLRStepFiveController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
+    if(dataStorage.read(CONTACT_PERSON)!=null){
+      nameController.text = dataStorage.read(CONTACT_PERSON);
+    }
+     if(dataStorage.read(CONTACT_NUMBER)!=null){
+      contactNoController.text = dataStorage.read(CONTACT_NUMBER);
+    }
+     if(dataStorage.read(EMAIL)!=null){
+      emailController.text = dataStorage.read(EMAIL);
+    }
+
   }
 
   @override
@@ -28,9 +39,7 @@ class NLRStepFiveController extends GetxController {
   void increment() => count.value++;
 
   bool checkEmptyData() {
-    if (nameController.text == '' ||
-        contactNoController.text == '' ||
-        emailController.text == '') {
+    if (nameController.text == '' || contactNoController.text == '') {
       return false;
     } else {
       return true;
@@ -38,9 +47,9 @@ class NLRStepFiveController extends GetxController {
   }
 
   void onPressContinue() {
-    dataStorage.write(CONTACT_PERSON, nameController.text);
-    dataStorage.write(CONTACT_NUMBER, contactNoController.text);
-    dataStorage.write(EMAIL, emailController.text);
+    dataStorage.write(CONTACT_PERSON, nameController.text.toString());
+    dataStorage.write(CONTACT_NUMBER, contactNoController.text.toString());
+    dataStorage.write(EMAIL, emailController.text.toString());
     Get.offNamed(Routes.NLR_STEP_SIX);
   }
 

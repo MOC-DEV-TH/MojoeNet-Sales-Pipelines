@@ -9,7 +9,7 @@ import '../../../utils/app_constants.dart';
 
 class NLRStepTwoController extends GetxController {
 
-  var isSelected = -1;
+  dynamic isSelected = -1;
   var isSelectedValue = '';
   final count = 0.obs;
   dynamic saleBusinessTypeData;

@@ -13,6 +13,7 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
 
   @override
   Widget build(BuildContext context) {
+    checkSelectedItem();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -62,7 +63,11 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
   }
 
   onPressContinue() {
-    controller.isSelectedValue != '' ? controller.onPressContinue() : null;
+    controller.isSelectedValue != ''
+        ? controller.onPressContinue()
+        : dataStorage.read(BUSINESS_TYPE) != null
+            ? controller.onPressContinue()
+            : null;
   }
 
   void onPressBack() {
@@ -97,7 +102,8 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.isSelectedValue == ''
+                color: controller.isSelectedValue == '' &&
+                        dataStorage.read(BUSINESS_TYPE) == null
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -146,6 +152,10 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                                 BUSINESS_TYPE,
                                 controller.saleBusinessTypeData
                                     .saleBusinessType[index].value);
+
+                            dataStorage.write(
+                                BUSINESS_TYPE_INDEX,
+                                index);
                           }
                         },
                         child: Container(
@@ -170,5 +180,11 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
             );
           }),
     );
+  }
+
+  void checkSelectedItem() {
+    dataStorage.read(BUSINESS_TYPE) != null
+        ? controller.isSelected = dataStorage.read(BUSINESS_TYPE_INDEX)
+        : controller.isSelected = -1;
   }
 }

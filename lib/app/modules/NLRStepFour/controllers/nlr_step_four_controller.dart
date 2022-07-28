@@ -10,7 +10,7 @@ import '../../../utils/app_constants.dart';
 class NLRStepFourController extends GetxController {
 
   final count = 0.obs;
-  var isSelected = -1;
+  dynamic isSelected = -1;
   var isSelectedValue = '';
   dynamic saleDesignationData;
   final dataStorage = GetStorage();

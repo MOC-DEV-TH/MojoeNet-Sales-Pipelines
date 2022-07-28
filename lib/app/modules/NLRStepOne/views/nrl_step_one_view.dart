@@ -13,6 +13,8 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(dataStorage.read(SOURCE));
+    checkSelectedItem();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -62,7 +64,11 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
   }
 
   void onPressContinue() {
-    controller.isSelectedValue != '' ? controller.onPressContinue() : null;
+    controller.isSelectedValue != ''
+        ? controller.onPressContinue()
+        : dataStorage.read(SOURCE) != null
+            ? controller.onPressContinue()
+            : null;
   }
 
   void onPressBack() {
@@ -97,7 +103,8 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.isSelectedValue == ''
+                color: controller.isSelectedValue == '' &&
+                        dataStorage.read(SOURCE) == null
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -140,6 +147,7 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
                               SOURCE,
                               controller
                                   .saleSourceData.saleSource[index].value);
+                          dataStorage.write(SOURCE_INDEX, index);
                         },
                         child: Container(
                           height: 50,
@@ -162,5 +170,11 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
             );
           }),
     );
+  }
+
+  void checkSelectedItem() {
+    dataStorage.read(SOURCE) != null
+        ? controller.isSelected = dataStorage.read(SOURCE_INDEX)
+        : controller.isSelected = -1;
   }
 }

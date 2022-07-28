@@ -40,6 +40,7 @@ class DropDownButtonComponent<T> extends StatelessWidget {
         isExpanded: true,
         isDense: false,
         itemHeight: 30,
+        value: value,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 1),
           border: OutlineInputBorder(

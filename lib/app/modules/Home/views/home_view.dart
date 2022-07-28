@@ -11,7 +11,7 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-    controller.fetchActivityOverview(context);
+    controller.fetchActivityOverview();
 
     return Scaffold(
         backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -20,19 +20,28 @@ class HomeView extends GetView<HomeController> {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          }
-          else {
+          } else {
             return Column(
               children: [
                 const SizedBox(
                   height: 60,
                 ),
-                const Center(
-                  child: Text(
-                    'Your Activity This Week',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                ),
+                Center(
+                    child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                     InkWell(
+                       onTap : (){
+                        onPressBack();
+                       },
+                         child:const Icon(Icons.arrow_back,color: Colors.white,)),
+                    const Text(
+                      'Your Activity This Week',
+                      style: TextStyle(fontSize: 24, color: Colors.white),
+                    ),
+                    Container(),
+                  ],
+                )),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Container(
@@ -133,5 +142,9 @@ class HomeView extends GetView<HomeController> {
             );
           }
         }));
+  }
+
+  void onPressBack(){
+    controller.onPressBack();
   }
 }

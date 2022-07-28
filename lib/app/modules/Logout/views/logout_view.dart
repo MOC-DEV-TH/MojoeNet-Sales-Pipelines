@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ndialog/ndialog.dart';
+import 'package:sales_pipeline/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import '../../../routes/app_pages.dart';
 import '../../../utils/app_utils.dart';
@@ -10,10 +11,15 @@ import '../controllers/logout_controller.dart';
 class LogoutView extends GetView<LogoutController> {
   @override
   Widget build(BuildContext context) {
+    // DashboardController.to.tabIndex == 4 ?
+    //    Future.delayed(Duration.zero,(){
+    //      showBlurDialog(context);
+    //    }) : null;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(int.parse(AppColors.bgColor)),
         elevation: 0,
+        automaticallyImplyLeading: false,
         toolbarHeight: 80,
         title: Container(
           child: const Center(
@@ -112,7 +118,9 @@ class LogoutView extends GetView<LogoutController> {
             Text("Wohoo.. This is ordinary AlertDialog with Blur background"),
         actions: <Widget>[
           FlatButton(child: Text("Yes"), onPressed: () {}),
-          FlatButton(child: Text("Cancel"), onPressed: () {}),
+          FlatButton(child: Text("Cancel"), onPressed: () {
+            Get.back();
+          }),
         ],
       ),
     ).show(context);

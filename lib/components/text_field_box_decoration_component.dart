@@ -11,6 +11,8 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
     this.isVisible = false,
     required this.label,
     required this.controller,
+    this.initialValue,
+    this.onTextDataChange,
     this.onPress,
   }) : super(key: key);
   final String hintText;
@@ -19,6 +21,8 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
   final String errorText;
   final IconData? icon;
   final bool isVisible;
+  final  Function(String)? onTextDataChange;
+  String? initialValue;
   final Function()? onPress;
   final TextInputType textInputType;
   final TextEditingController controller;
@@ -35,11 +39,15 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20),
         child: TextFormField(
           maxLines: null,
+          initialValue: initialValue,
           textInputAction: TextInputAction.next,
           keyboardType: textInputType,
           controller: controller,
           obscureText: isVisible,
           textAlign: TextAlign.start,
+          onChanged: (String value){
+            onTextDataChange!(value);
+          },
           style: TextStyle(fontSize: 12,color: Colors.grey),
           decoration: InputDecoration(
               hintText: hintText,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/modules/Home/controllers/home_controller.dart';
 import '../models/ActivityOverviewVO.dart';
 import '../routes/app_pages.dart';
+import 'package:intl/intl.dart';
 
 class AppointmentTodayTableItems extends StatelessWidget {
   final List<ActivityVO>? daily_appointment_data;
@@ -20,14 +22,17 @@ class AppointmentTodayTableItems extends StatelessWidget {
           _createTableTitleCell(label: 'Status'),
           _createTableTitleCell(label: 'Follow Up Via'),
         ]),
-        if(daily_appointment_data!=null)
-        for (var item in daily_appointment_data!)
-          TableRow(children: [
-            _createTableCell(label: item.followupDate.toString()),
-            _createBusinessTableCell(label: item.businessName.toString(),leadID: item.lid.toString()),
-            _createTableCell(label: item.status.toString()),
-            _createTableCell(label: item.followupVia.toString()),
-          ])
+        if (daily_appointment_data != null)
+          for (var item in daily_appointment_data!)
+            TableRow(children: [
+              _createTableCell(label: DateFormat('MMMM-dd')
+                  .format(DateTime.parse(item.followupDate.toString()))),
+              _createBusinessTableCell(
+                  label: item.businessName.toString(),
+                  leadID: item.lid.toString()),
+              _createTableCell(label: item.status.toString()),
+              _createTableCell(label: item.followupVia.toString()),
+            ])
       ],
     );
   }
@@ -63,7 +68,7 @@ class AppointmentTodayTableItems extends StatelessWidget {
         ));
   }
 
-  Widget _createBusinessTableCell({label,leadID}) {
+  Widget _createBusinessTableCell({label, leadID}) {
     return TableCell(
         verticalAlignment: TableCellVerticalAlignment.middle,
         child: Center(
@@ -87,6 +92,7 @@ class AppointmentTodayTableItems extends StatelessWidget {
   }
 
   void navigateToBusinessDetailView(leadID) {
-    Get.toNamed(Routes.BUSINESS_DETAIL,arguments: leadID);
+    Get.toNamed(Routes.BUSINESS_DETAIL, arguments: leadID)!
+        .then((value) => HomeController.to.fetchActivityOverview());
   }
 }

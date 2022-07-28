@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/network/RestApi.dart';
+import 'package:sales_pipeline/app/utils/app_utils.dart';
 
 import '../../../routes/app_pages.dart';
 
@@ -8,6 +10,8 @@ class TaskSelectionController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    AppUtils.removeLeadDataFromGetStorage();
+    RestApi.fetchAllDDlData();
   }
 
   @override

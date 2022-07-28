@@ -19,6 +19,8 @@ class LeadListingController extends GetxController {
   final dataStorage = GetStorage();
   dynamic saleStatusData;
 
+  static LeadListingController get to => Get.find();
+
   @override
   void onInit() {
     super.onInit();
@@ -29,7 +31,9 @@ class LeadListingController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    fetchLeadList();
   }
+
 
   @override
   void onClose() {}
