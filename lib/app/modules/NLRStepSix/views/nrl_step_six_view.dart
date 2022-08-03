@@ -346,6 +346,36 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                     ),
                   ],
                 ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GetBuilder<NLRStepSixController>(
+                      builder: (controller) => Container(
+                        height: 50,
+                        width: 20,
+                        child: Checkbox(
+                          side: const BorderSide(color: Colors.white),
+                          checkColor: Colors.grey,
+                          value: controller.referalCheckBoxValue,
+                          activeColor: Colors.white,
+                          onChanged: (value) => controller.updateReferalCheckBoxValue(
+                              value!), //  <-- leading Checkbox
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Text(
+                        'Is Referral',
+                        style: TextStyle(color: Colors.white, fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ));
   }

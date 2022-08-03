@@ -19,6 +19,7 @@ class NLRStepSixController extends GetxController {
   var potentialStatusValue = "1";
   var statusValue = "";
   bool checkBoxValue = false;
+  bool referalCheckBoxValue = false;
   final dataStorage = GetStorage();
   dynamic saleStatusData;
   var planValue = "";
@@ -102,7 +103,7 @@ class NLRStepSixController extends GetxController {
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
-      'isReferral': checkBoxValue == true ? '1' : '0',
+      'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
       'amount': potentialStatusValue == '0'
@@ -130,7 +131,7 @@ class NLRStepSixController extends GetxController {
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
-      'isReferral': checkBoxValue == true ? '1' : '0',
+      'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
       'amount': potentialStatusValue == '0'
@@ -202,6 +203,8 @@ class NLRStepSixController extends GetxController {
     amountTextController.text="xxxxxxxx";
     packageValue="";
     discountValue="";
+    checkBoxValue = false;
+    referalCheckBoxValue = false;
     update();
   }
 
@@ -213,6 +216,12 @@ class NLRStepSixController extends GetxController {
   void updateCheckBoxValue(bool cbValue) {
     debugPrint(cbValue.toString());
     checkBoxValue = cbValue;
+    update();
+  }
+
+  void updateReferalCheckBoxValue(bool cbValue) {
+    debugPrint(cbValue.toString());
+    referalCheckBoxValue = cbValue;
     update();
   }
 }
