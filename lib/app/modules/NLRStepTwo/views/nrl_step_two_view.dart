@@ -152,11 +152,10 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                                 BUSINESS_TYPE,
                                 controller.saleBusinessTypeData
                                     .saleBusinessType[index].value);
-
-                            dataStorage.write(
-                                BUSINESS_TYPE_INDEX,
-                                index);
                           }
+                          dataStorage.write(
+                              BUSINESS_TYPE_INDEX,
+                              index);
                         },
                         child: Container(
                           height: 50,

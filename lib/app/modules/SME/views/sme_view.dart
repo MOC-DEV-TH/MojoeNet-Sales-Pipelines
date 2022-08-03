@@ -60,11 +60,11 @@ class SMEView extends GetView<SMEController> {
   }
 
   void onPressContinue() {
-    controller.onPressContinue();
+    controller.isSelectedValue != '' ? controller.onPressContinue() : null;
   }
 
   void onPressBack() {
-    controller.isSelectedValue != '' ? controller.onPressBack() : null;
+   controller.onPressBack();
   }
 
   Widget makeButton() {
