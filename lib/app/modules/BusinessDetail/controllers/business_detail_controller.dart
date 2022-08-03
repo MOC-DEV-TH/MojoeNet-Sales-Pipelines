@@ -5,10 +5,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:sales_pipeline/app/models/business_detail_vo.dart';
-import 'package:sales_pipeline/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import '../../../models/dropDownVO.dart';
 import '../../../network/RestApi.dart';
-import '../../../routes/app_pages.dart';
 import '../../../utils/app_constants.dart';
 import '../../../utils/app_utils.dart';
 
@@ -26,6 +24,11 @@ class BusinessDetailController extends GetxController {
   var weightTextController = TextEditingController();
   var dateTimeTextController = TextEditingController();
   var estimateFlightDateTextController = TextEditingController();
+
+  var planTextController = TextEditingController();
+  var packageTextController = TextEditingController();
+  var amountTextController = TextEditingController();
+  var discountTextController = TextEditingController();
 
   final count = 0.obs;
   var leadStatusName = '';
@@ -125,7 +128,6 @@ class BusinessDetailController extends GetxController {
   void setDataToTextController(Details data) {
     sourceTextController.text = data.leadSource.toString();
     businessTypeTextController.text = data.businessType.toString();
-    businessNameTextController.text = data.businessName.toString();
     designationTextController.text = data.designation.toString();
     contactPersonTextController.text = data.firstname.toString();
     dateTimeTextController.text = data.followupDate.toString();
@@ -138,13 +140,33 @@ class BusinessDetailController extends GetxController {
         : estimateFlightDateTextController.text =
             data.estimateFlightdate.toString();
 
-    (data.currentIsp.toString() == 'null' || data.currentIsp.toString() == '')
-        ? currentISPTextController.text = 'xxxxxxxxxx'
+    (data.currentIsp.toString() == 'null')
+        ? currentISPTextController.text = ''
         : currentISPTextController.text = data.currentIsp.toString();
 
     data.followupDate.toString() == 'null'
         ? dateTimeTextController.text = ''
         : dateTimeTextController.text = data.followupDate.toString();
+
+    data.plan.toString() == 'null'
+        ? planTextController.text = ''
+        : planTextController.text = data.plan.toString();
+
+    data.package.toString() == 'null'
+        ? packageTextController.text = ''
+        : packageTextController.text = data.package.toString();
+
+    data.packageTotal.toString() == 'null'
+        ? amountTextController.text = ''
+        : amountTextController.text = data.packageTotal.toString();
+
+    data.discount.toString() == 'null'
+        ? discountTextController.text = ''
+        : discountTextController.text = data.discount.toString();
+
+    (data.businessName.toString() == 'null')
+        ? businessNameTextController.text = ''
+        : businessNameTextController.text = data.businessName.toString();
   }
 
   void onPressSave() {
@@ -155,25 +177,32 @@ class BusinessDetailController extends GetxController {
       'app_version': app_version,
       'source': sourceTextController.text.toString(),
       'business_type': businessTypeTextController.text.toString(),
-      'business_name': businessNameTextController.text.toString(),
+      'business_name': businessNameTextController.text.toString() == ''
+          ? ""
+          : businessNameTextController.text.toString(),
       'designation': designationTextController.text.toString(),
       'contact_person': contactPersonTextController.text.toString() == 'null'
-          ? null
+          ? ""
           : contactPersonTextController.text.toString(),
       'potential': activityDetailData.value.potential,
       'status': leadStatusName.toString(),
-      "followup_via": followUpViaStatusName.toString() == ''
-          ? null
+      "followup_via": followUpViaStatusName.toString() == 'null'
+          ? ""
           : followUpViaStatusName.toString(),
       "estimate_flightdate":
           estimateFlightDateTextController.text.toString() == ''
-              ? null
+              ? ""
               : estimateFlightDateTextController.text.toString(),
-      "current_isp": currentISPTextController.text.toString() == 'null'
-          ? null
+      "current_isp": currentISPTextController.text.toString() == ''
+          ? ""
           : currentISPTextController.text.toString(),
       "followup_date": dateTimeTextController.text.toString(),
       "weight": weightTextController.text.toString(),
+      'amount': amountTextController.text,
+      'plan': planTextController.text,
+      'package': packageTextController.text,
+      'discount': discountTextController.text == '' ? '0%' : discountTextController.text
+          ,
     };
     RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
         .then((value) => Future.delayed(const Duration(seconds: 1), () {

@@ -14,6 +14,7 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
     this.initialValue,
     this.onTextDataChange,
     this.onPress,
+    this.enable
   }) : super(key: key);
   final String hintText;
   final int maxLines;
@@ -24,6 +25,7 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
   final  Function(String)? onTextDataChange;
   String? initialValue;
   final Function()? onPress;
+  final bool? enable;
   final TextInputType textInputType;
   final TextEditingController controller;
 
@@ -36,15 +38,16 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 20),
+        padding: label!='amount' ? const EdgeInsets.only(left: 20) :const EdgeInsets.all(0),
         child: TextFormField(
           maxLines: null,
+          enabled: enable,
           initialValue: initialValue,
           textInputAction: TextInputAction.next,
           keyboardType: textInputType,
           controller: controller,
           obscureText: isVisible,
-          textAlign: TextAlign.start,
+          textAlign:label=='amount' ? TextAlign.center : TextAlign.start,
           onChanged: (String value){
             onTextDataChange!(value);
           },

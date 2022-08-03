@@ -181,7 +181,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                 makeTextFormField(
                     controller.locationAndDivisionTextController,
                     'Location/Division',
-                    controller.activityDetailData.value.leadSource ??
+                    controller.activityDetailData.value.division ??
                         'xxxxxxxxxx'),
                 makeTextFormField(
                     controller.businessNameTextController,
@@ -205,7 +205,23 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                 makeTextFormField(
                     controller.currentISPTextController,
                     'Current ISP',
-                    ''),
+                    controller.activityDetailData.value.currentIsp ?? 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.planTextController,
+                    'Plan',
+                    controller.activityDetailData.value.plan ?? 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.packageTextController,
+                    'Package',
+                    controller.activityDetailData.value.package ?? 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.amountTextController,
+                    'Amount',
+                    controller.activityDetailData.value.packageTotal ?? 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.discountTextController,
+                    'Discount',
+                    controller.activityDetailData.value.discount ?? 'xxxxxxxxxx'),
                 makeLeadStatusDropDown(
                     'Lead Status',
                     controller.saleStatusData.saleStatus,

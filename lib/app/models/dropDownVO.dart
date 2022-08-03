@@ -21,7 +21,10 @@ class DropDownVO {
       this.saleDesignation,
       this.division,
       this.township,
-      this.followUpVia});
+      this.followUpVia,
+      this.discount,
+      this.plan,
+      this.package});
 
   String? status;
   String? responseCode;
@@ -34,6 +37,9 @@ class DropDownVO {
   List<Sale>? division;
   List<SaleDesignation>? saleDesignation;
   List<FollowUpVia>? followUpVia;
+  List<Discount>? discount;
+  List<Plan>? plan;
+  List<Package>? package;
 
   factory DropDownVO.fromJson(Map<String, dynamic> json) => DropDownVO(
         status: json["status"],
@@ -54,6 +60,11 @@ class DropDownVO {
             json["sale_designation"].map((x) => SaleDesignation.fromJson(x))),
         followUpVia: List<FollowUpVia>.from(
             json["followup_via"].map((x) => FollowUpVia.fromJson(x))),
+        discount: List<Discount>.from(
+            json["discount"].map((x) => Discount.fromJson(x))),
+        plan: List<Plan>.from(json["plan"].map((x) => Plan.fromJson(x))),
+        package:
+            List<Package>.from(json["package"].map((x) => Package.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -70,6 +81,9 @@ class DropDownVO {
         "sale_designation":
             List<dynamic>.from(saleDesignation!.map((x) => x.toJson())),
         "followup_via": List<dynamic>.from(followUpVia!.map((x) => x.toJson())),
+        "discount": List<dynamic>.from(discount!.map((x) => x.toJson())),
+        "plan": List<dynamic>.from(plan!.map((x) => x.toJson())),
+        "package": List<dynamic>.from(package!.map((x) => x.toJson())),
       };
 }
 
@@ -152,5 +166,65 @@ class FollowUpVia {
   Map<String, dynamic> toJson() => {
         "key": key,
         "value": value,
+      };
+}
+
+class Discount {
+  Discount({
+    this.key,
+    this.value,
+  });
+
+  dynamic key;
+  String? value;
+
+  factory Discount.fromJson(Map<String, dynamic> json) => Discount(
+        key: json["key"],
+        value: json["value"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "key": key,
+        "value": value,
+      };
+}
+
+class Plan {
+  Plan({
+    this.key,
+    this.value,
+  });
+
+  dynamic key;
+  String? value;
+
+  factory Plan.fromJson(Map<String, dynamic> json) => Plan(
+        key: json["key"],
+        value: json["value"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "key": key,
+        "value": value,
+      };
+}
+
+class Package {
+  Package({this.key, this.value, this.plan});
+
+  dynamic key;
+  String? value;
+  String? plan;
+
+  factory Package.fromJson(Map<String, dynamic> json) => Package(
+        key: json["key"],
+        value: json["value"],
+        plan: json["plan"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "key": key,
+        "value": value,
+        "plan": plan,
       };
 }

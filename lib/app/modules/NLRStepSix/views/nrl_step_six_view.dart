@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/models/dropDownVO.dart';
 import 'package:sales_pipeline/app/modules/NLRStepSix/controllers/nlr_step_six_controller.dart';
+import 'package:sales_pipeline/components/package_drop_down_button_component.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -24,6 +25,9 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
   Widget build(BuildContext context) {
     debugPrint(controller.potentialStatusValue);
     debugPrint(controller.statusValue);
+
+    debugPrint(controller.saleStatusData.package[0].key.toString());
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
@@ -73,41 +77,49 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                         height: 40,
                       ),
                       Expanded(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                    child: LabelTextComponent(
-                                        text: 'Potential',
-                                        color: Colors.white,
-                                        padding: 0.0)),
-                                Flexible(
-                                  flex: 2,
-                                  child: DropDownButtonComponent(
-                                    itemsList: potentialList,
-                                    onChangedData: (SaleStatus value) {
-                                      debugPrint('DropdownValue${value.value}');
-                                      controller.updatePotential(value);
-                                    },
-                                    hintText: 'Yes(Default)',
-                                    hintColor: Colors.grey,
-                                    color: Colors.white,
-                                    selectedItemColor: Colors.grey,
-                                    iconColor:
-                                        Color(int.parse(AppColors.bgColor)),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                      child: LabelTextComponent(
+                                          text: 'Potential',
+                                          color: Colors.white,
+                                          padding: 0.0)),
+                                  Flexible(
+                                    flex: 2,
+                                    child: DropDownButtonComponent(
+                                      itemsList: potentialList,
+                                      onChangedData: (SaleStatus value) {
+                                        debugPrint(
+                                            'DropdownValue${value.value}');
+                                        controller.updatePotential(value);
+                                      },
+                                      hintText: 'Yes(Default)',
+                                      hintColor: Colors.grey,
+                                      color: Colors.white,
+                                      selectedItemColor: Colors.grey,
+                                      iconColor:
+                                          Color(int.parse(AppColors.bgColor)),
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            GetBuilder<NLRStepSixController>(
-                              builder: (controller) =>
-                                  controller.potentialStatusValue == '0'
-                                      ? makeFooterContainer()
-                                      : makeDropDownContainer(),
-                            ),
-                          ],
+                                ],
+                              ),
+                              GetBuilder<NLRStepSixController>(
+                                builder: (controller) =>
+                                    controller.potentialStatusValue == '0'
+                                        ? makeFooterContainer()
+                                        : Column(
+                                            children: [
+                                              makeDropDownContainer(),
+                                              makePackageDropDownContainer(),
+                                            ],
+                                          ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 70, child: makeButton(context)),
@@ -121,7 +133,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
   }
 
   onPressContinue(BuildContext context) {
-    controller.statusValue != '' ? controller.onPressContinue(context) : null;
+    controller.checkEmptyData() != false  ? controller.onPressContinue(context) : null;
   }
 
   void onPressBack() {
@@ -161,12 +173,179 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                     ),
                   ],
                 ),
+                controller.statusValue == 'Contracted'
+                    ? const SizedBox(
+                        height: 30,
+                      )
+                    : const SizedBox(),
+                controller.statusValue == 'Contracted'
+                    ? makeContractedDate()
+                    : const SizedBox(),
                 const SizedBox(
                   height: 30,
                 ),
-                controller.statusValue == 'Contracted'
-                    ? makeContractedDate()
-                    : const SizedBox()
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        LabelTextComponent(
+                            text: 'Plan', color: Colors.white, padding: 0.0),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '*',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
+                    )),
+                    Flexible(
+                      flex: 2,
+                      child: DropDownButtonComponent(
+                        itemsList: controller.saleStatusData.plan,
+                        onChangedData: (Plan value) {
+                          debugPrint('StatusValue${value.value}');
+                          controller.selectPlan(value);
+                        },
+                        hintText: 'Select plan',
+                        hintColor: Colors.grey,
+                        color: Colors.white,
+                        selectedItemColor: Colors.grey,
+                        iconColor: Color(int.parse(AppColors.bgColor)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+              ],
+            ));
+  }
+
+  Widget makePackageDropDownContainer() {
+    return GetBuilder<NLRStepSixController>(
+        builder: (controller) => Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        LabelTextComponent(
+                            text: 'Package', color: Colors.white, padding: 0.0),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '*',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
+                    )),
+                    Flexible(
+                      flex: 2,
+                      child: PackageDropDownButtonComponent(
+                        value: controller.planValue != ""
+                            ? controller.saleStatusData.package
+                                .where((data) =>
+                                    (data.plan == controller.planValue))
+                                .toList()[0]
+                            : null,
+                        itemsList: controller.saleStatusData.package
+                            .where(
+                                (data) => (data.plan == controller.planValue))
+                            .toList(),
+                        onChangedData: (Package value) {
+                          debugPrint('StatusValue${value.value}');
+                          controller.selectPackage(value);
+                        },
+                        hintText: 'Select package',
+                        hintColor: Colors.grey,
+                        color: Colors.white,
+                        selectedItemColor: Colors.grey,
+                        iconColor: Color(int.parse(AppColors.bgColor)),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        LabelTextComponent(
+                            text: 'Amount', color: Colors.white, padding: 0.0),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '*',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
+                    )),
+                    Flexible(
+                      flex: 2,
+                      child: TextFieldBoxDecorationComponent(
+                        controller: controller.amountTextController,
+                        errorText: '',
+                        hintText: 'xxxxxxxx',
+                        label: 'amount',
+                        enable: false,
+                        onTextDataChange: (String value) {
+                          if (value == "") {}
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Row(
+                      children: [
+                        LabelTextComponent(
+                            text: 'Discount',
+                            color: Colors.white,
+                            padding: 0.0),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        const Text(
+                          '*',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      ],
+                    )),
+                    Flexible(
+                      flex: 2,
+                      child: DropDownButtonComponent(
+                        itemsList: controller.saleStatusData.discount,
+                        onChangedData: (Discount value) {
+                          debugPrint('DiscountValue${value.value}');
+                          controller.selectDiscount(value);
+                        },
+                        hintText: 'Select discount',
+                        hintColor: Colors.grey,
+                        color: Colors.white,
+                        selectedItemColor: Colors.grey,
+                        iconColor: Color(int.parse(AppColors.bgColor)),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ));
   }
@@ -183,7 +362,8 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                 onTap: () {
                   controller.selectContractDateTime();
                 },
-                child: makeTextFormField(controller.contractDateTextController))),
+                child:
+                    makeTextFormField(controller.contractDateTextController))),
       ],
     );
   }
@@ -216,7 +396,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.statusValue == ''
+                color: controller.checkEmptyData() == false
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -297,6 +477,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                         errorText: '',
                         hintText: 'Enter Reason',
                         label: '',
+                        onTextDataChange: (String value){},
                       ),
                     ),
                   ],
@@ -359,10 +540,9 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
   Widget makeTextFormField(TextEditingController textEditingController) {
     return Container(
       height: 47,
-      decoration:const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(4))
-      ),
+      decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(4))),
       width: Get.width,
       child: Center(
         child: Padding(

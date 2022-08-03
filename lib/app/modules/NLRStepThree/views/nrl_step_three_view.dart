@@ -142,18 +142,18 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           children: [
             Expanded(
                 child: Row(
-              children: [
-                LabelTextComponent(
-                    text: 'Division', color: Colors.white, padding: 0.0),
-                const SizedBox(
-                  width: 5,
-                ),
-                const Text(
-                  '*',
-                  style: TextStyle(color: Colors.red),
-                )
-              ],
-            )),
+                  children: [
+                    LabelTextComponent(
+                        text: 'Division', color: Colors.white, padding: 0.0),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ],
+                )),
             Flexible(
               flex: 2,
               child: DropDownButtonComponent(
@@ -231,6 +231,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                 errorText: '',
                 hintText:'Text',
                 label: '',
+                onTextDataChange: (String value){},
               ),
             ),
           ],

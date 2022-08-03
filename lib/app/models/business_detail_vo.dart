@@ -83,6 +83,7 @@ class Details {
     this.referrelId,
     this.leadAssign,
     this.isReferal,
+    this.discount
   });
 
   String? lid;
@@ -122,6 +123,7 @@ class Details {
   dynamic referrelId;
   dynamic leadAssign;
   String? isReferal;
+  dynamic discount;
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
     lid: json["lid"],
@@ -161,6 +163,7 @@ class Details {
     referrelId: json["referrel_id"],
     leadAssign: json["lead_assign"],
     isReferal: json["isReferal"],
+    discount: json["discount"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -201,5 +204,6 @@ class Details {
     "referrel_id": referrelId,
     "lead_assign": leadAssign,
     "isReferal": isReferal,
+    "discount": discount,
   };
 }

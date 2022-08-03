@@ -14,13 +14,17 @@ class NLRStepSixController extends GetxController {
   var reasonTextController = TextEditingController();
   var followUpDateTextController = TextEditingController();
   var contractDateTextController = TextEditingController();
+  var amountTextController = TextEditingController();
   final count = 0.obs;
   var potentialStatusValue = "1";
   var statusValue = "";
   bool checkBoxValue = false;
   final dataStorage = GetStorage();
   dynamic saleStatusData;
+  var planValue = "";
   var isLoading = false.obs;
+  var packageValue = "";
+  var discountValue = "";
 
   @override
   void onInit() {
@@ -39,7 +43,45 @@ class NLRStepSixController extends GetxController {
 
   void increment() => count.value++;
 
+  bool checkEmptyData() {
+    if (potentialStatusValue=="1") {
+      if(statusValue != "" && planValue != "" && amountTextController.text != "" && packageValue != "" && discountValue!="") {
+        return true;
+      } else
+      {
+        return false;
+      }
+    } else {
+      if(statusValue!=""){
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+  }
 
+  void selectPlan(Plan valueData) {
+    planValue = valueData.value.toString();
+    amountTextController.text = saleStatusData.package
+        .firstWhere((package) => package.plan == valueData.value)
+        .value;
+    packageValue = saleStatusData.package
+        .firstWhere((package) => package.plan == valueData.value)
+        .key;
+    update();
+  }
+
+  void selectPackage(Package data) {
+    packageValue = data.key.toString();
+    amountTextController.text = data.value.toString();
+    update();
+  }
+
+  void selectDiscount(Discount data) {
+    discountValue = data.value.toString();
+    update();
+  }
 
   void onPressContinue(BuildContext context) {
     isLoading(true);
@@ -60,8 +102,15 @@ class NLRStepSixController extends GetxController {
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
+      'isReferral': checkBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
+      'amount': potentialStatusValue == '0'
+          ? ""
+          : amountTextController.text.toString(),
+      'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
+      'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
+      'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
     var smeDataMap = {
       'uid': dataStorage.read(UID),
@@ -81,25 +130,35 @@ class NLRStepSixController extends GetxController {
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
+      'isReferral': checkBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
+      'amount': potentialStatusValue == '0'
+          ? ""
+          : amountTextController.text.toString(),
+      'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
+      'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
+      'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
-    RestApi.postLeadFormData(
-            dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? smeDataMap : map,
+
+        RestApi.postLeadFormData(
+            dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
+                ? smeDataMap
+                : map,
             dataStorage.read(TOKEN))
-        .then((value) => Future.delayed(Duration.zero, () {
-              if (value.status == 'Success') {
-                isLoading(false);
-                AppUtils.removeLeadDataFromGetStorage();
-                Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-              } else if (value.responseCode == "005") {
-                isLoading(false);
-                AppUtils.showSessionExpireDialog(
-                    'Fail', 'Session Expired', context);
-              } else {
-                isLoading(false);
-              }
-            }));
+            .then((value) => Future.delayed(Duration.zero, () {
+          if (value.status == 'Success') {
+            isLoading(false);
+            AppUtils.removeLeadDataFromGetStorage();
+            Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+          } else if (value.responseCode == "005") {
+            isLoading(false);
+            AppUtils.showSessionExpireDialog(
+                'Fail', 'Session Expired', context);
+          } else {
+            isLoading(false);
+          }
+        }));
   }
 
   void onPressBack() {
@@ -120,7 +179,8 @@ class NLRStepSixController extends GetxController {
       contractDateTextController.text = dtFormat.toString();
     }
   }
-   selectDateTime() async {
+
+  selectDateTime() async {
     final DateTime? selected = await showDatePicker(
       initialDate: DateTime.now(),
       context: Get.context!,
@@ -138,6 +198,10 @@ class NLRStepSixController extends GetxController {
   void updatePotential(SaleStatus value) {
     potentialStatusValue = value.key!;
     statusValue = "";
+    planValue="";
+    amountTextController.text="xxxxxxxx";
+    packageValue="";
+    discountValue="";
     update();
   }
 
