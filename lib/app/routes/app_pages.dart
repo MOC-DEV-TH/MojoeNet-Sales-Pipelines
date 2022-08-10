@@ -3,6 +3,8 @@ import 'package:sales_pipeline/app/modules/BusinessDetail/bindings/business_deta
 import 'package:sales_pipeline/app/modules/BusinessDetail/views/business_detail_view.dart';
 import 'package:sales_pipeline/app/modules/Contracted/bindings/contracted_binding.dart';
 import 'package:sales_pipeline/app/modules/Contracted/views/contracted_view.dart';
+import 'package:sales_pipeline/app/modules/ContractedDetail/bindings/contracted_detail_binding.dart';
+import 'package:sales_pipeline/app/modules/ContractedDetail/views/contracted_detail_view.dart';
 import 'package:sales_pipeline/app/modules/NLRStepFive/views/nrl_step_five_view.dart';
 import 'package:sales_pipeline/app/modules/NLRStepOne/bindings/nlr_step_one_binding.dart';
 import 'package:sales_pipeline/app/modules/NLRStepOne/views/nrl_step_one_view.dart';
@@ -16,6 +18,8 @@ import 'package:sales_pipeline/app/modules/Target/bindings/target_binding.dart';
 import 'package:sales_pipeline/app/modules/Target/views/target_view.dart';
 import 'package:sales_pipeline/app/modules/TaskSelection/bindings/task_selection_binding.dart';
 import 'package:sales_pipeline/app/modules/TaskSelection/views/task_selection_view.dart';
+import 'package:sales_pipeline/app/modules/WebView/bindings/web_view_binding.dart';
+import 'package:sales_pipeline/app/modules/WebView/views/web_view.dart';
 
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
 import '../modules/Dashboard/views/dashboard_view.dart';
@@ -135,6 +139,16 @@ class AppPages {
       name: _Paths.TARGET,
       page: () => TargetView(),
       binding: TargetBinding(),
+    ),
+    GetPage(
+      name: _Paths.CONTRACTED_DETAIL,
+      page: () => ContractedDetailView(),
+      binding: ContractedDetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.WEB_VIEW,
+      page: () => WebViewView(),
+      binding: WebViewBinding(),
     ),
   ];
 }

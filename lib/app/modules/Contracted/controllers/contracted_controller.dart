@@ -14,6 +14,9 @@ class ContractedController extends GetxController {
   var isLoading = false.obs;
   var isFooterLoading = false.obs;
   final contractedLeadData = <Detail>[].obs;
+
+  static ContractedController get to => Get.find();
+
   @override
   void onInit() {
     super.onInit();

@@ -1,7 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:sales_pipeline/app/utils/app_constants.dart';
 
-class PackageDropDownButtonComponent<T> extends StatelessWidget {
+import '../app/models/dropDownVO.dart';
+
+class ContractedDetailPackageDropDownButtonComponent<T> extends StatelessWidget {
   final List<dynamic>? itemsList;
   final List<dynamic>? installItemsList;
   final IconData? icon;
@@ -9,12 +13,13 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
   final String? hintText;
   final void Function(T) onChangedData;
   final String? status;
+  final dynamic firstElement;
   final Color? color;
   final Color? hintColor;
   final Color? selectedItemColor;
   final Color? iconColor;
 
-  const PackageDropDownButtonComponent(
+   ContractedDetailPackageDropDownButtonComponent(
       {Key? key,
       this.itemsList = const [],
       this.installItemsList = const [],
@@ -25,9 +30,12 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
       this.hintColor,
       this.selectedItemColor,
       this.iconColor,
+        this.firstElement,
       required this.hintText,
       required this.onChangedData})
       : super(key: key);
+
+  final dataStorage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,6 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
         isDense: false,
         itemHeight: 30,
         value: value,
-        disabledHint: Text("Select Package"),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 1),
           border: OutlineInputBorder(
@@ -84,6 +91,7 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
             .toList(),
         onChanged: (value) {
           onChangedData(value);
+          debugPrint("PackageIndex${itemsList?.indexOf(value)}");
         },
         hint: Padding(
           padding: const EdgeInsets.only(left: 20),

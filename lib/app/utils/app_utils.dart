@@ -33,6 +33,7 @@ class AppUtils {
     dataStorage.remove(SOURCE_INDEX);
     dataStorage.remove(BUSINESS_TYPE_INDEX);
     dataStorage.remove(DESIGNATION_INDEX);
+    dataStorage.remove(SME);
   }
 
   static Future<void> removeDataFromGetStorage() async {

@@ -44,7 +44,7 @@ class LoginView extends GetView<LoginController> {
                       height: 18,
                     ),
                     makeInput(
-                        label: "Email", controller: controller.emailController),
+                        label: "User Name", controller: controller.userNameController),
                     makeInput(
                         label: "Password",
                         obsureText: true,

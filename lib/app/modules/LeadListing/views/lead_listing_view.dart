@@ -186,7 +186,9 @@ class LeadListingView extends GetView<LeadListingController> {
                                     color:
                                         Color(int.parse(AppColors.buttonColor)),
                                     itemsList:
-                                        controller.saleStatusData.saleStatus,
+                                    controller.saleStatusData.saleStatus
+                                        .where((data) => (data.value != 'Contracted'))
+                                        .toList(),
                                     onChangedData: (SaleStatus value) {
                                       debugPrint(
                                           'DropdownValuez${value.value}');

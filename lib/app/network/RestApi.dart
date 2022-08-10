@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sales_pipeline/app/models/ActivityOverviewVO.dart';
 import 'package:sales_pipeline/app/models/business_detail_vo.dart';
+import 'package:sales_pipeline/app/models/contracted_detail_vo.dart';
 import 'package:sales_pipeline/app/models/contracted_lead_vo.dart';
 import 'package:sales_pipeline/app/models/leadVO.dart';
 import 'package:sales_pipeline/app/models/loginVO.dart';
@@ -200,4 +201,44 @@ class RestApi {
       throw Exception('Failed to get contracted lead list');
     }
   }
+
+  static Future<ContractedDetailVo> fetchContractedDetailById(
+      String token, String uid, String leadID) async {
+    var response = await client.get(
+      Uri.parse(GET_CONTRACTED_DETAIL_URL +
+          UID_PARAM +
+          uid +
+          APP_VERSION +
+          app_version +
+          LEAD_ID +
+          leadID),
+      headers: {'content-type': 'application/json', 'token': token},
+    );
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return contractedDetailVoFromJson(response.body);
+    } else {
+      print(response.statusCode);
+      throw Exception('Failed to get contracted detail');
+    }
+  }
+
+  static Future<NetworkResultVo> postContractedDetail(
+      Map<dynamic, dynamic> params, String token) async {
+    debugPrint(params.toString());
+    var response = await client.post(
+      Uri.parse(POST_CONTRACTED_DETAIL),
+      body: json.encode(params),
+      headers: {'content-type': 'application/json', 'token': token},
+    );
+
+    if (response.statusCode == 200) {
+      debugPrint(response.body);
+      return networkResultVoFromJson(response.body);
+    } else {
+      print(response.statusCode);
+      throw Exception('Failed to post contracted detail data');
+    }
+  }
+
 }

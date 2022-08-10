@@ -21,6 +21,9 @@ abstract class Routes {
   static const BUSINESS_DETAIL = _Paths.BUSINESS_DETAIL;
   static const CONTRACTED = _Paths.CONTRACTED;
   static const TARGET = _Paths.TARGET;
+  static const CONTRACTED_DETAIL = _Paths.CONTRACTED_DETAIL;
+  static const WEB_VIEW = _Paths.WEB_VIEW;
+
 }
 
 abstract class _Paths {
@@ -43,4 +46,6 @@ abstract class _Paths {
   static const BUSINESS_DETAIL = '/business-detail';
   static const CONTRACTED = '/contracted';
   static const TARGET = '/target';
+  static const CONTRACTED_DETAIL = '/contracted_detail';
+  static const WEB_VIEW = '/web_view';
 }

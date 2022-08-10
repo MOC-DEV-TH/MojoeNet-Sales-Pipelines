@@ -52,21 +52,29 @@ class Detail {
     this.firstName,
     this.status,
     this.contactInformation,
+    this.profileID,
+    this.sign
   });
 
   String? firstName;
   String? status;
   String? contactInformation;
+  String? profileID;
+  String? sign;
 
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
     firstName: json["firstname"] == null ? null : json["firstname"],
     status: json["status"],
     contactInformation: json["contact_information"] == null ? null : json["contact_information"],
+    profileID: json["profile_id"] == null ? null : json["profile_id"],
+    sign: json["sign"] == null ? null : json["sign"],
   );
 
   Map<String, dynamic> toJson() => {
     "firstname": firstName == null ? null : firstName,
     "status": status,
     "contact_information": contactInformation == null ? null : contactInformation,
+    "profile_id": profileID == null ? null : profileID,
+    "sign": sign == null ? null : sign,
   };
 }

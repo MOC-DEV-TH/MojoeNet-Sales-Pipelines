@@ -8,7 +8,7 @@ import '../../../utils/app_constants.dart';
 import '../../../utils/app_utils.dart';
 
 class LoginController extends GetxController {
-  var emailController = TextEditingController();
+  var userNameController = TextEditingController();
   var passwordController = TextEditingController();
   var allDropDownData;
   final count = 0.obs;
@@ -35,10 +35,10 @@ class LoginController extends GetxController {
 
   void onPressLogin() {
     debugPrint('click');
-    if (emailController.text != '' || passwordController.text != '') {
+    if (userNameController.text != '' || passwordController.text != '') {
       isLoading(true);
       Map<String, String> map = {
-        'email': emailController.value.text,
+        'user_id': userNameController.value.text,
         'password': passwordController.value.text
       };
 
