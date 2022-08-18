@@ -27,7 +27,7 @@ class ContractedDetailVo {
     description: json["description"],
     isRequieredUpdate: json["is_requiered_update"],
     isforceUpdate: json["isforce_update"],
-    details: Details.fromJson(json["details"]),
+    details:json['details']!=null ? Details?.fromJson(json["details"]) : null,
   );
 
   Map<String, dynamic> toJson() => {

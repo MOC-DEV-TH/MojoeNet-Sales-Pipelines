@@ -61,9 +61,16 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 Text(
-                                  controller.activityDetailData.value.businessName.toString()=="null" ? "" :controller.activityDetailData.value.businessName.toString(),
-                                  style:const TextStyle(
+                                Text(
+                                  controller.activityDetailData.value
+                                              .businessName
+                                              .toString() ==
+                                          "null"
+                                      ? ""
+                                      : controller
+                                          .activityDetailData.value.businessName
+                                          .toString(),
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                                 InkWell(
@@ -183,6 +190,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     ? false
                     : true,
                 errorText: '',
+                label: label,
                 controller: textEditingController,
                 onTextDataChange: (String value) {},
               ),
@@ -203,12 +211,13 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                 ),
                 makeLeadSourceDropDownContainer(),
                 makeBusinessTypeDropDownContainer(),
-                controller.businessTypeStatus=='Other'
-                ? makeTextFormField(
-                    controller.businessTypeOtherTextController,
-                    'Business Type Other',
-                    controller.activityDetailData.value.businessTypeOther ??
-                        'xxxxxxxxxx') :const SizedBox(),
+                controller.businessTypeStatus == 'Other'
+                    ? makeTextFormField(
+                        controller.businessTypeOtherTextController,
+                        'Business Type Other',
+                        controller.activityDetailData.value.businessTypeOther ??
+                            'xxxxxxxxxx')
+                    : const SizedBox(),
                 makeDivisionDropDownContainer(),
                 makeTownshipDropDownContainer(),
                 makeTextFormField(
@@ -217,32 +226,43 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     controller.activityDetailData.value.businessName ??
                         'xxxxxxxxxx'),
                 makeTextFormField(
+                    controller.addressTextController,
+                    'Address',
+                    (controller.activityDetailData.value.address.toString() ==
+                                "null" ||
+                            controller.activityDetailData.value.address
+                                    .toString() ==
+                                "")
+                        ? 'xxxxxxxxxx'
+                        : controller.activityDetailData.value.address
+                            .toString()),
+                makeTextFormField(
                     controller.contactPersonTextController,
                     'Contact Person Name',
                     controller.activityDetailData.value.firstname ??
                         'xxxxxxxxxx'),
                 makeDesignationDropDownContainer(),
-                controller.designationStatus=='Other'
+                controller.designationStatus == 'Other'
                     ? makeTextFormField(
-                    controller.designationTypeOtherTextController,
-                    'Designation Type Other',
-                    controller.activityDetailData.value.designationTypeOther ??
-                        'xxxxxxxxxx') :const SizedBox(),
+                        controller.designationTypeOtherTextController,
+                        'Designation Type Other',
+                        controller.activityDetailData.value
+                                .designationTypeOther ??
+                            'xxxxxxxxxx')
+                    : const SizedBox(),
                 makeTextFormField(
                     controller.primaryContactNoTextController,
-                    'Contact Number',
+                    'Primary Contact Number',
                     controller.activityDetailData.value.contactno ??
                         'xxxxxxxxxx'),
                 makeTextFormField(
                     controller.secondaryContactNoTextController,
                     'Secondary Contact Number',
-                    controller.activityDetailData.value.secondaryContactNumber ??
+                    controller
+                            .activityDetailData.value.secondaryContactNumber ??
                         'xxxxxxxxxx'),
-                makeTextFormField(
-                    controller.emailTextController,
-                    'Emial',
-                    controller.activityDetailData.value.email ??
-                        'xxxxxxxxxx'),
+                makeTextFormField(controller.emailTextController, 'Emial',
+                    controller.activityDetailData.value.email ?? 'xxxxxxxxxx'),
                 makeTextFormField(
                     controller.currentISPTextController,
                     'Current ISP',

@@ -11,6 +11,7 @@ class TextFieldComponent extends StatelessWidget {
     this.suffixText,
     this.enable,
     this.initialValue,
+    this.label,
     this.onTextDataChange,
    required this.controller,
     this.onPress,
@@ -21,6 +22,7 @@ class TextFieldComponent extends StatelessWidget {
   final IconData? icon;
   final bool isVisible;
   final bool? enable;
+  String? label;
   String? initialValue;
   final Function()? onPress;
   final String? suffixText;
@@ -31,7 +33,7 @@ class TextFieldComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: TextInputType.multiline,
+      keyboardType:(label=="Primary Contact Number" || label=="Secondary Contact Number") ? TextInputType.number : TextInputType.multiline,
       maxLines: null,
       enabled: enable,
       initialValue: initialValue,

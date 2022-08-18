@@ -199,7 +199,8 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
       ),
       child: Center(
         child: TextFieldBoxDecorationComponent(
-          hintText:dataStorage.read(DESIGNATION_OTHER) ?? 'Enter type of designation...',
+          hintText:(dataStorage.read(DESIGNATION_OTHER).toString()=="null" || dataStorage.read(DESIGNATION_OTHER).toString()=="" ) ? 'Enter type of designation...'
+          :dataStorage.read(DESIGNATION_OTHER),
           errorText: '',
           controller: controller.noteController,
           onTextDataChange: (String value) {}, label: 'note',

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -26,7 +27,6 @@ class ContractedDetailController extends GetxController {
   var noteTextController = TextEditingController();
 
   var secondaryContactNoTextController = TextEditingController();
-
 
   var contractedDetail = Details().obs;
   var isLoading = false.obs;
@@ -140,7 +140,8 @@ class ContractedDetailController extends GetxController {
         ? nameTextController.text = ""
         : nameTextController.text = data.firstname.toString();
 
-    (data.businessName.toString() == "null" || data.businessName.toString() == "")
+    (data.businessName.toString() == "null" ||
+            data.businessName.toString() == "")
         ? businessNameTextController.text = ""
         : businessNameTextController.text = data.businessName.toString();
 
@@ -151,7 +152,6 @@ class ContractedDetailController extends GetxController {
     data.phone2.toString() == "null"
         ? secondaryContactNoTextController.text = ""
         : secondaryContactNoTextController.text = data.phone2.toString();
-
 
     data.latitude.toString() == "null"
         ? latTextController.text = ""
@@ -195,9 +195,10 @@ class ContractedDetailController extends GetxController {
       'name': nameTextController.text.toString(),
       'business_name': businessNameTextController.text.toString(),
       'contact_number': contactNoTextController.text.toString(),
-      'secondary_contact_number': secondaryContactNoTextController.text.toString(),
-      'email' : emailTextController.text.toString(),
-      'division': divisionStatus.toString(),
+      'secondary_contact_number':
+          secondaryContactNoTextController.text.toString(),
+      'email': emailTextController.text.toString(),
+      'division': divisionStatus.toString()=="null" ? "" :divisionStatus.toString(),
       'township': townshipStatus.toString(),
       'profile_id': Get.arguments.toString(),
       'contracted_date': contractDateTextController.text.toString(),
@@ -208,32 +209,50 @@ class ContractedDetailController extends GetxController {
       'long': longTextController.text.toString(),
     };
 
-     if (checkLatLongLength(latTextController.text.toString()) == false) {
-    isLoading(false);
-    AppUtils.showErrorSnackBar(
-    'Fail', 'Latitude field must be filled with format(00.000000)');
+    if (checkLatLongLength(latTextController.text.toString()) == false) {
+      isLoading(false);
+      AppUtils.showErrorSnackBar(
+          'Fail', 'Latitude field must be filled with format(00.000000)');
+    } else if (checkLatLongLength(longTextController.text.toString()) ==
+        false) {
+      isLoading(false);
+      AppUtils.showErrorSnackBar(
+          'Fail', 'Longitude field must be filled with format(00.000000)');
+    } else if(emailTextController.text.toString()!="null" || emailTextController.text.toString()!=""){
+      if(EmailValidator.validate(emailTextController.text)==false){
+        isLoading(false);
+        AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
+      }
+      else {
+        RestApi.postContractedDetail(map, dataStorage.read(TOKEN))
+            .then((value) => Future.delayed(const Duration(seconds: 1), () {
+          if (value.status == 'Success') {
+            isLoading(false);
+            Get.back();
+          } else if (value.responseCode == "005") {
+            isLoading(false);
+            AppUtils.showSessionExpireDialog(
+                'Fail', 'Session Expired', Get.context!);
+          } else {
+            isLoading(false);
+          }
+        }));
+      }
+    } else {
+      RestApi.postContractedDetail(map, dataStorage.read(TOKEN))
+          .then((value) => Future.delayed(const Duration(seconds: 1), () {
+                if (value.status == 'Success') {
+                  isLoading(false);
+                  Get.back();
+                } else if (value.responseCode == "005") {
+                  isLoading(false);
+                  AppUtils.showSessionExpireDialog(
+                      'Fail', 'Session Expired', Get.context!);
+                } else {
+                  isLoading(false);
+                }
+              }));
     }
-     else if (checkLatLongLength(longTextController.text.toString()) == false) {
-       isLoading(false);
-       AppUtils.showErrorSnackBar(
-           'Fail', 'Longitude field must be filled with format(00.000000)');
-     }
-
-     else {
-       RestApi.postContractedDetail(map, dataStorage.read(TOKEN))
-           .then((value) => Future.delayed(const Duration(seconds: 1), () {
-         if (value.status == 'Success') {
-           isLoading(false);
-           Get.back();
-         } else if (value.responseCode == "005") {
-           isLoading(false);
-           AppUtils.showSessionExpireDialog(
-               'Fail', 'Session Expired', Get.context!);
-         } else {
-           isLoading(false);
-         }
-       }));
-     }
   }
 
   void updateDivision(String value) {

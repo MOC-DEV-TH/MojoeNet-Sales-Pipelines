@@ -56,9 +56,15 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 Text(
-                                   controller.contractedDetail.value.businessName.toString()=="null" ? "" : controller.contractedDetail.value.businessName.toString(),
-                                  style:const TextStyle(
+                                Text(
+                                  controller.contractedDetail.value.businessName
+                                              .toString() ==
+                                          "null"
+                                      ? ""
+                                      : controller
+                                          .contractedDetail.value.businessName
+                                          .toString(),
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                                 InkWell(
@@ -141,6 +147,7 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                     ? false
                     : true,
                 errorText: '',
+                label: label,
                 controller: textEditingController,
                 onTextDataChange: (String value) {},
               ),
@@ -174,13 +181,13 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                     controller.businessNameTextController,
                     'Business Name',
                     controller.contractedDetail.value.businessName.toString() ==
-                        "null" ||
-                        controller.contractedDetail.value.businessName
-                            .toString() ==
-                            ""
+                                "null" ||
+                            controller.contractedDetail.value.businessName
+                                    .toString() ==
+                                ""
                         ? 'xxxxxxxxxx'
                         : controller.contractedDetail.value.businessName
-                        .toString()),
+                            .toString()),
                 makeTextFormField(
                     controller.addressTextController,
                     'Address',
@@ -189,19 +196,33 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                         : controller.contractedDetail.value.address),
                 makeTextFormField(
                     controller.contactNoTextController,
-                    'Contact Number',
-                    (controller.contractedDetail.value.phone1.toString() == "" || controller.contractedDetail.value.phone1.toString() == "null")
+                    'Primary Contact Number',
+                    (controller.contractedDetail.value.phone1.toString() ==
+                                "" ||
+                            controller.contractedDetail.value.phone1
+                                    .toString() ==
+                                "null")
                         ? 'xxxxxxxxxx'
                         : controller.contractedDetail.value.phone1),
                 makeTextFormField(
                     controller.secondaryContactNoTextController,
                     'Secondary Contact Number',
-                    (controller.contractedDetail.value.phone2.toString() == "" || controller.contractedDetail.value.phone2.toString() == "null")
+                    (controller.contractedDetail.value.phone2.toString() ==
+                                "" ||
+                            controller.contractedDetail.value.phone2
+                                    .toString() ==
+                                "null")
                         ? 'xxxxxxxxxx'
                         : controller.contractedDetail.value.phone2),
-                makeTextFormField(controller.emailTextController, 'Email',
-                    (controller.contractedDetail.value.email.toString()=="" ||controller.contractedDetail.value.email.toString()=="null")  ? 'xxxxxxxxxx' :
-                    controller.contractedDetail.value.email.toString()),
+                makeTextFormField(
+                    controller.emailTextController,
+                    'Email',
+                    (controller.contractedDetail.value.email.toString() == "" ||
+                            controller.contractedDetail.value.email
+                                    .toString() ==
+                                "null")
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.email.toString()),
                 makeTextFormField(controller.latTextController, 'Lat',
                     controller.contractedDetail.value.latitude ?? 'xxxxxxxxxx'),
                 makeTextFormField(
@@ -216,9 +237,16 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                   child: makeTextFormField(
                       controller.appointmentDateTextController,
                       'Installation Appointment Date',
-                      controller.contractedDetail.value
-                              .installationAppointmentDate ??
-                          'xxxxxxxxxx'),
+                      (controller.contractedDetail.value
+                                      .installationAppointmentDate ==
+                                  "" ||
+                              controller.contractedDetail.value
+                                      .installationAppointmentDate
+                                      .toString() ==
+                                  "null")
+                          ? 'xxxxxxxxxx'
+                          : controller.contractedDetail.value
+                              .installationAppointmentDate),
                 ),
                 InkWell(
                   onTap: () {
@@ -227,8 +255,12 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                   child: makeTextFormField(
                       controller.contractDateTextController,
                       'Contracted Date',
-                      controller.contractedDetail.value.contractedDate ??
-                          'xxxxxxxxxx'),
+                      (controller.contractedDetail.value.contractedDate == "" ||
+                              controller.contractedDetail.value.contractedDate
+                                      .toString() ==
+                                  "null")
+                          ? 'xxxxxxxxxx'
+                          : controller.contractedDetail.value.contractedDate),
                 ),
                 makeTextFormField(controller.noteTextController, 'Note',
                     controller.contractedDetail.value.notes ?? 'xxxxxxxxxx'),

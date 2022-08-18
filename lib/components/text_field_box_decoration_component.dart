@@ -44,7 +44,7 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
           enabled: enable,
           initialValue: initialValue,
           textInputAction: TextInputAction.next,
-          keyboardType:(label=='lat' || label=='long') ? TextInputType.number : textInputType,
+          keyboardType:(label=='lat' || label=='long' || label=='primary' || label=='secondary') ? TextInputType.number : textInputType,
           controller: controller,
           obscureText: isVisible,
           textAlign:(label=='lat' ||label=='long' ||label=='amount' || label=='note') ? TextAlign.center : TextAlign.start,

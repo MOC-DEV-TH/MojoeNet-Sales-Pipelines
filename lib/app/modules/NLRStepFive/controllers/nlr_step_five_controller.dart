@@ -1,6 +1,8 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:sales_pipeline/app/utils/app_utils.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../utils/app_constants.dart';
@@ -55,7 +57,17 @@ class NLRStepFiveController extends GetxController {
     dataStorage.write(CONTACT_NUMBER, contactNoController.text.toString());
     dataStorage.write(SECONDARY_CONTACT_NUMBER, secondaryContactNoController.text.toString());
     dataStorage.write(EMAIL, emailController.text.toString());
-    Get.offNamed(Routes.NLR_STEP_SIX);
+    if(emailController.text !=""){
+      if(EmailValidator.validate(emailController.text)==true){
+        Get.offNamed(Routes.NLR_STEP_SIX);
+      }
+      else {
+        AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
+      }
+    }
+    else {
+      Get.offNamed(Routes.NLR_STEP_SIX);
+    }
   }
 
   void onPressBack() {

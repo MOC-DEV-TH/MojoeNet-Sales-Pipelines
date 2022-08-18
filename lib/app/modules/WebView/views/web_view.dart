@@ -63,7 +63,7 @@ class WebViewView extends GetView<WebViewController> {
       color: Color(int.parse(AppColors.buttonColor)),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: const Text(
-        "Back",
+        "Save",
         style: TextStyle(
             fontWeight: FontWeight.w600, fontSize: 16, color: Colors.white),
       ),

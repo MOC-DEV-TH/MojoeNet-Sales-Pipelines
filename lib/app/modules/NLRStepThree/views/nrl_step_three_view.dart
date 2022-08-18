@@ -16,7 +16,6 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
   final dataStorage = GetStorage();
   @override
   Widget build(BuildContext context) {
-
     debugPrint(dataStorage.read(BUSINESS_NAME));
     debugPrint(dataStorage.read(ADDRESS));
     debugPrint(controller.divisionStatus);
@@ -69,6 +68,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
     );
   }
   void onPressContinue() {
+    controller.checkEmptyData()==false ? null :
     controller.onPressContinue();
   }
 
@@ -104,7 +104,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Color(int.parse(AppColors.buttonColor)),
+                color:controller.checkEmptyData()!=false ? Color(int.parse(AppColors.buttonColor)) : Colors.grey,
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               ),
               child: MaterialButton(
@@ -147,7 +147,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                       width: 5,
                     ),
                     const Text(
-                      '',
+                      '*',
                       style: TextStyle(color: Colors.red),
                     )
                   ],
@@ -160,7 +160,8 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   debugPrint('DivisionValue${data.value}');
                   controller.updateDivisionStatus(data.value.toString());
                 },
-                hintText: dataStorage.read(DIVISION) ?? 'Yangon(Default)',
+                hintText: (dataStorage.read(DIVISION).toString()=="null" || dataStorage.read(DIVISION).toString()=="")? 'Yangon(Default)'
+                :dataStorage.read(DIVISION),
                 hintColor: Colors.grey,
                 color: Colors.white,
                 selectedItemColor: Colors.grey,
@@ -184,7 +185,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   width: 5,
                 ),
                 const Text(
-                  '',
+                  '*',
                   style: TextStyle(color: Colors.red),
                 )
               ],
@@ -197,7 +198,8 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   debugPrint('TownshipValue${data.value}');
                   controller.updateTownshipStatus(data.value.toString());
                 },
-                hintText:dataStorage.read(TOWNSHIP) ?? 'Select Township',
+                hintText:(dataStorage.read(TOWNSHIP).toString()=="null" || dataStorage.read(TOWNSHIP).toString()=="") ? 'Select Township'
+                :dataStorage.read(TOWNSHIP),
                 hintColor: Colors.grey,
                 color: Colors.white,
                 selectedItemColor: Colors.grey,
@@ -249,7 +251,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   width: 5,
                 ),
                 const Text(
-                  '',
+                  '*',
                   style: TextStyle(color: Colors.red),
                 )
               ],

@@ -155,7 +155,8 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
       ),
       child: Center(
         child: TextFieldBoxDecorationComponent(
-          hintText:dataStorage.read(BUSINESS_TYPE_OTHER) ?? 'Enter type of business...',
+          hintText:(dataStorage.read(BUSINESS_TYPE_OTHER).toString()=="null" || dataStorage.read(BUSINESS_TYPE_OTHER).toString()=="") ? 'Enter type of business...'
+          : dataStorage.read(BUSINESS_TYPE_OTHER),
           errorText: '',
           controller: controller.noteController,
           onTextDataChange: (String value) {}, label: 'note',

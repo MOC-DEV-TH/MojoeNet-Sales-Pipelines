@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -36,6 +37,8 @@ class BusinessDetailController extends GetxController {
 
   var businessTypeOtherTextController = TextEditingController();
   var designationTypeOtherTextController = TextEditingController();
+
+  var addressTextController = TextEditingController();
 
 
   final count = 0.obs;
@@ -299,6 +302,10 @@ class BusinessDetailController extends GetxController {
     (data.customerNote.toString() == 'null')
         ? customerNoteTextController.text = ''
         : customerNoteTextController.text = data.customerNote.toString();
+
+    data.address.toString() == 'null'
+        ? addressTextController.text = ''
+        : addressTextController.text = data.address.toString();
     // currentPlanTextController.text = data.plan.toString();
     // currentPackageTextController.text = data.package.toString();
   }
@@ -319,6 +326,7 @@ class BusinessDetailController extends GetxController {
           ? ""
           : contactPersonTextController.text.toString(),
       'potential': activityDetailData.value.potential,
+      'address': addressTextController.text.toString(),
       'status': leadStatusName.toString(),
       "followup_via": followUpViaStatusName.toString() == 'null'
           ? ""
@@ -333,6 +341,8 @@ class BusinessDetailController extends GetxController {
       "followup_date": dateTimeTextController.text.toString(),
       "weight": weightTextController.text.toString(),
       'amount': amountTextController.text,
+      'designation_other': designationTypeOtherTextController.text,
+      'business_type_other': businessTypeOtherTextController.text,
       'division': divisionStatus,
       'township': townshipStatus,
       'package': packageValue == ""
@@ -385,7 +395,31 @@ class BusinessDetailController extends GetxController {
                   }
                 }));
       }
-    } else {
+    }
+
+    else if(emailTextController.text.toString()!= ""){
+     if(EmailValidator.validate(emailTextController.text)==false){
+      isLoading(false);
+      AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
+    }
+     else {
+       RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
+           .then((value) => Future.delayed(const Duration(seconds: 1), () {
+         if (value.status == 'Success') {
+           isLoading(false);
+           Get.back();
+         } else if (value.responseCode == "005") {
+           isLoading(false);
+           AppUtils.showSessionExpireDialog(
+               'Fail', 'Session Expired', Get.context!);
+         } else {
+           isLoading(false);
+         }
+       }));
+     }
+    }
+
+    else {
       RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
           .then((value) => Future.delayed(const Duration(seconds: 1), () {
                 if (value.status == 'Success') {

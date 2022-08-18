@@ -50,7 +50,7 @@ class NLRStepSixController extends GetxController {
 
   bool checkEmptyData() {
     if (potentialStatusValue=="1") {
-      if(statusValue != "" && planValue != "" && amountTextController.text != "" && packageValue != "" && discountValue!="") {
+      if(statusValue != "" && planValue != "" && amountTextController.text != "" && packageValue != "") {
         return true;
       } else
       {
