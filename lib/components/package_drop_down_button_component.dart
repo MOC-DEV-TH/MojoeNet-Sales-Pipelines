@@ -41,7 +41,6 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
         isDense: false,
         itemHeight: 30,
         value: value,
-        disabledHint: Text("Select Package"),
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 1),
           border: OutlineInputBorder(

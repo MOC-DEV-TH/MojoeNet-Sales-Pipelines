@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sales_pipeline/app/models/ActivityOverviewVO.dart';
 import 'package:sales_pipeline/app/models/leadVO.dart';
 import 'package:sales_pipeline/app/modules/LeadListing/controllers/lead_listing_controller.dart';
 
 import '../routes/app_pages.dart';
 
-class LeadListTableItems extends StatelessWidget {
-  final List<Detail>? lead;
-  const LeadListTableItems(this.lead, {Key? key})
+class ReferralAssignedTableItems extends StatelessWidget {
+  final List<LeadAssignedVO>? referral_assigned_data;
+  const ReferralAssignedTableItems(this.referral_assigned_data, {Key? key})
       : super(key: key);
 
   Widget build(BuildContext context) {
@@ -24,16 +25,17 @@ class LeadListTableItems extends StatelessWidget {
         TableRow(children: [
           _createTableTitleCell(label: 'SN'),
           _createTableTitleCell(label: 'Business Name'),
-          _createTableTitleCell(label: 'Status'),
+          _createTableTitleCell(label: 'Contact Info'),
           _createTableTitleCell(label: 'Action'),
         ]),
 
-        for (var i = 0; i < lead!.length; i++)
+        if(referral_assigned_data!=null)
+        for (var i = 0; i < referral_assigned_data!.length; i++)
           TableRow(children: [
             _createTableCell(label: i+1),
-            _createTableCell(label: lead![i].businessName),
-            _createTableCell(label: lead![i].status),
-            _createEditTableCell(label: 'Edit',leadID: lead![i].lid),
+            _createTableCell(label: referral_assigned_data![i].businessName),
+            _crateContactInfo(label1: referral_assigned_data![i].contactNo,label2: referral_assigned_data![i].address),
+            _createEditTableCell(label: 'Edit',leadID: referral_assigned_data![i].lid),
           ])
       ],
     );
@@ -65,7 +67,7 @@ class LeadListTableItems extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 label,
-                style: const TextStyle(color: Colors.white,fontSize: 12),
+                style: const TextStyle(color: Colors.white,fontSize: 12,decoration: TextDecoration.underline),
               ),
             ),
           ),
@@ -82,6 +84,36 @@ class LeadListTableItems extends StatelessWidget {
               label,
               style: const TextStyle(
                   color: Colors.white, fontWeight: FontWeight.bold,fontSize: 12),
+            ),
+          ),
+        ));
+  }
+
+  Widget _crateContactInfo({label1, label2,}) {
+    return TableCell(
+        verticalAlignment: TableCellVerticalAlignment.middle,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  label1.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+               const Text(",",style: TextStyle(color: Colors.white),),
+                Text(
+                  label2.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
             ),
           ),
         ));

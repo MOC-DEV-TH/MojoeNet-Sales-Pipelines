@@ -44,7 +44,10 @@ class WebViewView extends GetView<WebViewController> {
                     ),
                   ),
 
-                  makeButton()
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: makeButton(),
+                  )
                 ],
               ),
             ),

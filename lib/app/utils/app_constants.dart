@@ -15,6 +15,7 @@ const SOURCE = 'source';
 const SOURCE_INDEX = 'source-index';
 
 const BUSINESS_TYPE = 'business_type';
+const BUSINESS_TYPE_OTHER = 'business_type_other';
 const BUSINESS_TYPE_INDEX = 'business_type_index';
 
 const SME = 'sme';
@@ -24,9 +25,11 @@ const TOWNSHIP = 'township';
 const ADDRESS = 'address';
 
 const DESIGNATION = 'designation';
+const DESIGNATION_OTHER = 'designation_other';
 const DESIGNATION_INDEX = 'designation-index';
 
 const CONTACT_NUMBER = 'contact_number';
+const SECONDARY_CONTACT_NUMBER = '_secondary_contact_number';
 
 const CONTACT_PERSON = 'contact_person';
 

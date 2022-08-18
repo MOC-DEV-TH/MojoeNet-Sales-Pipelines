@@ -14,7 +14,11 @@ class NLRStepSixController extends GetxController {
   var reasonTextController = TextEditingController();
   var followUpDateTextController = TextEditingController();
   var contractDateTextController = TextEditingController();
+  var appointmentDateTextController = TextEditingController();
+  var customerNoteTextController = TextEditingController();
   var amountTextController = TextEditingController();
+  var latTextController = TextEditingController();
+  var longTextController = TextEditingController();
   final count = 0.obs;
   var potentialStatusValue = "1";
   var statusValue = "";
@@ -25,7 +29,7 @@ class NLRStepSixController extends GetxController {
   var planValue = "";
   var isLoading = false.obs;
   var packageValue = "";
-  var discountValue = "";
+  var discountValue = "0%";
 
   @override
   void onInit() {
@@ -97,15 +101,22 @@ class NLRStepSixController extends GetxController {
       'address': dataStorage.read(ADDRESS).toString(),
       'designation': dataStorage.read(DESIGNATION).toString(),
       'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
+      'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
       'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
-      'emiail': dataStorage.read(EMAIL).toString(),
+      'email': dataStorage.read(EMAIL).toString(),
       'potential': potentialStatusValue.toString(),
+      'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
+      'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
       'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
+      'installation_appointment_date': appointmentDateTextController.text.toString(),
+      'customer_note': customerNoteTextController.text.toString(),
+      'lat': latTextController.text.toString(),
+      'long': longTextController.text.toString(),
       'amount': potentialStatusValue == '0'
           ? ""
           : amountTextController.text.toString(),
@@ -125,8 +136,11 @@ class NLRStepSixController extends GetxController {
       'address': dataStorage.read(ADDRESS).toString(),
       'designation': dataStorage.read(DESIGNATION).toString(),
       'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
+      'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
       'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
-      'emiail': dataStorage.read(EMAIL).toString(),
+      'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
+      'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
+      'email': dataStorage.read(EMAIL).toString(),
       'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
@@ -134,6 +148,10 @@ class NLRStepSixController extends GetxController {
       'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
       'contracted_date': contractDateTextController.text.toString(),
+      'installation_appointment_date': appointmentDateTextController.text.toString(),
+      'customer_note': customerNoteTextController.text.toString(),
+      'lat': latTextController.text.toString(),
+      'long': longTextController.text.toString(),
       'amount': potentialStatusValue == '0'
           ? ""
           : amountTextController.text.toString(),
@@ -142,24 +160,60 @@ class NLRStepSixController extends GetxController {
       'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
 
+    if(statusValue=="Contracted"){
+      if (checkLatLongLength(latTextController.text.toString()) == false) {
+        isLoading(false);
+        AppUtils.showErrorSnackBar(
+            'Fail', 'Latitude field must be filled with format(00.000000)');
+      }
+     else if (checkLatLongLength(longTextController.text.toString()) == false) {
+        isLoading(false);
+        AppUtils.showErrorSnackBar(
+            'Fail', 'Longitude field must be filled with format(00.000000)');
+      }
+     else {
         RestApi.postLeadFormData(
             dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
                 ? smeDataMap
                 : map,
             dataStorage.read(TOKEN))
-            .then((value) => Future.delayed(Duration.zero, () {
-          if (value.status == 'Success') {
-            isLoading(false);
-            AppUtils.removeLeadDataFromGetStorage();
-            Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-          } else if (value.responseCode == "005") {
-            isLoading(false);
-            AppUtils.showSessionExpireDialog(
-                'Fail', 'Session Expired', context);
-          } else {
-            isLoading(false);
-          }
-        }));
+            .then((value) =>
+            Future.delayed(Duration.zero, () {
+              if (value.status == 'Success') {
+                isLoading(false);
+                AppUtils.removeLeadDataFromGetStorage();
+                Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+              } else if (value.responseCode == "005") {
+                isLoading(false);
+                AppUtils.showSessionExpireDialog(
+                    'Fail', 'Session Expired', context);
+              } else {
+                isLoading(false);
+              }
+            }));
+      }
+    }
+    else {
+      RestApi.postLeadFormData(
+          dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
+              ? smeDataMap
+              : map,
+          dataStorage.read(TOKEN))
+          .then((value) =>
+          Future.delayed(Duration.zero, () {
+            if (value.status == 'Success') {
+              isLoading(false);
+              AppUtils.removeLeadDataFromGetStorage();
+              Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+            } else if (value.responseCode == "005") {
+              isLoading(false);
+              AppUtils.showSessionExpireDialog(
+                  'Fail', 'Session Expired', context);
+            } else {
+              isLoading(false);
+            }
+          }));
+    }
   }
 
   void onPressBack() {
@@ -178,6 +232,21 @@ class NLRStepSixController extends GetxController {
       String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
       debugPrint("DateTimeFormat${dtFormat}");
       contractDateTextController.text = dtFormat.toString();
+    }
+  }
+
+  selectAppointmentDateTime() async {
+    final DateTime? selected = await showDatePicker(
+      initialDate: DateTime.now(),
+      context: Get.context!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (selected != null) {
+      String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
+      debugPrint("DateTimeFormat${dtFormat}");
+      appointmentDateTextController.text = dtFormat.toString();
     }
   }
 
@@ -223,5 +292,27 @@ class NLRStepSixController extends GetxController {
     debugPrint(cbValue.toString());
     referalCheckBoxValue = cbValue;
     update();
+  }
+}
+bool checkLatLongLength(String str) {
+  final lat = str.split('.');
+  List latList = [];
+  for (int i = 0; i < lat.length; i++) {
+    latList.add(lat[i]);
+  }
+  debugPrint(latList.length.toString());
+
+  if (latList.length >= 2) {
+    debugPrint(latList[0].toString().length.toString());
+    debugPrint(latList[1].toString().length.toString());
+    if (latList[0].toString().length != 2) {
+      return false;
+    } else if (latList[1].toString().length != 6) {
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    return false;
   }
 }

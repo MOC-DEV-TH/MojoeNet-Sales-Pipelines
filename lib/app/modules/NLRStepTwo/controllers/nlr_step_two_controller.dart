@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
@@ -9,8 +10,10 @@ import '../../../utils/app_constants.dart';
 
 class NLRStepTwoController extends GetxController {
 
+  var noteController = TextEditingController();
   dynamic isSelected = -1;
   var isSelectedValue = '';
+  var selectedItemValue = '';
   final count = 0.obs;
   dynamic saleBusinessTypeData;
   final dataStorage = GetStorage();
@@ -33,6 +36,8 @@ class NLRStepTwoController extends GetxController {
   void updateSelectedItem(int value){
     isSelected = value;
     isSelectedValue = value.toString();
+    selectedItemValue = saleBusinessTypeData
+        .saleBusinessType[value].value;
     update();
   }
 
@@ -41,6 +46,7 @@ class NLRStepTwoController extends GetxController {
   }
 
   void onPressContinue(){
+    dataStorage.write(BUSINESS_TYPE_OTHER, noteController.text);
     Get.offNamed(Routes.NLR_STEP_THREE);
   }
 

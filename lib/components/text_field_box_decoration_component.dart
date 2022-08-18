@@ -35,7 +35,7 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
       height: 47,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(4),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
         padding: label!='amount' ? const EdgeInsets.only(left: 20) :const EdgeInsets.all(0),
@@ -44,10 +44,10 @@ class TextFieldBoxDecorationComponent extends StatelessWidget {
           enabled: enable,
           initialValue: initialValue,
           textInputAction: TextInputAction.next,
-          keyboardType: textInputType,
+          keyboardType:(label=='lat' || label=='long') ? TextInputType.number : textInputType,
           controller: controller,
           obscureText: isVisible,
-          textAlign:label=='amount' ? TextAlign.center : TextAlign.start,
+          textAlign:(label=='lat' ||label=='long' ||label=='amount' || label=='note') ? TextAlign.center : TextAlign.start,
           onChanged: (String value){
             onTextDataChange!(value);
           },

@@ -61,6 +61,10 @@ class LoginController extends GetxController {
     }
   }
 
+  void onPressForgotPassword(){
+    Get.toNamed(Routes.FORGOT_PASSWORD_VIEW);
+  }
+
   void firstTimeFetchAllDropDownDataFromNetwork() {
     RestApi.fetchAllDDlData();
   }

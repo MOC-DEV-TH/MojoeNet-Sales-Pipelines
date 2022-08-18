@@ -50,7 +50,14 @@ class Details {
     this.firstname,
     this.phone1,
     this.email,
-    this.address
+    this.address,
+    this.latitude,
+    this.longitude,
+    this.installationAppointmentDate,
+    this.contractedDate,
+    this.notes,
+    this.phone2,
+    this.businessName
   });
 
   String? profileId;
@@ -60,8 +67,15 @@ class Details {
   dynamic package;
   String? firstname;
   dynamic phone1;
+  dynamic phone2;
   dynamic address;
   String? email;
+  String? latitude;
+  String? longitude;
+  String? contractedDate;
+  String? installationAppointmentDate;
+  String? notes;
+  dynamic businessName;
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
     profileId: json["profile_id"],
@@ -71,8 +85,15 @@ class Details {
     package: json["package"],
     firstname: json["firstname"],
     phone1: json["phone_1"],
+    phone2: json["phone_2"],
     email: json["email"],
     address: json["address"],
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+    installationAppointmentDate: json["installation"],
+    contractedDate: json["contract_date"],
+    notes: json["notes"],
+    businessName: json["business_name"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -83,8 +104,15 @@ class Details {
     "package": package,
     "firstname": firstname,
     "phone_1": phone1,
+    "phone_2": phone2,
     "email": email,
     "address": address,
+    "latitude": latitude,
+    "longitude": longitude,
+    "installation": installationAppointmentDate,
+    "contract_date": contractedDate,
+    "notes": notes,
+    "business_name": businessName,
 
   };
 }

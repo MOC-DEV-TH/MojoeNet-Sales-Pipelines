@@ -179,7 +179,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                       )
                     : const SizedBox(),
                 controller.statusValue == 'Contracted'
-                    ? makeContractedDate()
+                    ? makeContractedContainer()
                     : const SizedBox(),
                 const SizedBox(
                   height: 30,
@@ -337,7 +337,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                           debugPrint('DiscountValue${value.value}');
                           controller.selectDiscount(value);
                         },
-                        hintText: 'Select discount',
+                        hintText: '0%',
                         hintColor: Colors.grey,
                         color: Colors.white,
                         selectedItemColor: Colors.grey,
@@ -380,20 +380,114 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
             ));
   }
 
-  Widget makeContractedDate() {
-    return Row(
+  Widget makeContractedContainer() {
+    return Column(
       children: [
-        Expanded(
-            child: LabelTextComponent(
-                text: 'Contract Date', color: Colors.white, padding: 0.0)),
-        Flexible(
-            flex: 2,
-            child: InkWell(
-                onTap: () {
-                  controller.selectContractDateTime();
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: LabelTextComponent(
+                    text: 'Lat', color: Colors.white, padding: 0.0)),
+            Flexible(
+              flex: 2,
+              child: TextFieldBoxDecorationComponent(
+                controller: controller.latTextController,
+                errorText: '',
+                hintText: 'Enter latitude',
+                label: 'lat',
+                enable: true,
+                onTextDataChange: (String value) {
+                  if (value == "") {}
                 },
-                child:
-                    makeTextFormField(controller.contractDateTextController))),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: LabelTextComponent(
+                    text: 'Long', color: Colors.white, padding: 0.0)),
+            Flexible(
+              flex: 2,
+              child: TextFieldBoxDecorationComponent(
+                controller: controller.longTextController,
+                errorText: '',
+                hintText: 'Enter longitude',
+                label: 'long',
+                enable: true,
+                onTextDataChange: (String value) {
+                  if (value == "") {}
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: LabelTextComponent(
+                    text: 'Contract Date', color: Colors.white, padding: 0.0)),
+            Flexible(
+                flex: 2,
+                child: InkWell(
+                    onTap: () {
+                      controller.selectContractDateTime();
+                    },
+                    child:
+                        makeTextFormField(controller.contractDateTextController))),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          children: [
+            Expanded(
+                child: LabelTextComponent(
+                    text: 'Installation Appointment Date', color: Colors.white, padding: 0.0)),
+            Flexible(
+                flex: 2,
+                child: InkWell(
+                    onTap: () {
+                      controller.selectAppointmentDateTime();
+                    },
+                    child:
+                    makeTextFormField(controller.appointmentDateTextController))),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: LabelTextComponent(
+                    text: 'Customer Note', color: Colors.white, padding: 0.0)),
+            Flexible(
+              flex: 2,
+              child: TextFieldBoxDecorationComponent(
+                controller: controller.customerNoteTextController,
+                errorText: '',
+                hintText: 'Enter Note...',
+                label: 'amount',
+                enable: true,
+                onTextDataChange: (String value) {
+                  if (value == "") {}
+                },
+              ),
+            ),
+          ],
+        ),
       ],
     );
   }

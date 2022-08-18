@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/modules/Contracted/controllers/contracted_controller.dart';
 import 'package:sales_pipeline/app/utils/app_constants.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../models/contracted_lead_vo.dart';
 import '../routes/app_pages.dart';
@@ -32,8 +31,8 @@ class ContractedListTableItems extends StatelessWidget {
         ]),
         for (var i = 0; i < contractedLead!.length; i++)
           TableRow(children: [
-            _createTableCell(label: i.toString()),
-            _createTableCell(label: contractedLead![i].firstName.toString()),
+            _createTableCell(label: (i+1).toString()),
+            _createTableCell(label: contractedLead![i].businessName.toString()),
             _createTableCell(label: contractedLead![i].status.toString()),
             _createActionTableCell(
                 label1: 'Edit',

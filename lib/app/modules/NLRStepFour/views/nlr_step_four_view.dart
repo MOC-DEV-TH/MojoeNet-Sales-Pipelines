@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sales_pipeline/app/modules/NLRStepFour/controllers/nlr_step_four_controller.dart';
 import 'package:sales_pipeline/app/utils/app_constants.dart';
+import 'package:sales_pipeline/components/text_field_box_decoration_component.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
@@ -13,8 +14,11 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
   @override
   Widget build(BuildContext context) {
     checkSelectedItem();
+    if(dataStorage.read(DESIGNATION_OTHER) != null){
+      controller.noteController.text = dataStorage.read(DESIGNATION_OTHER);
+    }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
       body: GestureDetector(
         onTap: () {
@@ -51,7 +55,19 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                     ],
                   ),
                 ),
-                Expanded(child: Center(child: buildListView())),
+                Expanded(child: Scrollbar(
+                  isAlwaysShown: false,
+                  child: SingleChildScrollView(
+                    child: Center(child: Column(
+                      children: [
+                        buildListView(),
+                       GetBuilder<NLRStepFourController>(builder: (controller){
+                        return (controller.selectedItemValue=='Other' ||dataStorage.read(DESIGNATION)=='Other')?makeNoteController():const SizedBox();
+                       })
+                      ],
+                    )),
+                  ),
+                )),
                 SizedBox(height: 70, child: makeButton()),
               ],
             ),
@@ -131,6 +147,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
   Widget buildListView() {
     return Scrollbar(
       child: ListView.builder(
+          physics: const ScrollPhysics(),
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 4, bottom: 8),
           itemCount: controller.saleDesignationData.saleDesignation.length,
@@ -141,11 +158,12 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                   builder: (controller) => InkWell(
                         onTap: () {
                           controller.updateSelectedItem(index);
-                          dataStorage.write(
-                              DESIGNATION,
-                              controller.saleDesignationData
-                                  .saleDesignation[index].value);
                           dataStorage.write(DESIGNATION_INDEX, index);
+                            dataStorage.write(
+                                DESIGNATION,
+                                controller.saleDesignationData
+                                    .saleDesignation[index].value);
+
                         },
                         child: Container(
                           height: 50,
@@ -168,6 +186,25 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                       )),
             );
           }),
+    );
+  }
+
+  Widget makeNoteController(){
+    return Container(
+      height: 48,
+      width: Get.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
+      child: Center(
+        child: TextFieldBoxDecorationComponent(
+          hintText:dataStorage.read(DESIGNATION_OTHER) ?? 'Enter type of designation...',
+          errorText: '',
+          controller: controller.noteController,
+          onTextDataChange: (String value) {}, label: 'note',
+        ),
+      ),
     );
   }
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sales_pipeline/app/modules/ContractedDetail/controllers/contracted_detail_controller.dart';
-import 'package:sales_pipeline/app/utils/app_constants.dart';
 import 'package:sales_pipeline/components/contracted_detail_package_drop_down_button_component.dart';
 import 'package:sales_pipeline/components/text_field_component.dart';
-import 'package:sales_pipeline/main.dart';
 import 'package:sales_pipeline/res/colors.dart';
 
 import '../../../../components/drop_down_button_component.dart';
@@ -58,9 +56,9 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  'Business Name',
-                                  style: TextStyle(
+                                 Text(
+                                   controller.contractedDetail.value.businessName.toString()=="null" ? "" : controller.contractedDetail.value.businessName.toString(),
+                                  style:const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                                 InkWell(
@@ -134,8 +132,14 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
             width: Get.width,
             child: Center(
               child: TextFieldComponent(
-                hintText: hintText,
-                enable:(label=='Current Plan' || label=='Current Package') ? false : true,
+                hintText: hintText.toString(),
+                enable: (label == 'Installation Appointment Date' ||
+                        label == 'Contracted Date' ||
+                        label == 'Division' ||
+                        label == 'Current Plan' ||
+                        label == 'Current Package')
+                    ? false
+                    : true,
                 errorText: '',
                 controller: textEditingController,
                 onTextDataChange: (String value) {},
@@ -158,29 +162,93 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                 makeTextFormField(
                     controller.nameTextController,
                     'Name',
-                    controller.contractedDetail.value.firstname ??
-                        'xxxxxxxxxx'),
-                makeTextFormField(controller.addressTextController, 'Address',
-                    controller.contractedDetail.value.address ?? 'xxxxxxxxxx'),
+                    controller.contractedDetail.value.firstname.toString() ==
+                                "null" ||
+                            controller.contractedDetail.value.firstname
+                                    .toString() ==
+                                ""
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.firstname
+                            .toString()),
+                makeTextFormField(
+                    controller.businessNameTextController,
+                    'Business Name',
+                    controller.contractedDetail.value.businessName.toString() ==
+                        "null" ||
+                        controller.contractedDetail.value.businessName
+                            .toString() ==
+                            ""
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.businessName
+                        .toString()),
+                makeTextFormField(
+                    controller.addressTextController,
+                    'Address',
+                    controller.contractedDetail.value.address.toString() == ""
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.address),
                 makeTextFormField(
                     controller.contactNoTextController,
-                    'Contact No',
-                    controller.contractedDetail.value.phone1 ?? 'xxxxxxxxxx'),
+                    'Contact Number',
+                    (controller.contractedDetail.value.phone1.toString() == "" || controller.contractedDetail.value.phone1.toString() == "null")
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.phone1),
+                makeTextFormField(
+                    controller.secondaryContactNoTextController,
+                    'Secondary Contact Number',
+                    (controller.contractedDetail.value.phone2.toString() == "" || controller.contractedDetail.value.phone2.toString() == "null")
+                        ? 'xxxxxxxxxx'
+                        : controller.contractedDetail.value.phone2),
                 makeTextFormField(controller.emailTextController, 'Email',
-                    controller.contractedDetail.value.email ?? 'xxxxxxxxxx'),
-                makeTextFormField(controller.divisionTextController, 'Division',
-                    controller.contractedDetail.value.division ?? 'xxxxxxxxxx'),
-                makeTextFormField(controller.currentPlanTextController, 'Current Plan',
+                    (controller.contractedDetail.value.email.toString()=="" ||controller.contractedDetail.value.email.toString()=="null")  ? 'xxxxxxxxxx' :
+                    controller.contractedDetail.value.email.toString()),
+                makeTextFormField(controller.latTextController, 'Lat',
+                    controller.contractedDetail.value.latitude ?? 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.longTextController,
+                    'Long',
+                    controller.contractedDetail.value.longitude ??
+                        'xxxxxxxxxx'),
+                InkWell(
+                  onTap: () {
+                    controller.selectAppointmentDateTime();
+                  },
+                  child: makeTextFormField(
+                      controller.appointmentDateTextController,
+                      'Installation Appointment Date',
+                      controller.contractedDetail.value
+                              .installationAppointmentDate ??
+                          'xxxxxxxxxx'),
+                ),
+                InkWell(
+                  onTap: () {
+                    controller.selectContractDateTime();
+                  },
+                  child: makeTextFormField(
+                      controller.contractDateTextController,
+                      'Contracted Date',
+                      controller.contractedDetail.value.contractedDate ??
+                          'xxxxxxxxxx'),
+                ),
+                makeTextFormField(controller.noteTextController, 'Note',
+                    controller.contractedDetail.value.notes ?? 'xxxxxxxxxx'),
+                makeDivisionDropDownContainer(),
+                makeTownshipDropDownContainer(),
+                makeTextFormField(
+                    controller.currentPlanTextController,
+                    'Current Plan',
                     controller.contractedDetail.value.plan ?? 'xxxxxxxxxx'),
-                makeTextFormField(controller.currentPackageTextController, 'Current Package',
+                makeNewPlanContainer(),
+                makeTextFormField(
+                    controller.currentPackageTextController,
+                    'Current Package',
                     controller.contractedDetail.value.package ?? 'xxxxxxxxxx'),
-                makeDropDownContainer(),
                 makePackageDropDownContainer()
               ],
             ));
   }
 
-  Widget makeDropDownContainer() {
+  Widget makeTownshipDropDownContainer() {
     return GetBuilder<ContractedDetailController>(
         builder: (controller) => Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -203,13 +271,15 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                         child: DropDownButtonComponent(
                           itemsList: controller.saleStatusData.township,
                           onChangedData: (Sale value) {
-                            controller.updateTownshipStatus(value.value.toString());
+                            controller
+                                .updateTownshipStatus(value.value.toString());
                             debugPrint(
                                 'TownshipDropDownDropdownValue${value.value}');
                           },
                           hintText:
-                              controller.contractedDetail.value.township ??
-                                  'Select Township',
+                              controller.contractedDetail.value.township == ""
+                                  ? 'Select Township'
+                                  : controller.contractedDetail.value.township,
                           hintColor: Colors.grey,
                           color: Colors.white,
                           selectedItemColor: Colors.grey,
@@ -219,12 +289,21 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+              ],
+            ));
+  }
+
+  Widget makeNewPlanContainer() {
+    return GetBuilder<ContractedDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
                     const Text(
                       "New Plan",
                       style: TextStyle(color: Colors.white, fontSize: 14),
@@ -251,9 +330,6 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                     ),
                   ],
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
               ],
             ));
   }
@@ -263,6 +339,9 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
         builder: (controller) => Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const SizedBox(
+                  height: 15,
+                ),
                 const Text(
                   "New Package",
                   style: TextStyle(color: Colors.white, fontSize: 14),
@@ -294,6 +373,49 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                       iconColor: Color(int.parse(AppColors.bgColor)),
                     ),
                   ),
+                ),
+              ],
+            ));
+  }
+
+  Widget makeDivisionDropDownContainer() {
+    return GetBuilder<ContractedDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Division",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.division,
+                          onChangedData: (Sale value) {
+                            controller.updateDivision(value.value.toString());
+                            debugPrint(
+                                'divisionDropDownDropdownValue${value.value}');
+                          },
+                          hintText:
+                              controller.contractedDetail.value.division ??
+                                  'Select Division',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ));

@@ -83,7 +83,15 @@ class Details {
     this.referrelId,
     this.leadAssign,
     this.isReferal,
-    this.discount
+    this.discount,
+    this.latitude,
+    this.longitude,
+    this.contractDate,
+    this.customerNote,
+    this.installationAppointmentDate,
+    this.secondaryContactNumber,
+    this.businessTypeOther,
+    this.designationTypeOther
   });
 
   String? lid;
@@ -124,6 +132,16 @@ class Details {
   dynamic leadAssign;
   String? isReferal;
   dynamic discount;
+  dynamic latitude;
+  dynamic longitude;
+  dynamic contractDate;
+  dynamic installationAppointmentDate;
+  dynamic customerNote;
+  dynamic secondaryContactNumber;
+  dynamic businessTypeOther;
+  dynamic designationTypeOther;
+
+
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
     lid: json["lid"],
@@ -164,6 +182,14 @@ class Details {
     leadAssign: json["lead_assign"],
     isReferal: json["isReferal"],
     discount: json["discount"],
+    latitude: json["latitude"],
+    longitude: json["longitude"],
+    contractDate: json["contract_date"],
+    installationAppointmentDate: json["installation_appointment_date"],
+    customerNote: json["customer_note"],
+    secondaryContactNumber: json['secondary_contact_number'],
+    businessTypeOther: json["business_type_other"],
+    designationTypeOther: json["designation_other"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -205,5 +231,13 @@ class Details {
     "lead_assign": leadAssign,
     "isReferal": isReferal,
     "discount": discount,
+    "latitude": latitude,
+    "longitude": longitude,
+    "contract_date": contractDate,
+    "installation_appointment_date": installationAppointmentDate,
+    "customer_note": customerNote,
+    "secondary_contact_number" : secondaryContactNumber,
+    "designation_other": designationTypeOther,
+    "business_type_other": businessTypeOther,
   };
 }

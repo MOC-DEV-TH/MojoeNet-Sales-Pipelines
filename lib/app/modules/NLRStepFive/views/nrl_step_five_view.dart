@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-import 'package:get_cli/functions/version/version_update.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sales_pipeline/app/modules/NLRStepFive/controllers/nlr_step_five_controller.dart';
 import 'package:sales_pipeline/app/utils/app_constants.dart';
@@ -70,9 +68,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
   }
 
   void onPressContinue() {
-    (controller.checkEmptyData() == false)
-        ? null
-        : controller.onPressContinue();
+    controller.onPressContinue();
   }
 
   void onPressBack() {
@@ -107,9 +103,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.checkEmptyData() == false
-                    ? Colors.grey
-                    : Color(int.parse(AppColors.buttonColor)),
+                color:Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               ),
               child: MaterialButton(
@@ -151,7 +145,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
                   width: 5,
                 ),
                 const Text(
-                  '*',
+                  '',
                   style: TextStyle(color: Colors.red),
                 )
               ],
@@ -165,7 +159,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
                 label: '',
                 onTextDataChange: (String value){
                   if(value==""){
-                    controller.checkEmptyData();
+                    //controller.checkEmptyData();
                   }
                 },
               ),
@@ -187,7 +181,7 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
                   width: 5,
                 ),
                 const Text(
-                  '*',
+                  '',
                   style: TextStyle(color: Colors.red),
                 )
               ],
@@ -197,7 +191,39 @@ class NLRStepFiveView extends GetView<NLRStepFiveController> {
               child: TextFieldBoxDecorationComponent(
                 controller: controller.contactNoController,
                 errorText: '',
-                hintText:'Text',
+                hintText:'Primary',
+                label: '',
+                onTextDataChange: (String value){},
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 30,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Row(
+                  children: [
+                    LabelTextComponent(
+                        text: '', color: Colors.white, padding: 0.0),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      '',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  ],
+                )),
+            Flexible(
+              flex: 2,
+              child: TextFieldBoxDecorationComponent(
+                controller: controller.secondaryContactNoController,
+                errorText: '',
+                hintText:'Secondary',
                 label: '',
                 onTextDataChange: (String value){},
               ),

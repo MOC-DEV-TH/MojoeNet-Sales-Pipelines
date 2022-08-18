@@ -8,6 +8,7 @@ import '../../../utils/app_constants.dart';
 class NLRStepFiveController extends GetxController {
   var nameController = TextEditingController();
   var contactNoController = TextEditingController();
+  var secondaryContactNoController = TextEditingController();
   var emailController = TextEditingController();
   final dataStorage = GetStorage();
   final count = 0.obs;
@@ -24,6 +25,9 @@ class NLRStepFiveController extends GetxController {
     }
      if(dataStorage.read(EMAIL)!=null){
       emailController.text = dataStorage.read(EMAIL);
+    }
+    if(dataStorage.read(SECONDARY_CONTACT_NUMBER)!=null){
+      secondaryContactNoController.text = dataStorage.read(SECONDARY_CONTACT_NUMBER);
     }
 
   }
@@ -49,6 +53,7 @@ class NLRStepFiveController extends GetxController {
   void onPressContinue() {
     dataStorage.write(CONTACT_PERSON, nameController.text.toString());
     dataStorage.write(CONTACT_NUMBER, contactNoController.text.toString());
+    dataStorage.write(SECONDARY_CONTACT_NUMBER, secondaryContactNoController.text.toString());
     dataStorage.write(EMAIL, emailController.text.toString());
     Get.offNamed(Routes.NLR_STEP_SIX);
   }

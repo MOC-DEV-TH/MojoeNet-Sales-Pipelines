@@ -53,6 +53,20 @@ class LoginView extends GetView<LoginController> {
                       height: 18,
                     ),
                     makeButton(),
+                    const SizedBox(
+                      height: 34,
+                    ),
+                    //  InkWell(
+                    //    onTap: (){_handleOnPressForgotPassword();},
+                    //    child:const Text(
+                    //     'Forgot Password?',
+                    //     style: TextStyle(
+                    //         fontWeight: FontWeight.normal,
+                    //         fontSize: 14,
+                    //         decoration: TextDecoration.underline,
+                    //         color: Colors.white),
+                    // ),
+                    //  ),
                     Padding(
                         padding: EdgeInsets.only(
                             bottom: MediaQuery
@@ -71,6 +85,10 @@ class LoginView extends GetView<LoginController> {
 
   void _handleOnPressLogin() {
     controller.onPressLogin();
+  }
+
+  void _handleOnPressForgotPassword(){
+     controller.onPressForgotPassword();
   }
 
   Widget makeButton() {

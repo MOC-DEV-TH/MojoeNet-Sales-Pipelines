@@ -10,6 +10,7 @@ import 'package:sales_pipeline/components/lead_status_drop_down_button_component
 import 'package:sales_pipeline/components/text_field_component.dart';
 import 'package:sales_pipeline/res/colors.dart';
 
+import '../../../../components/contracted_detail_package_drop_down_button_component.dart';
 import '../../../routes/app_pages.dart';
 
 class BusinessDetailView extends GetView<BusinessDetailController> {
@@ -60,9 +61,9 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text(
-                                  'Business Name',
-                                  style: TextStyle(
+                                 Text(
+                                  controller.activityDetailData.value.businessName.toString()=="null" ? "" :controller.activityDetailData.value.businessName.toString(),
+                                  style:const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                                 InkWell(
@@ -136,7 +137,32 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     Icons.calendar_month,
                     color: Colors.white,
                   )
-                : const SizedBox()
+                : label == 'Lat'
+                    ? const Text(
+                        '*',
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : label == 'Long'
+                        ? const Text(
+                            '*',
+                            style: TextStyle(color: Colors.red),
+                          )
+                        : label == 'Installation Appointment Date'
+                            ? const Text(
+                                '*',
+                                style: TextStyle(color: Colors.red),
+                              )
+                            : label == 'Contracted Date'
+                                ? const Text(
+                                    '*',
+                                    style: TextStyle(color: Colors.red),
+                                  )
+                                : label == 'Note'
+                                    ? const Text(
+                                        '*',
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    : const SizedBox()
           ],
         ),
         InkWell(
@@ -147,11 +173,18 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
             child: Center(
               child: TextFieldComponent(
                 hintText: hintText,
-                enable: label == 'Current ISP' ? true : false,
+                enable: (label == "Estimate Flight Date" ||
+                        label == "Remind Me on Date/Time" ||
+                        label == 'Amount' ||
+                        label == 'Current Package' ||
+                        label == 'Installation Appointment Date' ||
+                        label == 'Contracted Date' ||
+                        label == "Current Plan")
+                    ? false
+                    : true,
                 errorText: '',
                 controller: textEditingController,
-                onTextDataChange: (String value){
-                },
+                onTextDataChange: (String value) {},
               ),
             ),
           ),
@@ -168,21 +201,16 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                 const SizedBox(
                   height: 10,
                 ),
-                makeTextFormField(
-                    controller.sourceTextController,
-                    'Source',
-                    controller.activityDetailData.value.leadSource ??
-                        'xxxxxxxxxx'),
-                makeTextFormField(
-                    controller.businessTypeTextController,
-                    'Business Type',
-                    controller.activityDetailData.value.businessType ??
-                        'xxxxxxxxxx'),
-                makeTextFormField(
-                    controller.locationAndDivisionTextController,
-                    'Location/Division',
-                    controller.activityDetailData.value.division ??
-                        'xxxxxxxxxx'),
+                makeLeadSourceDropDownContainer(),
+                makeBusinessTypeDropDownContainer(),
+                controller.businessTypeStatus=='Other'
+                ? makeTextFormField(
+                    controller.businessTypeOtherTextController,
+                    'Business Type Other',
+                    controller.activityDetailData.value.businessTypeOther ??
+                        'xxxxxxxxxx') :const SizedBox(),
+                makeDivisionDropDownContainer(),
+                makeTownshipDropDownContainer(),
                 makeTextFormField(
                     controller.businessNameTextController,
                     'Business Name',
@@ -193,39 +221,57 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     'Contact Person Name',
                     controller.activityDetailData.value.firstname ??
                         'xxxxxxxxxx'),
+                makeDesignationDropDownContainer(),
+                controller.designationStatus=='Other'
+                    ? makeTextFormField(
+                    controller.designationTypeOtherTextController,
+                    'Designation Type Other',
+                    controller.activityDetailData.value.designationTypeOther ??
+                        'xxxxxxxxxx') :const SizedBox(),
                 makeTextFormField(
-                    controller.designationTextController,
-                    'Designation',
-                    controller.activityDetailData.value.designation ??
+                    controller.primaryContactNoTextController,
+                    'Contact Number',
+                    controller.activityDetailData.value.contactno ??
                         'xxxxxxxxxx'),
                 makeTextFormField(
-                    controller.contactNoAndEmailTextController,
-                    'Contact Number/Email Address',
-                    '${controller.activityDetailData.value.contactno} / ${controller.activityDetailData.value.email} '),
+                    controller.secondaryContactNoTextController,
+                    'Secondary Contact Number',
+                    controller.activityDetailData.value.secondaryContactNumber ??
+                        'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.emailTextController,
+                    'Emial',
+                    controller.activityDetailData.value.email ??
+                        'xxxxxxxxxx'),
                 makeTextFormField(
                     controller.currentISPTextController,
                     'Current ISP',
-                    controller.activityDetailData.value.currentIsp ?? 'xxxxxxxxxx'),
+                    controller.activityDetailData.value.currentIsp ??
+                        'xxxxxxxxxx'),
                 makeTextFormField(
-                    controller.planTextController,
-                    'Plan',
+                    controller.currentPlanTextController,
+                    'Current Plan',
                     controller.activityDetailData.value.plan ?? 'xxxxxxxxxx'),
+                makeNewPlanDropDownContainer(),
                 makeTextFormField(
-                    controller.packageTextController,
-                    'Package',
-                    controller.activityDetailData.value.package ?? 'xxxxxxxxxx'),
+                    controller.currentPackageTextController,
+                    'Current Package',
+                    controller.activityDetailData.value.package ??
+                        'xxxxxxxxxx'),
+                makePackageDropDownContainer(),
                 makeTextFormField(
                     controller.amountTextController,
                     'Amount',
-                    controller.activityDetailData.value.packageTotal ?? 'xxxxxxxxxx'),
-                makeTextFormField(
-                    controller.discountTextController,
-                    'Discount',
-                    controller.activityDetailData.value.discount ?? 'xxxxxxxxxx'),
+                    controller.activityDetailData.value.packageTotal ??
+                        'xxxxxxxxxx'),
+                makeDiscountDropDownContainer(),
                 makeLeadStatusDropDown(
                     'Lead Status',
                     controller.saleStatusData.saleStatus,
                     controller.leadStatusName),
+                controller.leadStatusName == "Contracted"
+                    ? makeContractedContainer()
+                    : const SizedBox(),
                 controller.leadStatusName != ''
                     ? InkWell(
                         onTap: () {
@@ -234,7 +280,8 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                         child: makeTextFormField(
                             controller.dateTimeTextController,
                             'Remind Me on Date/Time',
-                             controller.activityDetailData.value.followupDate ?? 'xxxxxxxxxx'),
+                            controller.activityDetailData.value.followupDate ??
+                                'xxxxxxxxxx'),
                       )
                     : const SizedBox(),
                 makeTextFormField(
@@ -309,7 +356,9 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                         debugPrint('DropdownValue${value.value}');
                         controller.updateFollowUpViaStatus(value);
                       },
-                      hintText:controller.followUpViaStatusName=='null' ? 'Select here' : controller.followUpViaStatusName,
+                      hintText: controller.followUpViaStatusName == 'null'
+                          ? 'Select here'
+                          : controller.followUpViaStatusName,
                       hintColor: Colors.grey,
                       color: Colors.white,
                       selectedItemColor: Colors.grey,
@@ -324,8 +373,373 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                   child: makeTextFormField(
                       controller.estimateFlightDateTextController,
                       'Estimate Flight Date',
-                      controller.activityDetailData.value.estimateFlightdate ?? 'xxxxxxxxxx'
+                      controller.activityDetailData.value.estimateFlightdate ??
+                          'xxxxxxxxxx'),
+                ),
+              ],
+            ));
+  }
+
+  Widget makeNewPlanDropDownContainer() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 10,
+        ),
+        const Text(
+          "New Plan",
+          style: TextStyle(color: Colors.white, fontSize: 14),
+        ),
+        Container(
+          color: Colors.white,
+          height: 38,
+          width: Get.width,
+          child: Center(
+            child: DropDownButtonComponent(
+              itemsList: controller.saleStatusData.plan,
+              onChangedData: (Plan value) {
+                debugPrint('PlanDropDownDropdownValue${value.value}');
+                controller.selectPlan(value);
+              },
+              hintText: 'Select New Plan',
+              hintColor: Colors.grey,
+              color: Colors.white,
+              selectedItemColor: Colors.grey,
+              iconColor: Color(int.parse(AppColors.bgColor)),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget makePackageDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "New Package",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: 38,
+                  width: Get.width,
+                  child: Center(
+                    child: ContractedDetailPackageDropDownButtonComponent(
+                      value: controller.planValue != ""
+                          ? controller.saleStatusData.package
+                              .where(
+                                  (data) => (data.plan == controller.planValue))
+                              .toList()[0]
+                          : null,
+                      itemsList: controller.saleStatusData.package
+                          .where((data) => (data.plan == controller.planValue))
+                          .toList(),
+                      onChangedData: (Package value) {
+                        debugPrint(
+                            'PackageDropDownDropdownValue${value.value}');
+                        controller.selectPackage(value);
+                      },
+                      hintText: 'Select New Package',
+                      hintColor: Colors.grey,
+                      color: Colors.white,
+                      selectedItemColor: Colors.grey,
+                      iconColor: Color(int.parse(AppColors.bgColor)),
+                    ),
                   ),
+                ),
+              ],
+            ));
+  }
+
+  Widget makeDiscountDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Discount",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: 38,
+                  width: Get.width,
+                  child: Center(
+                    child: DropDownButtonComponent(
+                      itemsList: controller.saleStatusData.discount,
+                      onChangedData: (Discount value) {
+                        controller.selectDiscount(value);
+                        debugPrint(
+                            'DiscountDropDownDropdownValue${value.value}');
+                      },
+                      hintText:
+                          controller.activityDetailData.value.discount ?? '0%',
+                      hintColor: Colors.grey,
+                      color: Colors.white,
+                      selectedItemColor: Colors.grey,
+                      iconColor: Color(int.parse(AppColors.bgColor)),
+                    ),
+                  ),
+                ),
+              ],
+            ));
+  }
+
+  Widget makeTownshipDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Township",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.township,
+                          onChangedData: (Sale value) {
+                            controller
+                                .updateTownshipStatus(value.value.toString());
+                            debugPrint(
+                                'TownshipDropDownDropdownValue${value.value}');
+                          },
+                          hintText:
+                              controller.activityDetailData.value.township ??
+                                  'Select Township',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
+  }
+
+  Widget makeContractedContainer() {
+    return Column(
+      children: [
+        makeTextFormField(controller.latTextController, 'Lat',
+            controller.activityDetailData.value.latitude ?? 'xx.xxxxxx'),
+        makeTextFormField(controller.longTextController, 'Long',
+            controller.activityDetailData.value.longitude ?? 'xx.xxxxxx'),
+        InkWell(
+          onTap: () {
+            controller.selectAppointmentDateTime();
+          },
+          child: makeTextFormField(
+              controller.appointmentDateTextController,
+              'Installation Appointment Date',
+              controller.activityDetailData.value.installationAppointmentDate ??
+                  'xxxxxxxxxx'),
+        ),
+        InkWell(
+          onTap: () {
+            controller.selectContractDateTime();
+          },
+          child: makeTextFormField(
+              controller.contractDateTextController,
+              'Contracted Date',
+              controller.activityDetailData.value.contractDate ?? 'xxxxxxxxxx'),
+        ),
+        makeTextFormField(controller.customerNoteTextController, 'Note',
+            controller.activityDetailData.value.customerNote ?? 'xxxxxxxxxx'),
+      ],
+    );
+  }
+
+  Widget makeLeadSourceDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Source",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.saleSource,
+                          onChangedData: (Sale value) {
+                            controller.updateLeadSource(value.value.toString());
+                            debugPrint(
+                                'LeadSourceDropDownDropdownValue${value.value}');
+                          },
+                          hintText:
+                              controller.activityDetailData.value.leadSource ??
+                                  'Select Lead Source',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
+  }
+
+  Widget makeBusinessTypeDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Business Type",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.saleBusinessType,
+                          onChangedData: (Sale value) {
+                            controller
+                                .updateBusinessType(value.value.toString());
+                            debugPrint(
+                                'BusinessTypeDropDownDropdownValue${value.value}');
+                          },
+                          hintText: controller
+                                  .activityDetailData.value.businessType ??
+                              'Select Business Type',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
+  }
+
+  Widget makeDivisionDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Division",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.division,
+                          onChangedData: (Sale value) {
+                            controller.updateDivision(value.value.toString());
+                            debugPrint(
+                                'divisionDropDownDropdownValue${value.value}');
+                          },
+                          hintText:
+                              controller.activityDetailData.value.division ??
+                                  'Select Division',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ));
+  }
+
+  Widget makeDesignationDropDownContainer() {
+    return GetBuilder<BusinessDetailController>(
+        builder: (controller) => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Designation",
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      height: 38,
+                      width: Get.width,
+                      child: Center(
+                        child: DropDownButtonComponent(
+                          itemsList: controller.saleStatusData.saleDesignation,
+                          onChangedData: (SaleDesignation value) {
+                            controller
+                                .updateDesignation(value.value.toString());
+                            debugPrint(
+                                'designationDropDownDropdownValue${value.value}');
+                          },
+                          hintText:
+                              controller.activityDetailData.value.designation ??
+                                  'Select Designation',
+                          hintColor: Colors.grey,
+                          color: Colors.white,
+                          selectedItemColor: Colors.grey,
+                          iconColor: Color(int.parse(AppColors.bgColor)),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ));

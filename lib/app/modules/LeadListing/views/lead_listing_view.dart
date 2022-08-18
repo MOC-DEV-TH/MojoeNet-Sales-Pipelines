@@ -171,7 +171,7 @@ class LeadListingView extends GetView<LeadListingController> {
                                                           .contactNoTextController
                                                           .text);
                                             },
-                                            child: Icon(
+                                            child:const Icon(
                                               Icons.search,
                                               color: Colors.white,
                                             ),
@@ -195,7 +195,7 @@ class LeadListingView extends GetView<LeadListingController> {
                                       controller.fetchLeadListByFilterName(
                                           STATUS_PARAM + value.key.toString());
                                     },
-                                    hintText: 'Status',
+                                    hintText: 'Choose Status',
                                     hintColor: Colors.white,
                                     selectedItemColor: Colors.white,
                                     iconColor: Colors.white,

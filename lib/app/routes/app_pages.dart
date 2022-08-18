@@ -5,6 +5,8 @@ import 'package:sales_pipeline/app/modules/Contracted/bindings/contracted_bindin
 import 'package:sales_pipeline/app/modules/Contracted/views/contracted_view.dart';
 import 'package:sales_pipeline/app/modules/ContractedDetail/bindings/contracted_detail_binding.dart';
 import 'package:sales_pipeline/app/modules/ContractedDetail/views/contracted_detail_view.dart';
+import 'package:sales_pipeline/app/modules/ForgotPassword/bindings/forgot_password_binding.dart';
+import 'package:sales_pipeline/app/modules/ForgotPassword/views/forgot_password_view.dart';
 import 'package:sales_pipeline/app/modules/NLRStepFive/views/nrl_step_five_view.dart';
 import 'package:sales_pipeline/app/modules/NLRStepOne/bindings/nlr_step_one_binding.dart';
 import 'package:sales_pipeline/app/modules/NLRStepOne/views/nrl_step_one_view.dart';
@@ -149,6 +151,11 @@ class AppPages {
       name: _Paths.WEB_VIEW,
       page: () => WebViewView(),
       binding: WebViewBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGOT_PASSWORD_VIEW,
+      page: () => ForgotPasswordView(),
+      binding: ForgotPasswordBinding(),
     ),
   ];
 }

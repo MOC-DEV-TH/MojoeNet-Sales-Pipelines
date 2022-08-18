@@ -4,6 +4,7 @@ import 'package:sales_pipeline/app/widgets/appointment_this_week_table_items.dar
 import 'package:sales_pipeline/app/widgets/appointment_today_table_items.dart';
 import 'package:sales_pipeline/app/widgets/follow_up_this_week_table_items.dart';
 import 'package:sales_pipeline/app/widgets/follow_up_today_table_items.dart';
+import 'package:sales_pipeline/app/widgets/referral_assigned_table_items.dart';
 import 'package:sales_pipeline/res/colors.dart';
 
 import '../controllers/home_controller.dart';
@@ -134,6 +135,27 @@ class HomeView extends GetView<HomeController> {
                                 .activityOverviewDetailData
                                 .value
                                 .weeklyAppointmentData),
+
+                            /**
+                             * Referral assigned table items
+                             */
+                            const SizedBox(
+                              height: 30,
+                            ),
+                            const Text(
+                              'Referral Assignment',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.white),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            ReferralAssignedTableItems(controller
+                                .activityOverviewDetailData
+                                .value
+                                .leadAssignedData),
                           ],
                         )),
                   ),

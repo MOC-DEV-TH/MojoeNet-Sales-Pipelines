@@ -6,6 +6,7 @@ import 'package:sales_pipeline/app/utils/app_constants.dart';
 import 'package:sales_pipeline/res/colors.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 
+import '../../../../components/text_field_box_decoration_component.dart';
 import '../controllers/nlr_step_two_controller.dart';
 
 class NLRStepTwoView extends GetView<NLRStepTwoController> {
@@ -14,8 +15,11 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
   @override
   Widget build(BuildContext context) {
     checkSelectedItem();
+    if(dataStorage.read(BUSINESS_TYPE_OTHER) != null){
+      controller.noteController.text = dataStorage.read(BUSINESS_TYPE_OTHER);
+    }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       backgroundColor: Color(int.parse(AppColors.bgColor)),
       body: GestureDetector(
         onTap: () {
@@ -52,7 +56,19 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                     ],
                   ),
                 ),
-                Expanded(child: Center(child: buildListView())),
+                Expanded(child: Scrollbar(
+                  isAlwaysShown: false,
+                  child: SingleChildScrollView(
+                    child: Center(child: Column(
+                      children: [
+                        buildListView(),
+                        GetBuilder<NLRStepTwoController>(builder: (controller){
+                          return (controller.selectedItemValue=='Other' || dataStorage.read(BUSINESS_TYPE) == 'Other') ? makeNoteController():const SizedBox();
+                        })
+                      ],
+                    )),
+                  ),
+                )),
                 SizedBox(height: 70, child: makeButton()),
               ],
             ),
@@ -129,9 +145,29 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
     );
   }
 
+  Widget makeNoteController(){
+    return Container(
+      height: 48,
+      width: Get.width,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
+      child: Center(
+        child: TextFieldBoxDecorationComponent(
+          hintText:dataStorage.read(BUSINESS_TYPE_OTHER) ?? 'Enter type of business...',
+          errorText: '',
+          controller: controller.noteController,
+          onTextDataChange: (String value) {}, label: 'note',
+        ),
+      ),
+    );
+  }
+
   Widget buildListView() {
     return Scrollbar(
       child: ListView.builder(
+          physics: const ScrollPhysics(),
           shrinkWrap: true,
           padding: const EdgeInsets.only(top: 4, bottom: 8),
           itemCount: controller.saleBusinessTypeData.saleBusinessType.length,
@@ -146,12 +182,13 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                               'SME') {
                             dataStorage.write(BUSINESS_TYPE, 'SME');
                             controller.navigateToSME();
-                          } else {
+                          }
+                          else {
                             controller.updateSelectedItem(index);
-                            dataStorage.write(
-                                BUSINESS_TYPE,
-                                controller.saleBusinessTypeData
-                                    .saleBusinessType[index].value);
+                              dataStorage.write(
+                                  BUSINESS_TYPE,
+                                  controller.saleBusinessTypeData
+                                      .saleBusinessType[index].value);
                           }
                           dataStorage.write(
                               BUSINESS_TYPE_INDEX,

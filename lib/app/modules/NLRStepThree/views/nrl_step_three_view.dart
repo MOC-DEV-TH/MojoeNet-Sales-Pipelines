@@ -21,6 +21,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
     debugPrint(dataStorage.read(ADDRESS));
     debugPrint(controller.divisionStatus);
     debugPrint(controller.townshipStatus);
+    debugPrint(dataStorage.read(BUSINESS_TYPE_OTHER));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -52,7 +53,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                         ),
                       ),
                       const Text(
-                        'Enter the contact information.',
+                        'Enter the business information.',
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
                     ],
@@ -68,7 +69,6 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
     );
   }
   void onPressContinue() {
-    (controller.checkEmptyData() == false) ? null :
     controller.onPressContinue();
   }
 
@@ -104,9 +104,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: controller.checkEmptyData()==false
-                    ? Colors.grey
-                    : Color(int.parse(AppColors.buttonColor)),
+                color: Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
               ),
               child: MaterialButton(
@@ -149,7 +147,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                       width: 5,
                     ),
                     const Text(
-                      '*',
+                      '',
                       style: TextStyle(color: Colors.red),
                     )
                   ],
@@ -186,7 +184,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   width: 5,
                 ),
                 const Text(
-                  '*',
+                  '',
                   style: TextStyle(color: Colors.red),
                 )
               ],
@@ -251,7 +249,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   width: 5,
                 ),
                 const Text(
-                  '*',
+                  '',
                   style: TextStyle(color: Colors.red),
                 )
               ],
