@@ -142,6 +142,7 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                 enable: (label == 'Installation Appointment Date' ||
                         label == 'Contracted Date' ||
                         label == 'Division' ||
+                        label == 'Amount' ||
                         label == 'Current Plan' ||
                         label == 'Current Package')
                     ? false
@@ -275,7 +276,12 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                     controller.currentPackageTextController,
                     'Current Package',
                     controller.contractedDetail.value.package ?? 'xxxxxxxxxx'),
-                makePackageDropDownContainer()
+                makePackageDropDownContainer(),
+                makeTextFormField(
+                    controller.amountTextController,
+                    'Amount',
+                    controller.contractedDetail.value.packageTotal ??
+                        'xxxxxxxxxx'),
               ],
             ));
   }

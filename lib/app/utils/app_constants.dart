@@ -1,10 +1,11 @@
 const app_version = '1.0';
 
 // staging url
-const BASE_URL = 'http://mojoenet.myanmaronlinecreations.com';
+const BASE_URL = 'http://mojoenet.com';
 
 // live url
 // 'http://mojoenet.com';
+// 'http://mojoenet.myanmaronlinecreations.com'
 
 //get storage key
 const TOKEN = 'token';

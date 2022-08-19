@@ -25,6 +25,7 @@ class ContractedDetailController extends GetxController {
   var latTextController = TextEditingController();
   var longTextController = TextEditingController();
   var noteTextController = TextEditingController();
+  var amountTextController = TextEditingController();
 
   var secondaryContactNoTextController = TextEditingController();
 
@@ -62,11 +63,15 @@ class ContractedDetailController extends GetxController {
     packageValue = saleStatusData.package
         .firstWhere((package) => package.plan == valueData.value)
         .key;
+    amountTextController.text = saleStatusData.package
+        .firstWhere((package) => package.plan == valueData.value)
+        .value;
     update();
   }
 
   void selectPackage(Package data) {
     packageValue = data.key.toString();
+    amountTextController.text = data.value.toString();
     update();
   }
 
@@ -174,6 +179,10 @@ class ContractedDetailController extends GetxController {
         ? noteTextController.text = ""
         : noteTextController.text = data.notes.toString();
 
+    data.packageTotal.toString() == "null"
+        ? amountTextController.text = ""
+        : amountTextController.text = data.packageTotal.toString();
+
     divisionStatus = data.division.toString();
     townshipStatus = data.township!.toString();
     currentPackageTextController.text = data.package.toString();
@@ -198,7 +207,8 @@ class ContractedDetailController extends GetxController {
       'secondary_contact_number':
           secondaryContactNoTextController.text.toString(),
       'email': emailTextController.text.toString(),
-      'division': divisionStatus.toString()=="null" ? "" :divisionStatus.toString(),
+      'division':
+          divisionStatus.toString() == "null" ? "" : divisionStatus.toString(),
       'township': townshipStatus.toString(),
       'profile_id': Get.arguments.toString(),
       'contracted_date': contractDateTextController.text.toString(),
@@ -207,6 +217,7 @@ class ContractedDetailController extends GetxController {
       'customer_note': noteTextController.text.toString(),
       'lat': latTextController.text.toString(),
       'long': longTextController.text.toString(),
+      'amount': amountTextController.text,
     };
 
     if (checkLatLongLength(latTextController.text.toString()) == false) {
@@ -218,25 +229,24 @@ class ContractedDetailController extends GetxController {
       isLoading(false);
       AppUtils.showErrorSnackBar(
           'Fail', 'Longitude field must be filled with format(00.000000)');
-    } else if(emailTextController.text.toString()!="null" || emailTextController.text.toString()!=""){
-      if(EmailValidator.validate(emailTextController.text)==false){
+    } else if (emailTextController.text.toString() != "") {
+      if (EmailValidator.validate(emailTextController.text) == false) {
         isLoading(false);
         AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
-      }
-      else {
+      } else {
         RestApi.postContractedDetail(map, dataStorage.read(TOKEN))
             .then((value) => Future.delayed(const Duration(seconds: 1), () {
-          if (value.status == 'Success') {
-            isLoading(false);
-            Get.back();
-          } else if (value.responseCode == "005") {
-            isLoading(false);
-            AppUtils.showSessionExpireDialog(
-                'Fail', 'Session Expired', Get.context!);
-          } else {
-            isLoading(false);
-          }
-        }));
+                  if (value.status == 'Success') {
+                    isLoading(false);
+                    Get.back();
+                  } else if (value.responseCode == "005") {
+                    isLoading(false);
+                    AppUtils.showSessionExpireDialog(
+                        'Fail', 'Session Expired', Get.context!);
+                  } else {
+                    isLoading(false);
+                  }
+                }));
       }
     } else {
       RestApi.postContractedDetail(map, dataStorage.read(TOKEN))
