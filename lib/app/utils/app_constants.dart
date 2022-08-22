@@ -1,7 +1,7 @@
 const app_version = '1.0';
 
 // staging url
-const BASE_URL = 'http://mojoenet.com';
+const BASE_URL = 'https://mojoenet.com';
 
 // live url
 // 'http://mojoenet.com';
