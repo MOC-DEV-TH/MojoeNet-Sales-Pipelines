@@ -117,8 +117,8 @@ class LogoutView extends GetView<LogoutController> {
         content:
             Text("Wohoo.. This is ordinary AlertDialog with Blur background"),
         actions: <Widget>[
-          FlatButton(child: Text("Yes"), onPressed: () {}),
-          FlatButton(child: Text("Cancel"), onPressed: () {
+          ElevatedButton(child: Text("Yes"), onPressed: () {}),
+          ElevatedButton(child: Text("Cancel"), onPressed: () {
             Get.back();
           }),
         ],
@@ -138,7 +138,7 @@ class LogoutView extends GetView<LogoutController> {
             const Text('background should be blured and little bit darker '),
         elevation: 2,
         actions: [
-          FlatButton(
+          ElevatedButton(
             child: const Text('OK'),
             onPressed: () {
               Navigator.of(context).pop();
