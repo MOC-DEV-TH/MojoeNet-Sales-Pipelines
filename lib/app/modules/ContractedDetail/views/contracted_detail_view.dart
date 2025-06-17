@@ -81,7 +81,7 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                             ),
                             Expanded(
                                 child: Scrollbar(
-                                    isAlwaysShown: false,
+                                    thumbVisibility: false,
                                     child: SingleChildScrollView(
                                         child: buildBusinessInfo(context)))),
                           ],

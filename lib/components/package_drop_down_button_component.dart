@@ -38,51 +38,60 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
       ),
       child: DropdownButtonFormField2<dynamic>(
         isExpanded: true,
-        isDense: false,
-        itemHeight: 30,
         value: value,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(bottom: 1),
+          contentPadding: const EdgeInsets.only(bottom: 1),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(4),
           ),
         ),
-        icon: const Padding(
-          padding: EdgeInsets.only(right: 5),
-          child: Icon(Icons.keyboard_arrow_down_outlined),
+        iconStyleData: IconStyleData(
+          icon: const Icon(Icons.keyboard_arrow_down_outlined),
+          iconEnabledColor: iconColor,
+          iconSize: 30,
+          iconDisabledColor: Colors.grey,
         ),
-        iconEnabledColor: iconColor,
-        iconSize: 30,
-        buttonHeight: 40,
-        dropdownMaxHeight: 190,
-        scrollbarAlwaysShow: true,
-        selectedItemBuilder: (BuildContext context) {
-          return itemsList!
-              .map((items) => Center(
-                    child: Text(
-                      items.key.toString(),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: selectedItemColor, fontSize: 10),
-                    ),
-                  ))
-              .toList();
-        },
+        dropdownStyleData: DropdownStyleData(
+          maxHeight: 190,
+          padding: null,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+          ),
+          scrollbarTheme: ScrollbarThemeData(
+            thumbVisibility: MaterialStateProperty.all(true),
+          ),
+        ),
+        buttonStyleData: const ButtonStyleData(
+          height: 40,
+          padding: EdgeInsets.symmetric(horizontal: 10),
+        ),
         items: itemsList!
             .map((items) => DropdownMenuItem(
-                  child: Center(
-                    child: Text(
-                      items.key.toString(),
-                      maxLines: 2,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey, fontSize: 10),
-                    ),
-                  ),
-                  value: items,
-                ))
+          value: items,
+          child: Center(
+            child: Text(
+              items.key.toString(),
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey, fontSize: 10),
+            ),
+          ),
+        ))
             .toList(),
         onChanged: (value) {
           onChangedData(value);
+        },
+        selectedItemBuilder: (BuildContext context) {
+          return itemsList!
+              .map((items) => Center(
+            child: Text(
+              items.key.toString(),
+              maxLines: 2,
+              textAlign: TextAlign.center,
+              style: TextStyle(color: selectedItemColor, fontSize: 10),
+            ),
+          ))
+              .toList();
         },
         hint: Padding(
           padding: const EdgeInsets.only(left: 20),
@@ -93,7 +102,8 @@ class PackageDropDownButtonComponent<T> extends StatelessWidget {
             ),
           ),
         ),
-      ),
+      )
+      ,
     );
   }
 }

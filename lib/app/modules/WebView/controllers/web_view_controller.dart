@@ -13,7 +13,7 @@ class WebViewController extends GetxController {
   final dataStorage = GetStorage();
   @override
   void onInit() {
-    if (Platform.isAndroid) WebView.platform = AndroidWebView();
+    //if (Platform.isAndroid) WebView.platform = AndroidWebView();
     super.onInit();
   }
 

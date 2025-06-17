@@ -1,0 +1,1 @@
+/Users/mocdeveloper/sale_pipeline_client/build/app/intermediates/cxx/Debug/2y5m1c4p/obj/x86_64

@@ -57,7 +57,7 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                   ),
                 ),
                 Expanded(child: Scrollbar(
-                  isAlwaysShown: false,
+                  thumbVisibility: false,
                   child: SingleChildScrollView(
                     child: Center(child: Column(
                       children: [

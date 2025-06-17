@@ -56,7 +56,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                   ),
                 ),
                 Expanded(child: Scrollbar(
-                  isAlwaysShown: false,
+                  thumbVisibility: false,
                   child: SingleChildScrollView(
                     child: Center(child: Column(
                       children: [

@@ -87,7 +87,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                             ),
                             Expanded(
                                 child: Scrollbar(
-                                    isAlwaysShown: false,
+                                    thumbVisibility: false,
                                     child: SingleChildScrollView(
                                         child: buildBusinessInfo(context)))),
                           ],

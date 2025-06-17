@@ -1,0 +1,2 @@
+/Users/mocdeveloper/sale_pipeline_client/android/app/.cxx/RelWithDebInfo/3w59294a/x86_64/CMakeFiles/edit_cache.dir
+/Users/mocdeveloper/sale_pipeline_client/android/app/.cxx/RelWithDebInfo/3w59294a/x86_64/CMakeFiles/rebuild_cache.dir
