@@ -69,7 +69,7 @@ class LeadStatusDropDownButtonComponent<T> extends StatelessWidget {
           value: items,
           child: Center(
             child: Text(
-              items.key.toString(),
+              items.value.toString(),
               maxLines: 2,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey, fontSize: 10),
@@ -84,7 +84,7 @@ class LeadStatusDropDownButtonComponent<T> extends StatelessWidget {
           return itemsList!
               .map((items) => Center(
             child: Text(
-              items.key.toString(),
+              items.value.toString(),
               maxLines: 2,
               textAlign: TextAlign.center,
               style: TextStyle(color: selectedItemColor, fontSize: 10),
