@@ -14,7 +14,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
   @override
   Widget build(BuildContext context) {
     checkSelectedItem();
-    if(dataStorage.read(DESIGNATION_OTHER) != null){
+    if (dataStorage.read(DESIGNATION_OTHER) != null) {
       controller.noteController.text = dataStorage.read(DESIGNATION_OTHER);
     }
     return Scaffold(
@@ -55,20 +55,40 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                     ],
                   ),
                 ),
-                Expanded(child: Scrollbar(
+                Expanded(
+                    child: Scrollbar(
                   thumbVisibility: false,
                   child: SingleChildScrollView(
-                    child: Center(child: Column(
+                    child: Center(
+                        child: Column(
                       children: [
                         buildListView(),
-                       GetBuilder<NLRStepFourController>(builder: (controller){
-                        return (controller.selectedItemValue=='Other' ||dataStorage.read(DESIGNATION)=='Other')?makeNoteController():const SizedBox();
-                       })
+                        GetBuilder<NLRStepFourController>(
+                            builder: (controller) {
+                          return (controller.selectedItemValue == 'Other' ||
+                                  dataStorage.read(DESIGNATION) == 'Other')
+                              ? makeNoteController()
+                              : const SizedBox();
+                        })
                       ],
                     )),
                   ),
                 )),
                 SizedBox(height: 70, child: makeButton()),
+
+                ///Skip button
+                TextButton(
+                    onPressed: () {
+                      controller.onPressContinue();
+                    },
+                    child: Text(
+                      'Skip for now',
+                      style: TextStyle(
+                          color: Colors.white,
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white,fontWeight: FontWeight.w700
+                      ),
+                    ))
               ],
             ),
           ),
@@ -118,7 +138,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
             child: Container(
               decoration: BoxDecoration(
                 color: controller.isSelectedValue == '' &&
-                    dataStorage.read(DESIGNATION) == null
+                        dataStorage.read(DESIGNATION) == null
                     ? Colors.grey
                     : Color(int.parse(AppColors.buttonColor)),
                 borderRadius: const BorderRadius.all(Radius.circular(12.0)),
@@ -159,11 +179,10 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                         onTap: () {
                           controller.updateSelectedItem(index);
                           dataStorage.write(DESIGNATION_INDEX, index);
-                            dataStorage.write(
-                                DESIGNATION,
-                                controller.saleDesignationData
-                                    .saleDesignation[index].value);
-
+                          dataStorage.write(
+                              DESIGNATION,
+                              controller.saleDesignationData
+                                  .saleDesignation[index].value);
                         },
                         child: Container(
                           height: 50,
@@ -189,7 +208,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
     );
   }
 
-  Widget makeNoteController(){
+  Widget makeNoteController() {
     return Container(
       height: 48,
       width: Get.width,
@@ -199,11 +218,14 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
       ),
       child: Center(
         child: TextFieldBoxDecorationComponent(
-          hintText:(dataStorage.read(DESIGNATION_OTHER).toString()=="null" || dataStorage.read(DESIGNATION_OTHER).toString()=="" ) ? 'Enter type of designation...'
-          :dataStorage.read(DESIGNATION_OTHER),
+          hintText: (dataStorage.read(DESIGNATION_OTHER).toString() == "null" ||
+                  dataStorage.read(DESIGNATION_OTHER).toString() == "")
+              ? 'Enter type of designation...'
+              : dataStorage.read(DESIGNATION_OTHER),
           errorText: '',
           controller: controller.noteController,
-          onTextDataChange: (String value) {}, label: 'note',
+          onTextDataChange: (String value) {},
+          label: 'note',
         ),
       ),
     );

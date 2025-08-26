@@ -123,6 +123,20 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                         ),
                       ),
                       SizedBox(height: 70, child: makeButton(context)),
+
+                      ///Skip button
+                      TextButton(
+                          onPressed: () {
+                            controller.onPressContinue(context);
+                          },
+                          child: Text(
+                            'Skip for now',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                                color: Colors.white,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.white,),
+                          ))
                     ],
                   );
                 }

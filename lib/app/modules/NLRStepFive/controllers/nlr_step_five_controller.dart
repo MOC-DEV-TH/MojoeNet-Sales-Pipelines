@@ -52,6 +52,21 @@ class NLRStepFiveController extends GetxController {
     }
   }
 
+  onChangedName(String value){
+    nameController.text = value;
+    update();
+  }
+
+  onChangedPrimaryContactNumber(String value){
+    contactNoController.text = value;
+    update();
+  }
+
+  onChangedEmail(String value){
+    emailController.text = value;
+    update();
+  }
+
   void onPressContinue() {
     dataStorage.write(CONTACT_PERSON, nameController.text.toString());
     dataStorage.write(CONTACT_NUMBER, contactNoController.text.toString());

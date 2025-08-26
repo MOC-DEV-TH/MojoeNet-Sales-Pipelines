@@ -88,9 +88,142 @@ class NLRStepSixController extends GetxController {
     update();
   }
 
+  // void onPressContinue(BuildContext context) {
+  //   isLoading(true);
+  //   var map = {
+  //     'uid': dataStorage.read(UID),
+  //     'app_version': app_version,
+  //     'source': dataStorage.read(SOURCE).toString(),
+  //     'business_type': dataStorage.read(BUSINESS_TYPE).toString(),
+  //     'business_name': dataStorage.read(BUSINESS_NAME).toString(),
+  //     'division': dataStorage.read(DIVISION).toString(),
+  //     'township': dataStorage.read(TOWNSHIP).toString(),
+  //     'address': dataStorage.read(ADDRESS).toString(),
+  //     'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
+  //     'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
+  //     'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
+  //     'email': dataStorage.read(EMAIL).toString(),
+  //
+  //     'designation': dataStorage.read(DESIGNATION).toString(),
+  //     'potential': potentialStatusValue.toString(),
+  //     'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
+  //     'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
+  //     'status': statusValue.toString(),
+  //     'followup_date': followUpDateTextController.text.toString(),
+  //     'isNotified': checkBoxValue == true ? '1' : '0',
+  //     'isReferral': referalCheckBoxValue == true ? '1' : '0',
+  //     'reason': reasonTextController.text.toString(),
+  //     'contracted_date': contractDateTextController.text.toString()==""?null: contractDateTextController.text.toString(),
+  //     'installation_appointment_date': appointmentDateTextController.text.toString()==""?null:appointmentDateTextController.text.toString(),
+  //     'customer_note': customerNoteTextController.text.toString(),
+  //     'lat': latTextController.text.toString(),
+  //     'long': longTextController.text.toString(),
+  //     'amount': potentialStatusValue == '0'
+  //         ? ""
+  //         : amountTextController.text.toString(),
+  //     'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
+  //     'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
+  //     'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
+  //   };
+  //   var smeDataMap = {
+  //     'uid': dataStorage.read(UID),
+  //     'app_version': app_version,
+  //     'source': dataStorage.read(SOURCE).toString(),
+  //     'business_type': dataStorage.read(BUSINESS_TYPE).toString(),
+  //     'sme': dataStorage.read(SME).toString(),
+  //     'business_name': dataStorage.read(BUSINESS_NAME).toString(),
+  //     'division': dataStorage.read(DIVISION).toString(),
+  //     'township': dataStorage.read(TOWNSHIP).toString(),
+  //     'address': dataStorage.read(ADDRESS).toString(),
+  //
+  //     'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
+  //     'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
+  //     'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
+  //     'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
+  //     'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
+  //     'email': dataStorage.read(EMAIL).toString(),
+  //
+  //     'designation': dataStorage.read(DESIGNATION).toString(),
+  //     'potential': potentialStatusValue.toString(),
+  //     'status': statusValue.toString(),
+  //     'followup_date': followUpDateTextController.text.toString(),
+  //     'isNotified': checkBoxValue == true ? '1' : '0',
+  //     'isReferral': referalCheckBoxValue == true ? '1' : '0',
+  //     'reason': reasonTextController.text.toString(),
+  //     'contracted_date': contractDateTextController.text.toString()==""?null: contractDateTextController.text.toString(),
+  //     'installation_appointment_date': appointmentDateTextController.text.toString()==""?null:appointmentDateTextController.text.toString(),
+  //     'customer_note': customerNoteTextController.text.toString(),
+  //     'lat': latTextController.text.toString(),
+  //     'long': longTextController.text.toString(),
+  //     'amount': potentialStatusValue == '0'
+  //         ? ""
+  //         : amountTextController.text.toString(),
+  //     'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
+  //     'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
+  //     'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
+  //   };
+  //
+  //   if(statusValue=="Contracted"){
+  //     if (checkLatLongLength(latTextController.text.toString()) == false) {
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar(
+  //           'Fail', 'Latitude field must be filled with format(00.000000)');
+  //     }
+  //    else if (checkLatLongLength(longTextController.text.toString()) == false) {
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar(
+  //           'Fail', 'Longitude field must be filled with format(00.000000)');
+  //     }
+  //    else {
+  //       RestApi.postLeadFormData(
+  //           dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
+  //               ? smeDataMap
+  //               : map,
+  //           dataStorage.read(TOKEN))
+  //           .then((value) =>
+  //           Future.delayed(Duration.zero, () {
+  //             if (value.status == 'Success') {
+  //               isLoading(false);
+  //               AppUtils.removeLeadDataFromGetStorage();
+  //               Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+  //             } else if (value.responseCode == "005") {
+  //               isLoading(false);
+  //               AppUtils.showSessionExpireDialog(
+  //                   'Fail', 'Session Expired', context);
+  //             } else {
+  //               isLoading(false);
+  //             }
+  //           }));
+  //     }
+  //   }
+  //   else {
+  //     RestApi.postLeadFormData(
+  //         dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
+  //             ? smeDataMap
+  //             : map,
+  //         dataStorage.read(TOKEN))
+  //         .then((value) =>
+  //         Future.delayed(Duration.zero, () {
+  //           if (value.status == 'Success') {
+  //             isLoading(false);
+  //             AppUtils.removeLeadDataFromGetStorage();
+  //             Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+  //           } else if (value.responseCode == "005") {
+  //             isLoading(false);
+  //             AppUtils.showSessionExpireDialog(
+  //                 'Fail', 'Session Expired', context);
+  //           } else {
+  //             isLoading(false);
+  //           }
+  //         }));
+  //   }
+  // }
+
+
   void onPressContinue(BuildContext context) {
     isLoading(true);
-    var map = {
+
+    Map<String, dynamic> map = {
       'uid': dataStorage.read(UID),
       'app_version': app_version,
       'source': dataStorage.read(SOURCE).toString(),
@@ -99,11 +232,11 @@ class NLRStepSixController extends GetxController {
       'division': dataStorage.read(DIVISION).toString(),
       'township': dataStorage.read(TOWNSHIP).toString(),
       'address': dataStorage.read(ADDRESS).toString(),
-      'designation': dataStorage.read(DESIGNATION).toString(),
       'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
       'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
       'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
       'email': dataStorage.read(EMAIL).toString(),
+      'designation': dataStorage.read(DESIGNATION).toString(),
       'potential': potentialStatusValue.toString(),
       'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
       'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
@@ -112,19 +245,18 @@ class NLRStepSixController extends GetxController {
       'isNotified': checkBoxValue == true ? '1' : '0',
       'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
-      'contracted_date': contractDateTextController.text.toString()==""?null: contractDateTextController.text.toString(),
-      'installation_appointment_date': appointmentDateTextController.text.toString()==""?null:appointmentDateTextController.text.toString(),
+      'contracted_date': contractDateTextController.text.toString().isEmpty ? null : contractDateTextController.text.toString(),
+      'installation_appointment_date': appointmentDateTextController.text.toString().isEmpty ? null : appointmentDateTextController.text.toString(),
       'customer_note': customerNoteTextController.text.toString(),
       'lat': latTextController.text.toString(),
       'long': longTextController.text.toString(),
-      'amount': potentialStatusValue == '0'
-          ? ""
-          : amountTextController.text.toString(),
+      'amount': potentialStatusValue == '0' ? "" : amountTextController.text.toString(),
       'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
       'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
       'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
-    var smeDataMap = {
+
+    Map<String, dynamic> smeDataMap = {
       'uid': dataStorage.read(UID),
       'app_version': app_version,
       'source': dataStorage.read(SOURCE).toString(),
@@ -134,86 +266,87 @@ class NLRStepSixController extends GetxController {
       'division': dataStorage.read(DIVISION).toString(),
       'township': dataStorage.read(TOWNSHIP).toString(),
       'address': dataStorage.read(ADDRESS).toString(),
-      'designation': dataStorage.read(DESIGNATION).toString(),
       'contact_number': dataStorage.read(CONTACT_NUMBER).toString(),
       'secondary_contact_number': dataStorage.read(SECONDARY_CONTACT_NUMBER).toString(),
       'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
       'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
       'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
       'email': dataStorage.read(EMAIL).toString(),
+      'designation': dataStorage.read(DESIGNATION).toString(),
       'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
       'isReferral': referalCheckBoxValue == true ? '1' : '0',
       'reason': reasonTextController.text.toString(),
-      'contracted_date': contractDateTextController.text.toString()==""?null: contractDateTextController.text.toString(),
-      'installation_appointment_date': appointmentDateTextController.text.toString()==""?null:appointmentDateTextController.text.toString(),
+      'contracted_date': contractDateTextController.text.toString().isEmpty ? null : contractDateTextController.text.toString(),
+      'installation_appointment_date': appointmentDateTextController.text.toString().isEmpty ? null : appointmentDateTextController.text.toString(),
       'customer_note': customerNoteTextController.text.toString(),
       'lat': latTextController.text.toString(),
       'long': longTextController.text.toString(),
-      'amount': potentialStatusValue == '0'
-          ? ""
-          : amountTextController.text.toString(),
+      'amount': potentialStatusValue == '0' ? "" : amountTextController.text.toString(),
       'plan': potentialStatusValue == '0' ? "" : planValue.toString(),
       'package': potentialStatusValue == '0' ? "" : packageValue.toString(),
       'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
 
-    if(statusValue=="Contracted"){
-      if (checkLatLongLength(latTextController.text.toString()) == false) {
+    // Remove null or empty values
+    Map<String, dynamic> cleanedMap = removeEmptyOrNullFields(map);
+    Map<String, dynamic> cleanedSmeDataMap = removeEmptyOrNullFields(smeDataMap);
+
+    if (statusValue == "Contracted") {
+      if (!checkLatLongLength(latTextController.text.toString())) {
         isLoading(false);
-        AppUtils.showErrorSnackBar(
-            'Fail', 'Latitude field must be filled with format(00.000000)');
-      }
-     else if (checkLatLongLength(longTextController.text.toString()) == false) {
+        AppUtils.showErrorSnackBar('Fail', 'Latitude field must be filled with format(00.000000)');
+      } else if (!checkLatLongLength(longTextController.text.toString())) {
         isLoading(false);
-        AppUtils.showErrorSnackBar(
-            'Fail', 'Longitude field must be filled with format(00.000000)');
-      }
-     else {
+        AppUtils.showErrorSnackBar('Fail', 'Longitude field must be filled with format(00.000000)');
+      } else {
         RestApi.postLeadFormData(
-            dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
-                ? smeDataMap
-                : map,
-            dataStorage.read(TOKEN))
-            .then((value) =>
-            Future.delayed(Duration.zero, () {
-              if (value.status == 'Success') {
-                isLoading(false);
-                AppUtils.removeLeadDataFromGetStorage();
-                Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-              } else if (value.responseCode == "005") {
-                isLoading(false);
-                AppUtils.showSessionExpireDialog(
-                    'Fail', 'Session Expired', context);
-              } else {
-                isLoading(false);
-              }
-            }));
+          dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
+          dataStorage.read(TOKEN),
+        ).then((value) => Future.delayed(Duration.zero, () {
+          if (value.status == 'Success') {
+            isLoading(false);
+            AppUtils.removeLeadDataFromGetStorage();
+            Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+          } else if (value.responseCode == "005") {
+            isLoading(false);
+            AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
+          } else {
+            isLoading(false);
+          }
+        }));
       }
-    }
-    else {
+    } else {
       RestApi.postLeadFormData(
-          dataStorage.read(BUSINESS_TYPE).toString() == 'SME'
-              ? smeDataMap
-              : map,
-          dataStorage.read(TOKEN))
-          .then((value) =>
-          Future.delayed(Duration.zero, () {
-            if (value.status == 'Success') {
-              isLoading(false);
-              AppUtils.removeLeadDataFromGetStorage();
-              Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-            } else if (value.responseCode == "005") {
-              isLoading(false);
-              AppUtils.showSessionExpireDialog(
-                  'Fail', 'Session Expired', context);
-            } else {
-              isLoading(false);
-            }
-          }));
+        dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
+        dataStorage.read(TOKEN),
+      ).then((value) => Future.delayed(Duration.zero, () {
+        if (value.status == 'Success') {
+          isLoading(false);
+          AppUtils.removeLeadDataFromGetStorage();
+          Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+        } else if (value.responseCode == "005") {
+          isLoading(false);
+          AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
+        } else {
+          isLoading(false);
+        }
+      }));
     }
+  }
+
+
+
+  Map<String, dynamic> removeEmptyOrNullFields(Map<String, dynamic> inputMap) {
+    final result = <String, dynamic>{};
+    inputMap.forEach((key, value) {
+      if (value != null && value.toString().trim().isNotEmpty) {
+        result[key] = value;
+      }
+    });
+    return result;
   }
 
   void onPressBack() {
