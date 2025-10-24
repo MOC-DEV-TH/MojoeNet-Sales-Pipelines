@@ -261,7 +261,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     controller
                             .activityDetailData.value.secondaryContactNumber ??
                         'xxxxxxxxxx'),
-                makeTextFormField(controller.emailTextController, 'Emial',
+                makeTextFormField(controller.emailTextController, 'Email',
                     controller.activityDetailData.value.email ?? 'xxxxxxxxxx'),
                 makeTextFormField(
                     controller.currentISPTextController,

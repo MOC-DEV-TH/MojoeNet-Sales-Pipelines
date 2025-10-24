@@ -24,7 +24,7 @@ abstract class Routes {
   static const CONTRACTED_DETAIL = _Paths.CONTRACTED_DETAIL;
   static const WEB_VIEW = _Paths.WEB_VIEW;
   static const FORGOT_PASSWORD_VIEW = _Paths.FORGOT_PASSWORD_VIEW;
-
+  static const N_L_R_STEP_SEVEN = _Paths.N_L_R_STEP_SEVEN;
 }
 
 abstract class _Paths {
@@ -50,4 +50,5 @@ abstract class _Paths {
   static const CONTRACTED_DETAIL = '/contracted_detail';
   static const WEB_VIEW = '/web_view';
   static const FORGOT_PASSWORD_VIEW = '/forgot_password_view';
+  static const N_L_R_STEP_SEVEN = '/n-l-r-step-seven';
 }

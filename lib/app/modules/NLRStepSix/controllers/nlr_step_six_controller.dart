@@ -237,9 +237,10 @@ class NLRStepSixController extends GetxController {
       'contact_person': dataStorage.read(CONTACT_PERSON).toString(),
       'email': dataStorage.read(EMAIL).toString(),
       'designation': dataStorage.read(DESIGNATION).toString(),
-      'potential': potentialStatusValue.toString(),
       'designation_other': dataStorage.read(DESIGNATION_OTHER).toString(),
       'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
+
+      'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
       'isNotified': checkBoxValue == true ? '1' : '0',
@@ -273,6 +274,8 @@ class NLRStepSixController extends GetxController {
       'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
       'email': dataStorage.read(EMAIL).toString(),
       'designation': dataStorage.read(DESIGNATION).toString(),
+
+
       'potential': potentialStatusValue.toString(),
       'status': statusValue.toString(),
       'followup_date': followUpDateTextController.text.toString(),
@@ -290,7 +293,7 @@ class NLRStepSixController extends GetxController {
       'discount': potentialStatusValue == '0' ? "" : discountValue.toString(),
     };
 
-    // Remove null or empty values
+    /// Remove null or empty values
     Map<String, dynamic> cleanedMap = removeEmptyOrNullFields(map);
     Map<String, dynamic> cleanedSmeDataMap = removeEmptyOrNullFields(smeDataMap);
 
@@ -302,39 +305,42 @@ class NLRStepSixController extends GetxController {
         isLoading(false);
         AppUtils.showErrorSnackBar('Fail', 'Longitude field must be filled with format(00.000000)');
       } else {
-        RestApi.postLeadFormData(
-          dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
-          dataStorage.read(TOKEN),
-        ).then((value) => Future.delayed(Duration.zero, () {
-          if (value.status == 'Success') {
-            isLoading(false);
-            AppUtils.removeLeadDataFromGetStorage();
-            Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-          } else if (value.responseCode == "005") {
-            isLoading(false);
-            AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
-          } else {
-            isLoading(false);
-          }
-        }));
+        Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+        // RestApi.postLeadFormData(
+        //   dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
+        //   dataStorage.read(TOKEN),
+        // ).then((value) => Future.delayed(Duration.zero, () {
+        //   if (value.status == 'Success') {
+        //     isLoading(false);
+        //     AppUtils.removeLeadDataFromGetStorage();
+        //     Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+        //   } else if (value.responseCode == "005") {
+        //     isLoading(false);
+        //     AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
+        //   } else {
+        //     isLoading(false);
+        //   }
+        // }));
       }
     } else {
-      RestApi.postLeadFormData(
-        dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
-        dataStorage.read(TOKEN),
-      ).then((value) => Future.delayed(Duration.zero, () {
-        if (value.status == 'Success') {
-          isLoading(false);
-          AppUtils.removeLeadDataFromGetStorage();
-          Get.offNamed(Routes.SUCCESS_LEAD_INFO);
-        } else if (value.responseCode == "005") {
-          isLoading(false);
-          AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
-        } else {
-          isLoading(false);
-        }
-      }));
+      Get.offNamed(Routes.N_L_R_STEP_SEVEN);
     }
+    //   RestApi.postLeadFormData(
+    //     dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
+    //     dataStorage.read(TOKEN),
+    //   ).then((value) => Future.delayed(Duration.zero, () {
+    //     if (value.status == 'Success') {
+    //       isLoading(false);
+    //       AppUtils.removeLeadDataFromGetStorage();
+    //       Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+    //     } else if (value.responseCode == "005") {
+    //       isLoading(false);
+    //       AppUtils.showSessionExpireDialog('Fail', 'Session Expired', context);
+    //     } else {
+    //       isLoading(false);
+    //     }
+    //   }));
+    // }
   }
 
 

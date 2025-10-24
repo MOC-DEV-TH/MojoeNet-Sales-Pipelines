@@ -1,30 +1,15 @@
 import 'package:get/get.dart';
-import 'package:sales_pipeline/app/modules/BusinessDetail/bindings/business_detail_binding.dart';
-import 'package:sales_pipeline/app/modules/BusinessDetail/views/business_detail_view.dart';
-import 'package:sales_pipeline/app/modules/Contracted/bindings/contracted_binding.dart';
-import 'package:sales_pipeline/app/modules/Contracted/views/contracted_view.dart';
-import 'package:sales_pipeline/app/modules/ContractedDetail/bindings/contracted_detail_binding.dart';
-import 'package:sales_pipeline/app/modules/ContractedDetail/views/contracted_detail_view.dart';
-import 'package:sales_pipeline/app/modules/ForgotPassword/bindings/forgot_password_binding.dart';
-import 'package:sales_pipeline/app/modules/ForgotPassword/views/forgot_password_view.dart';
-import 'package:sales_pipeline/app/modules/NLRStepFive/views/nrl_step_five_view.dart';
-import 'package:sales_pipeline/app/modules/NLRStepOne/bindings/nlr_step_one_binding.dart';
-import 'package:sales_pipeline/app/modules/NLRStepOne/views/nrl_step_one_view.dart';
-import 'package:sales_pipeline/app/modules/NLRStepThree/views/nrl_step_three_view.dart';
-import 'package:sales_pipeline/app/modules/NLRStepTwo/bindings/nlr_step_two_binding.dart';
-import 'package:sales_pipeline/app/modules/NLRStepTwo/views/nrl_step_two_view.dart';
-import 'package:sales_pipeline/app/modules/SME/bindings/sme_binding.dart';
-import 'package:sales_pipeline/app/modules/SME/views/sme_view.dart';
-import 'package:sales_pipeline/app/modules/SuccessLeadInfo/bindings/success_lead_info_binding.dart';
-import 'package:sales_pipeline/app/modules/Target/bindings/target_binding.dart';
-import 'package:sales_pipeline/app/modules/Target/views/target_view.dart';
-import 'package:sales_pipeline/app/modules/TaskSelection/bindings/task_selection_binding.dart';
-import 'package:sales_pipeline/app/modules/TaskSelection/views/task_selection_view.dart';
-import 'package:sales_pipeline/app/modules/WebView/bindings/web_view_binding.dart';
-import 'package:sales_pipeline/app/modules/WebView/views/web_view.dart';
 
+import '../modules/BusinessDetail/bindings/business_detail_binding.dart';
+import '../modules/BusinessDetail/views/business_detail_view.dart';
+import '../modules/Contracted/bindings/contracted_binding.dart';
+import '../modules/Contracted/views/contracted_view.dart';
+import '../modules/ContractedDetail/bindings/contracted_detail_binding.dart';
+import '../modules/ContractedDetail/views/contracted_detail_view.dart';
 import '../modules/Dashboard/bindings/dashboard_binding.dart';
 import '../modules/Dashboard/views/dashboard_view.dart';
+import '../modules/ForgotPassword/bindings/forgot_password_binding.dart';
+import '../modules/ForgotPassword/views/forgot_password_view.dart';
 import '../modules/Home/bindings/home_binding.dart';
 import '../modules/Home/views/home_view.dart';
 import '../modules/LeadListing/bindings/lead_listing_binding.dart';
@@ -34,14 +19,31 @@ import '../modules/Login/views/login_view.dart';
 import '../modules/Logout/bindings/logout_binding.dart';
 import '../modules/Logout/views/logout_view.dart';
 import '../modules/NLRStepFive/bindings/nlr_step_five_binding.dart';
+import '../modules/NLRStepFive/views/nrl_step_five_view.dart';
 import '../modules/NLRStepFour/bindings/nlr_step_four_binding.dart';
 import '../modules/NLRStepFour/views/nlr_step_four_view.dart';
+import '../modules/NLRStepOne/bindings/nlr_step_one_binding.dart';
+import '../modules/NLRStepOne/views/nrl_step_one_view.dart';
+import '../modules/NLRStepSeven/bindings/n_l_r_step_seven_binding.dart';
+import '../modules/NLRStepSeven/views/n_l_r_step_seven_view.dart';
 import '../modules/NLRStepSix/bindings/nlr_step_six_binding.dart';
 import '../modules/NLRStepSix/views/nrl_step_six_view.dart';
 import '../modules/NLRStepThree/bindings/nlr_step_three_binding.dart';
+import '../modules/NLRStepThree/views/nrl_step_three_view.dart';
+import '../modules/NLRStepTwo/bindings/nlr_step_two_binding.dart';
+import '../modules/NLRStepTwo/views/nrl_step_two_view.dart';
 import '../modules/NewLead/bindings/new_lead_binding.dart';
 import '../modules/NewLead/views/new_lead_view.dart';
+import '../modules/SME/bindings/sme_binding.dart';
+import '../modules/SME/views/sme_view.dart';
+import '../modules/SuccessLeadInfo/bindings/success_lead_info_binding.dart';
 import '../modules/SuccessLeadInfo/views/success_lead_info_view.dart';
+import '../modules/Target/bindings/target_binding.dart';
+import '../modules/Target/views/target_view.dart';
+import '../modules/TaskSelection/bindings/task_selection_binding.dart';
+import '../modules/TaskSelection/views/task_selection_view.dart';
+import '../modules/WebView/bindings/web_view_binding.dart';
+import '../modules/WebView/views/web_view.dart';
 
 part 'app_routes.dart';
 
@@ -86,7 +88,6 @@ class AppPages {
       page: () => TaskSelectionView(),
       binding: TaskSelectionBinding(),
     ),
-
     GetPage(
       name: _Paths.NLR_STEP_ONE,
       page: () => NLRStepOneView(),
@@ -156,6 +157,11 @@ class AppPages {
       name: _Paths.FORGOT_PASSWORD_VIEW,
       page: () => ForgotPasswordView(),
       binding: ForgotPasswordBinding(),
+    ),
+    GetPage(
+      name: _Paths.N_L_R_STEP_SEVEN,
+      page: () => const NLRStepSevenView(),
+      binding: NLRStepSevenBinding(),
     ),
   ];
 }

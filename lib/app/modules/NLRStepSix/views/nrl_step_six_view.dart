@@ -11,6 +11,7 @@ import '../../../../components/drop_down_button_component.dart';
 import '../../../../components/label_text_component.dart';
 import '../../../../components/text_field_box_decoration_component.dart';
 import '../../../../components/text_field_component.dart';
+import '../../../routes/app_pages.dart';
 
 class NLRStepSixView extends GetView<NLRStepSixController> {
   List<SaleStatus> potentialList = [
@@ -127,7 +128,8 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                       ///Skip button
                       TextButton(
                           onPressed: () {
-                            controller.onPressContinue(context);
+                            Get.offNamed(Routes.N_L_R_STEP_SEVEN);
+                            //controller.onPressContinue(context);
                           },
                           child: Text(
                             'Skip for now',
