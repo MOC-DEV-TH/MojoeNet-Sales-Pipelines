@@ -31,7 +31,7 @@ class LeadListTableItems extends StatelessWidget {
         for (var i = 0; i < lead!.length; i++)
           TableRow(children: [
             _createTableCell(label: i+1),
-            _createTableCell(label: lead![i].businessName),
+            _createTableCell(label: lead![i].businessName ?? '-----'),
             _createTableCell(label: lead![i].status),
             _createEditTableCell(label: 'Edit',leadID: lead![i].lid),
           ])

@@ -39,7 +39,7 @@ class NLRStepFourView extends GetView<NLRStepFourController> {
                   child: Column(
                     children: [
                       DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 7,
                         position: 3,
                         decorator: const DotsDecorator(
                           size: Size.square(15.0),

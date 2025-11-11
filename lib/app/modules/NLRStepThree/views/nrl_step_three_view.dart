@@ -44,7 +44,7 @@ class NLRStepThreeView extends GetView<NLRStepThreeController> {
                   child: Column(
                     children: [
                       DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 7,
                         position: 2,
                         decorator: const DotsDecorator(
                           color: Colors.white, // Inactive color

@@ -91,7 +91,12 @@ class Details {
     this.installationAppointmentDate,
     this.secondaryContactNumber,
     this.businessTypeOther,
-    this.designationTypeOther
+    this.designationTypeOther,
+    this.meetingNotes,
+    this.nextStep,
+    this.estContractDate,
+    this.estStartDate,
+    this.estFollowUpDate
   });
 
   String? lid;
@@ -140,6 +145,11 @@ class Details {
   dynamic secondaryContactNumber;
   dynamic businessTypeOther;
   dynamic designationTypeOther;
+  String? meetingNotes;
+  String? nextStep;
+  String? estContractDate;
+  String? estStartDate;
+  String? estFollowUpDate;
 
 
 
@@ -190,6 +200,11 @@ class Details {
     secondaryContactNumber: json['secondary_contact_number'],
     businessTypeOther: json["business_type_other"],
     designationTypeOther: json["designation_other"],
+    meetingNotes: json["meeting_notes"],
+    nextStep: json["next_step"],
+    estContractDate: json["est_contract_date"],
+    estStartDate: json["est_start_date"],
+    estFollowUpDate: json["follow_up_date"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -239,5 +254,10 @@ class Details {
     "secondary_contact_number" : secondaryContactNumber,
     "designation_other": designationTypeOther,
     "business_type_other": businessTypeOther,
+    "meeting_notes": meetingNotes,
+    "next_step": nextStep,
+    "est_contract_date": estContractDate,
+    "est_start_date": estStartDate,
+    "follow_up_date": estFollowUpDate,
   };
 }

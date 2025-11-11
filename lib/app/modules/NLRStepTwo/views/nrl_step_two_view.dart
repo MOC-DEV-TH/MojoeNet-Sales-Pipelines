@@ -40,7 +40,7 @@ class NLRStepTwoView extends GetView<NLRStepTwoController> {
                   child: Column(
                     children: [
                       DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 7,
                         position: 1,
                         decorator: const DotsDecorator(
                           size: Size.square(15.0),

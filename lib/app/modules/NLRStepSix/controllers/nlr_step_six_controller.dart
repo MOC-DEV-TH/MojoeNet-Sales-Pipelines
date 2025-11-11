@@ -14,6 +14,11 @@ class NLRStepSixController extends GetxController {
   var reasonTextController = TextEditingController();
   var followUpDateTextController = TextEditingController();
   var contractDateTextController = TextEditingController();
+
+  var estContractDateTextController = TextEditingController();
+  var estStartDateTextController = TextEditingController();
+  var estFollowUpDateTextController = TextEditingController();
+
   var appointmentDateTextController = TextEditingController();
   var customerNoteTextController = TextEditingController();
   var amountTextController = TextEditingController();
@@ -386,6 +391,21 @@ class NLRStepSixController extends GetxController {
       String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
       debugPrint("DateTimeFormat${dtFormat}");
       appointmentDateTextController.text = dtFormat.toString();
+    }
+  }
+
+  selectDate(TextEditingController controller) async {
+    final DateTime? selected = await showDatePicker(
+      initialDate: DateTime.now(),
+      context: Get.context!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (selected != null) {
+      String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
+      debugPrint("DateTimeFormat${dtFormat}");
+      controller.text = dtFormat.toString();
     }
   }
 

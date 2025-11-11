@@ -139,7 +139,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
               label,
               style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
-            label == 'Estimate Flight Date'
+            (label == 'Estimate Flight Date' || label == "Est.Contract Date" || label == "Est.Start Date" || label == "Est.Follow Up Date")
                 ? const Icon(
                     Icons.calendar_month,
                     color: Colors.white,
@@ -186,7 +186,8 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                         label == 'Current Package' ||
                         label == 'Installation Appointment Date' ||
                         label == 'Contracted Date' ||
-                        label == "Current Plan")
+                        label == "Current Plan" ||
+                    label == "Est.Contract Date" || label == "Est.Start Date" || label == "Est.Follow Up Date")
                     ? false
                     : true,
                 errorText: '',
@@ -306,6 +307,48 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     : const SizedBox(),
                 makeTextFormField(
                     controller.weightTextController, 'Weighted%', 'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.meetingNoteTextController,
+                    'Meeting Notes',
+                    controller.activityDetailData.value.meetingNotes ??
+                        'xxxxxxxxxx'),
+                makeTextFormField(
+                    controller.nextStepTextController,
+                    'Next Step',
+                    controller.activityDetailData.value.nextStep ??
+                        'xxxxxxxxxx'),
+
+                InkWell(
+                  onTap: (){
+                    controller.selectDate(controller.estContractDateTextController);
+                  },
+                  child: makeTextFormField(
+                      controller.estContractDateTextController,
+                      'Est.Contract Date',
+                      controller.activityDetailData.value.estContractDate ??
+                          'xxxxxxxxxx'),
+                ),
+                InkWell(
+                  onTap: (){
+                    controller.selectDate(controller.estStartDateTextController);
+                  },
+                  child: makeTextFormField(
+                      controller.estStartDateTextController,
+                      'Est.Start Date',
+                      controller.activityDetailData.value.estStartDate ??
+                          'xxxxxxxxxx'),
+                ),
+                InkWell(
+                  onTap: (){
+                    controller.selectDate(controller.estFollowUpDateTextController);
+                  },
+                  child: makeTextFormField(
+                      controller.estFollowUpDateTextController,
+                      'Est.Follow Up Date',
+                      controller.activityDetailData.value.estFollowUpDate ??
+                          'xxxxxxxxxx'),
+                ),
+
                 (controller.leadStatusName == 'Keep Follow Up' ||
                         controller.leadStatusName == 'Proposal Follow Up' ||
                         controller.leadStatusName == 'Appointment' ||

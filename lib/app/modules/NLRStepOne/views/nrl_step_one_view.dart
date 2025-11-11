@@ -37,7 +37,7 @@ class NLRStepOneView extends GetView<NLRStepOneController> {
                   child: Column(
                     children: [
                       DotsIndicator(
-                        dotsCount: 6,
+                        dotsCount: 7,
                         position: 0,
                         decorator: const DotsDecorator(
                           size: Size.square(15.0),

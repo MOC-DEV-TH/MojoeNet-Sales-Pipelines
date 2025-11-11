@@ -40,6 +40,13 @@ class BusinessDetailController extends GetxController {
 
   var addressTextController = TextEditingController();
 
+  var meetingNoteTextController = TextEditingController();
+  var nextStepTextController = TextEditingController();
+
+  var estContractDateTextController = TextEditingController();
+  var estStartDateTextController = TextEditingController();
+  var estFollowUpDateTextController = TextEditingController();
+
 
   final count = 0.obs;
   var leadStatusName = '';
@@ -169,6 +176,21 @@ class BusinessDetailController extends GetxController {
     }
   }
 
+  selectDate(TextEditingController controller) async {
+    final DateTime? selected = await showDatePicker(
+      initialDate: DateTime.now(),
+      context: Get.context!,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (selected != null) {
+      String dtFormat = DateFormat('yyyy-MM-dd').format(selected);
+      debugPrint("DateTimeFormat${dtFormat}");
+      controller.text = dtFormat.toString();
+    }
+  }
+
   void updateFollowUpViaStatus(FollowUpVia status) {
     followUpViaStatusName = status.value!;
     update();
@@ -282,6 +304,14 @@ class BusinessDetailController extends GetxController {
         ? businessNameTextController.text = ''
         : businessNameTextController.text = data.businessName.toString();
 
+    (data.meetingNotes.toString() == 'null')
+        ? meetingNoteTextController.text = ''
+        : meetingNoteTextController.text = data.meetingNotes.toString();
+
+    (data.nextStep.toString() == 'null')
+        ? nextStepTextController.text = ''
+        : nextStepTextController.text = data.nextStep.toString();
+
     (data.latitude.toString() == 'null')
         ? latTextController.text = ''
         : latTextController.text = data.latitude.toString();
@@ -306,6 +336,18 @@ class BusinessDetailController extends GetxController {
     data.address.toString() == 'null'
         ? addressTextController.text = ''
         : addressTextController.text = data.address.toString();
+
+    (data.estContractDate.toString() == 'null')
+        ? estContractDateTextController.text = ''
+        : estContractDateTextController.text = data.estContractDate.toString();
+
+    (data.estStartDate.toString() == 'null')
+        ? estStartDateTextController.text = ''
+        : estStartDateTextController.text = data.estStartDate.toString();
+
+    data.estFollowUpDate.toString() == 'null'
+        ? estFollowUpDateTextController.text = ''
+        : estFollowUpDateTextController.text = data.estFollowUpDate.toString();
     // currentPlanTextController.text = data.plan.toString();
     // currentPackageTextController.text = data.package.toString();
   }
@@ -365,6 +407,15 @@ class BusinessDetailController extends GetxController {
       'contact_number': primaryContactNoTextController.text.toString(),
       'secondary_contact_number': secondaryContactNoTextController.text.toString(),
       'email' : emailTextController.text.toString(),
+      'meeting_notes': meetingNoteTextController.text.toString() == ''
+          ? ""
+          : meetingNoteTextController.text.toString(),
+      'next_step': nextStepTextController.text.toString() == ''
+          ? ""
+          : nextStepTextController.text.toString(),
+      'est_contract_date': estContractDateTextController.text.toString() == '' ? "" : estContractDateTextController.text,
+      'est_start_date': estStartDateTextController.text.toString() == '' ? "" : estStartDateTextController.text,
+      'follow_up_date':estFollowUpDateTextController.text.toString() == '' ? "" : estFollowUpDateTextController.text,
     };
     if (leadStatusName == "Contracted") {
       if (checkEmptyData() == false) {
