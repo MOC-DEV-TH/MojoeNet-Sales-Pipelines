@@ -12,14 +12,14 @@ class NLRStepSevenView extends GetView<NLRStepSevenController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Color(int.parse(AppColors.bgColor)),
-      body: GestureDetector(
-        onTap: () {
-          FocusManager.instance.primaryFocus?.unfocus();
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color(int.parse(AppColors.bgColor)),
+        body: Container(
           width: MediaQuery
               .of(context)
               .size
@@ -181,9 +181,10 @@ class MeetingNotesField extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: TextField(
               controller: c,
-              keyboardType: TextInputType.multiline,
-              minLines: 5,
-              maxLines: 8,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              maxLines: 5,
+              onSubmitted: (_) => FocusScope.of(context).unfocus(),
               style: const TextStyle(fontSize: 16, color: Colors.black87),
               decoration: const InputDecoration(
                 isCollapsed: true,

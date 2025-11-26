@@ -310,7 +310,7 @@ class NLRStepSixController extends GetxController {
         isLoading(false);
         AppUtils.showErrorSnackBar('Fail', 'Longitude field must be filled with format(00.000000)');
       } else {
-        Get.offNamed(Routes.SUCCESS_LEAD_INFO);
+        Get.offNamed(Routes.N_L_R_STEP_SEVEN);
         // RestApi.postLeadFormData(
         //   dataStorage.read(BUSINESS_TYPE).toString() == 'SME' ? cleanedSmeDataMap : cleanedMap,
         //   dataStorage.read(TOKEN),

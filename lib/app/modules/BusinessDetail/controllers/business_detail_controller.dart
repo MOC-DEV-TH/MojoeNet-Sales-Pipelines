@@ -417,6 +417,13 @@ class BusinessDetailController extends GetxController {
       'est_start_date': estStartDateTextController.text.toString() == '' ? "" : estStartDateTextController.text,
       'follow_up_date':estFollowUpDateTextController.text.toString() == '' ? "" : estFollowUpDateTextController.text,
     };
+
+    map.removeWhere(
+          (key, value) =>
+      value == null ||
+          (value is String && value.trim().isEmpty),
+    );
+
     if (leadStatusName == "Contracted") {
       if (checkEmptyData() == false) {
         isLoading(false);
