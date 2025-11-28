@@ -355,7 +355,7 @@ class BusinessDetailController extends GetxController {
   void onPressSave() {
     isLoading(true);
     var map = {
-      'lid': Get.arguments.toString(),
+      //'lid': Get.arguments.toString(),
       'uid': dataStorage.read(UID),
       'app_version': app_version,
       'source': leadSourceStatus,
