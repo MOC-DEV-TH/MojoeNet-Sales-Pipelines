@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class TextFieldComponent extends StatelessWidget {
   TextFieldComponent({
     Key? key,
@@ -13,9 +14,10 @@ class TextFieldComponent extends StatelessWidget {
     this.initialValue,
     this.label,
     this.onTextDataChange,
-   required this.controller,
+    required this.controller,
     this.onPress,
   }) : super(key: key);
+
   final String hintText;
   final int maxLines;
   final String errorText;
@@ -26,33 +28,49 @@ class TextFieldComponent extends StatelessWidget {
   String? initialValue;
   final Function()? onPress;
   final String? suffixText;
-  final  Function(String)? onTextDataChange;
+  final Function(String)? onTextDataChange;
   final TextInputType textInputType;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
+    // ✅ Set initial text ONCE if needed
+    if (initialValue != null && controller.text.isEmpty) {
+      controller.text = initialValue!;
+    }
+
+    final isPhoneField =
+        label == "Primary Contact Number" || label == "Secondary Contact Number";
+
+    final isMultiLineNote =
+        label == "Meeting Notes" || label == "Next Step";
+
     return TextFormField(
-      keyboardType:(label=="Primary Contact Number" || label=="Secondary Contact Number") ? TextInputType.number : TextInputType.multiline,
-      maxLines: null,
-      enabled: enable,
-      initialValue: initialValue,
-      textInputAction: TextInputAction.next,
+      keyboardType: isPhoneField ? TextInputType.number : TextInputType.text,
+      maxLines: isMultiLineNote ? null : 1,
+      enabled: enable ?? true,
+      autofocus: false,
+      // ❌ DO NOT use initialValue here
       controller: controller,
+      textInputAction: TextInputAction.next,
       textAlign: TextAlign.center,
-      style:const TextStyle(fontSize:12),
-      onChanged: (String value){
-        onTextDataChange!(value);
+      style: const TextStyle(fontSize: 12),
+      onChanged: (String value) {
+        if (onTextDataChange != null) {
+          onTextDataChange!(value);
+        }
       },
       decoration: InputDecoration(
-        hintText:  hintText,
-        hintStyle:const TextStyle(fontSize: 12),
+        hintText: hintText,
+        hintStyle: const TextStyle(fontSize: 12),
         border: InputBorder.none,
-        labelStyle:const TextStyle(
+        labelStyle: const TextStyle(
           fontSize: 12,
           color: Colors.black,
         ),
-        contentPadding: EdgeInsets.only(bottom: 12),
+        contentPadding: EdgeInsets.only(
+          bottom: isMultiLineNote ? 0 : 12,
+        ),
       ),
     );
   }

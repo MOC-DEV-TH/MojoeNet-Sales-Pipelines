@@ -62,7 +62,7 @@ class NLRStepSevenController extends GetxController {
       'business_type_other': dataStorage.read(BUSINESS_TYPE_OTHER).toString(),
 
       'potential': s6.potentialStatusValue,
-      'status': s6.statusValue,
+      'status': s6.statusKey,
       'followup_date': s6.followUpDateTextController.text,
       'est_contract_date': s6.estContractDateTextController.text,
       'est_start_date': s6.estStartDateTextController.text,

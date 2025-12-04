@@ -50,6 +50,7 @@ class BusinessDetailController extends GetxController {
 
   final count = 0.obs;
   var leadStatusName = '';
+  var leadStatusKey = '';
   var followUpViaStatusName = '';
   final dataStorage = GetStorage();
   dynamic saleStatusData;
@@ -142,6 +143,7 @@ class BusinessDetailController extends GetxController {
 
   void updateLeadStatus(SaleStatus data) {
     leadStatusName = data.value!;
+    leadStatusKey = data.key.toString();
     weightTextController.text = data.weight!;
     update();
   }
@@ -229,6 +231,7 @@ class BusinessDetailController extends GetxController {
     dateTimeTextController.text = data.followupDate.toString();
     weightTextController.text = data.weighted.toString();
     leadStatusName = data.status.toString();
+    leadStatusKey = data.statusKey.toString();
     followUpViaStatusName = data.followupVia.toString();
 
     (data.leadSource.toString() == 'null')
@@ -352,70 +355,209 @@ class BusinessDetailController extends GetxController {
     // currentPackageTextController.text = data.package.toString();
   }
 
+  // void onPressSave() {
+  //   isLoading(true);
+  //   var map = {
+  //     'lid': Get.arguments.toString(),
+  //     'uid': dataStorage.read(UID),
+  //     'app_version': app_version,
+  //     'source': leadSourceStatus,
+  //     'business_type': businessTypeStatus,
+  //     'business_name': businessNameTextController.text.toString() == ''
+  //         ? ""
+  //         : businessNameTextController.text.toString(),
+  //     'designation': designationStatus,
+  //     'contact_person': contactPersonTextController.text.toString() == 'null'
+  //         ? ""
+  //         : contactPersonTextController.text.toString(),
+  //     'potential': activityDetailData.value.potential,
+  //     'address': addressTextController.text.toString(),
+  //     'status': leadStatusKey.toString(),
+  //     "followup_via": followUpViaStatusName.toString() == 'null'
+  //         ? ""
+  //         : followUpViaStatusName.toString(),
+  //     "estimate_flightdate":
+  //         estimateFlightDateTextController.text.toString() == ''
+  //             ? ""
+  //             : estimateFlightDateTextController.text.toString(),
+  //     "current_isp": currentISPTextController.text.toString() == ''
+  //         ? ""
+  //         : currentISPTextController.text.toString(),
+  //     "followup_date": dateTimeTextController.text.toString(),
+  //     "weight": weightTextController.text.toString(),
+  //     'amount': amountTextController.text,
+  //     'designation_other': designationTypeOtherTextController.text,
+  //     'business_type_other': businessTypeOtherTextController.text,
+  //     'division': divisionStatus,
+  //     'township': townshipStatus,
+  //     'package': packageValue == ""
+  //         ? currentPackageTextController.text
+  //         : packageValue.toString(),
+  //     'plan': planValue == ""
+  //         ? currentPlanTextController.text
+  //         : planValue.toString(),
+  //     'discount': discountValue,
+  //     'contracted_date': contractDateTextController.text.toString() == ""
+  //         ? " "
+  //         : contractDateTextController.text.toString(),
+  //     'installation_appointment_date':
+  //         appointmentDateTextController.text.toString() == ""
+  //             ? " "
+  //             : appointmentDateTextController.text.toString(),
+  //     'customer_note': customerNoteTextController.text.toString(),
+  //     'lat': latTextController.text,
+  //     'long': longTextController.text,
+  //     'contact_number': primaryContactNoTextController.text.toString(),
+  //     'secondary_contact_number': secondaryContactNoTextController.text.toString(),
+  //     'email' : emailTextController.text.toString(),
+  //     'meeting_notes': meetingNoteTextController.text.toString() == ''
+  //         ? ""
+  //         : meetingNoteTextController.text.toString(),
+  //     'next_step': nextStepTextController.text.toString() == ''
+  //         ? ""
+  //         : nextStepTextController.text.toString(),
+  //     'est_contract_date': estContractDateTextController.text.toString() == '' ? "" : estContractDateTextController.text,
+  //     'est_start_date': estStartDateTextController.text.toString() == '' ? "" : estStartDateTextController.text,
+  //     'follow_up_date':estFollowUpDateTextController.text.toString() == '' ? "" : estFollowUpDateTextController.text,
+  //   };
+  //
+  //   map.removeWhere(
+  //         (key, value) =>
+  //     value == null ||
+  //         (value is String && value.trim().isEmpty),
+  //   );
+  //
+  //   if (leadStatusName == "Contracted") {
+  //     if (checkEmptyData() == false) {
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar('Fail', 'Please fill all required fields!!!');
+  //     } else if (checkLatLongLength(latTextController.text.toString()) == false) {
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar(
+  //           'Fail', 'Latitude field must be filled with format(00.000000)');
+  //     }
+  //     else if (checkLatLongLength(longTextController.text.toString()) == false) {
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar(
+  //           'Fail', 'Longitude field must be filled with format(00.000000)');
+  //     }
+  //     else {
+  //       RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
+  //           .then((value) => Future.delayed(const Duration(seconds: 1), () {
+  //                 if (value.status == 'Success') {
+  //                   isLoading(false);
+  //                   Get.back();
+  //                 } else if (value.responseCode == "005") {
+  //                   isLoading(false);
+  //                   AppUtils.showSessionExpireDialog(
+  //                       'Fail', 'Session Expired', Get.context!);
+  //                 } else {
+  //                   isLoading(false);
+  //                 }
+  //               }));
+  //     }
+  //   }
+  //
+  //   else if(emailTextController.text.toString()!= ""){
+  //    if(EmailValidator.validate(emailTextController.text)==false){
+  //     isLoading(false);
+  //     AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
+  //   }
+  //    else {
+  //      RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
+  //          .then((value) => Future.delayed(const Duration(seconds: 1), () {
+  //        if (value.status == 'Success') {
+  //          isLoading(false);
+  //          Get.back();
+  //        } else if (value.responseCode == "005") {
+  //          isLoading(false);
+  //          AppUtils.showSessionExpireDialog(
+  //              'Fail', 'Session Expired', Get.context!);
+  //        } else {
+  //          isLoading(false);
+  //        }
+  //      }));
+  //    }
+  //   }
+  //
+  //   else {
+  //     if(checkEstDateEmptyData() == false){
+  //       isLoading(false);
+  //       AppUtils.showErrorSnackBar('Fail', 'Please fill all required fields!!!');
+  //     }
+  //     else {
+  //       RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
+  //           .then((value) => Future.delayed(const Duration(seconds: 1), () {
+  //         if (value.status == 'Success') {
+  //           isLoading(false);
+  //           Get.back();
+  //         } else if (value.responseCode == "005") {
+  //           isLoading(false);
+  //           AppUtils.showSessionExpireDialog(
+  //               'Fail', 'Session Expired', Get.context!);
+  //         } else {
+  //           isLoading(false);
+  //         }
+  //       }));
+  //     }
+  //   }
+  // }
+
   void onPressSave() {
     isLoading(true);
-    var map = {
-      //'lid': Get.arguments.toString(),
+
+    final map = <String, dynamic>{
+      'lid': Get.arguments.toString(),
       'uid': dataStorage.read(UID),
       'app_version': app_version,
       'source': leadSourceStatus,
       'business_type': businessTypeStatus,
-      'business_name': businessNameTextController.text.toString() == ''
-          ? ""
-          : businessNameTextController.text.toString(),
+      'business_name': businessNameTextController.text.trim(),
       'designation': designationStatus,
       'contact_person': contactPersonTextController.text.toString() == 'null'
           ? ""
           : contactPersonTextController.text.toString(),
       'potential': activityDetailData.value.potential,
-      'address': addressTextController.text.toString(),
-      'status': leadStatusName.toString(),
-      "followup_via": followUpViaStatusName.toString() == 'null'
+      'address': addressTextController.text.trim(),
+      'status': leadStatusKey,
+      'followup_via': followUpViaStatusName.toString() == 'null'
           ? ""
           : followUpViaStatusName.toString(),
-      "estimate_flightdate":
-          estimateFlightDateTextController.text.toString() == ''
-              ? ""
-              : estimateFlightDateTextController.text.toString(),
-      "current_isp": currentISPTextController.text.toString() == ''
-          ? ""
-          : currentISPTextController.text.toString(),
-      "followup_date": dateTimeTextController.text.toString(),
-      "weight": weightTextController.text.toString(),
-      'amount': amountTextController.text,
-      'designation_other': designationTypeOtherTextController.text,
-      'business_type_other': businessTypeOtherTextController.text,
+      'estimate_flightdate': estimateFlightDateTextController.text.trim(),
+      'current_isp': currentISPTextController.text.trim(),
+      'followup_date': dateTimeTextController.text.trim(),
+      'weight': weightTextController.text.trim(),
+      'amount': amountTextController.text.trim(),
+      'designation_other': designationTypeOtherTextController.text.trim(),
+      'business_type_other': businessTypeOtherTextController.text.trim(),
       'division': divisionStatus,
       'township': townshipStatus,
-      'package': packageValue == ""
-          ? currentPackageTextController.text
-          : packageValue.toString(),
-      'plan': planValue == ""
-          ? currentPlanTextController.text
-          : planValue.toString(),
+      'package': packageValue.isEmpty
+          ? currentPackageTextController.text.trim()
+          : packageValue,
+      'plan': planValue.isEmpty
+          ? currentPlanTextController.text.trim()
+          : planValue,
       'discount': discountValue,
-      'contracted_date': contractDateTextController.text.toString() == ""
-          ? " "
-          : contractDateTextController.text.toString(),
+      'contracted_date': contractDateTextController.text.trim().isEmpty
+          ? ''
+          : contractDateTextController.text.trim(),
       'installation_appointment_date':
-          appointmentDateTextController.text.toString() == ""
-              ? " "
-              : appointmentDateTextController.text.toString(),
-      'customer_note': customerNoteTextController.text.toString(),
-      'lat': latTextController.text,
-      'long': longTextController.text,
-      'contact_number': primaryContactNoTextController.text.toString(),
-      'secondary_contact_number': secondaryContactNoTextController.text.toString(),
-      'email' : emailTextController.text.toString(),
-      'meeting_notes': meetingNoteTextController.text.toString() == ''
-          ? ""
-          : meetingNoteTextController.text.toString(),
-      'next_step': nextStepTextController.text.toString() == ''
-          ? ""
-          : nextStepTextController.text.toString(),
-      'est_contract_date': estContractDateTextController.text.toString() == '' ? "" : estContractDateTextController.text,
-      'est_start_date': estStartDateTextController.text.toString() == '' ? "" : estStartDateTextController.text,
-      'follow_up_date':estFollowUpDateTextController.text.toString() == '' ? "" : estFollowUpDateTextController.text,
+      appointmentDateTextController.text.trim().isEmpty
+          ? ''
+          : appointmentDateTextController.text.trim(),
+      'customer_note': customerNoteTextController.text.trim(),
+      'lat': latTextController.text.trim(),
+      'long': longTextController.text.trim(),
+      'contact_number': primaryContactNoTextController.text.trim(),
+      'secondary_contact_number':
+      secondaryContactNoTextController.text.trim(),
+      'email': emailTextController.text.trim(),
+      'meeting_notes': meetingNoteTextController.text.trim(),
+      'next_step': nextStepTextController.text.trim(),
+      'est_contract_date': estContractDateTextController.text.trim(),
+      'est_start_date': estStartDateTextController.text.trim(),
+      'follow_up_date': estFollowUpDateTextController.text.trim(),
     };
 
     map.removeWhere(
@@ -424,74 +566,61 @@ class BusinessDetailController extends GetxController {
           (value is String && value.trim().isEmpty),
     );
 
+    String? errorMsg;
+
+    final email = emailTextController.text.trim();
+
     if (leadStatusName == "Contracted") {
-      if (checkEmptyData() == false) {
-        isLoading(false);
-        AppUtils.showErrorSnackBar('Fail', 'Contracted Data must not empty!!!');
-      } else if (checkLatLongLength(latTextController.text.toString()) == false) {
-        isLoading(false);
-        AppUtils.showErrorSnackBar(
-            'Fail', 'Latitude field must be filled with format(00.000000)');
+      // -------- Contracted validations --------
+      if (!checkEmptyData()) {
+        errorMsg = 'Please fill all required fields!!!';
+      } else if (!checkLatLongLength(latTextController.text.trim())) {
+        errorMsg = 'Latitude field must be filled with format(00.000000)';
+      } else if (!checkLatLongLength(longTextController.text.trim())) {
+        errorMsg = 'Longitude field must be filled with format(00.000000)';
       }
-      else if (checkLatLongLength(longTextController.text.toString()) == false) {
-        isLoading(false);
-        AppUtils.showErrorSnackBar(
-            'Fail', 'Longitude field must be filled with format(00.000000)');
-      }
-      else {
-        RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
-            .then((value) => Future.delayed(const Duration(seconds: 1), () {
-                  if (value.status == 'Success') {
-                    isLoading(false);
-                    Get.back();
-                  } else if (value.responseCode == "005") {
-                    isLoading(false);
-                    AppUtils.showSessionExpireDialog(
-                        'Fail', 'Session Expired', Get.context!);
-                  } else {
-                    isLoading(false);
-                  }
-                }));
+    } else {
+      // -------- Not contracted validations --------
+      if (email.isNotEmpty && !EmailValidator.validate(email)) {
+        errorMsg = 'Invalid Email Format';
+      } else if (!checkEstDateEmptyData()) {
+        errorMsg = 'Please fill all required fields!!!';
       }
     }
 
-    else if(emailTextController.text.toString()!= ""){
-     if(EmailValidator.validate(emailTextController.text)==false){
+    // If any error, show and stop
+    if (errorMsg != null) {
       isLoading(false);
-      AppUtils.showErrorSnackBar("Fail", 'Invalid Email Format');
-    }
-     else {
-       RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
-           .then((value) => Future.delayed(const Duration(seconds: 1), () {
-         if (value.status == 'Success') {
-           isLoading(false);
-           Get.back();
-         } else if (value.responseCode == "005") {
-           isLoading(false);
-           AppUtils.showSessionExpireDialog(
-               'Fail', 'Session Expired', Get.context!);
-         } else {
-           isLoading(false);
-         }
-       }));
-     }
+      AppUtils.showErrorSnackBar('Fail', errorMsg);
+      return;
     }
 
-    else {
-      RestApi.postLeadFormData(map, dataStorage.read(TOKEN))
-          .then((value) => Future.delayed(const Duration(seconds: 1), () {
-                if (value.status == 'Success') {
-                  isLoading(false);
-                  Get.back();
-                } else if (value.responseCode == "005") {
-                  isLoading(false);
-                  AppUtils.showSessionExpireDialog(
-                      'Fail', 'Session Expired', Get.context!);
-                } else {
-                  isLoading(false);
-                }
-              }));
-    }
+    // All validations passed → call API once
+    _submitLead(map);
+  }
+
+
+  /// Short-hand for posting lead form data
+  Future<void> _submitLead(Map<String, dynamic> map) async {
+    final token = dataStorage.read(TOKEN);
+
+    RestApi.postLeadFormData(map, token).then(
+          (value) => Future.delayed(const Duration(seconds: 1), () {
+        if (value.status == 'Success') {
+          isLoading(false);
+          Get.back();
+        } else if (value.responseCode == "005") {
+          isLoading(false);
+          AppUtils.showSessionExpireDialog(
+            'Fail',
+            'Session Expired',
+            Get.context!,
+          );
+        } else {
+          isLoading(false);
+        }
+      }),
+    );
   }
 
   bool checkEmptyData() {
@@ -500,6 +629,17 @@ class BusinessDetailController extends GetxController {
         contractDateTextController.text == '' ||
         latTextController.text == '' ||
         longTextController.text == '') {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  bool checkEstDateEmptyData() {
+    if (estContractDateTextController.text == '' ||
+        estStartDateTextController.text == '' ||
+        estFollowUpDateTextController.text == ''
+        ) {
       return false;
     } else {
       return true;

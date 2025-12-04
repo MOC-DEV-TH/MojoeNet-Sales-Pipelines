@@ -134,8 +134,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                       ///Skip button
                       TextButton(
                           onPressed: () {
-                            Get.offNamed(Routes.N_L_R_STEP_SEVEN);
-                            //controller.onPressContinue(context);
+                            controller.onPressSkipForNow();
                           },
                           child: Text(
                             'Skip for now',
@@ -184,7 +183,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                             .toList(),
                         onChangedData: (SaleStatus value) {
                           debugPrint('StatusValue${value.value}');
-                          controller.updateStatus(value.value.toString());
+                          controller.updateStatus(value.value.toString(),value.key.toString());
                         },
                         hintText: 'Select status',
                         hintColor: Colors.grey,
@@ -375,8 +374,19 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                 Row(
                   children: [
                     Expanded(
-                        child: LabelTextComponent(
-                            text: 'Est.Contract Date', color: Colors.white, padding: 0.0)),
+                        child: Row(
+                          children: [
+                            LabelTextComponent(
+                                text: 'Est.Contract\nDate', color: Colors.white, padding: 0.0),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
+                        )),
                     Flexible(
                         flex: 2,
                         child: InkWell(
@@ -394,8 +404,19 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                 Row(
                   children: [
                     Expanded(
-                        child: LabelTextComponent(
-                            text: 'Est.Start Date', color: Colors.white, padding: 0.0)),
+                        child: Row(
+                          children: [
+                            LabelTextComponent(
+                                text: 'Est.Start Date', color: Colors.white, padding: 0.0),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
+                        )),
                     Flexible(
                         flex: 2,
                         child: InkWell(
@@ -413,8 +434,19 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                 Row(
                   children: [
                     Expanded(
-                        child: LabelTextComponent(
-                            text: 'Est.Follow Up Date', color: Colors.white, padding: 0.0)),
+                        child: Row(
+                          children: [
+                            LabelTextComponent(
+                                text: 'Est.Follow\nUp Date', color: Colors.white, padding: 0.0),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              '*',
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
+                        )),
                     Flexible(
                         flex: 2,
                         child: InkWell(
@@ -598,6 +630,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
           width: 20,
         ),
         GetBuilder<NLRStepSixController>(
+          id: 'continue_btn',
           builder: (controller) => Expanded(
             child: Container(
               decoration: BoxDecoration(
@@ -653,7 +686,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                             itemsList: potentialListNoStatus,
                             onChangedData: (SaleStatus value) {
                               debugPrint('StatusValue${value.value}');
-                              controller.updateStatus(value.value.toString());
+                              controller.updateStatus(value.value.toString(),value.key.toString());
                             },
                             hintText: 'Select status',
                             hintColor: Colors.grey,

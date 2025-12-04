@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sales_pipeline/app/models/dropDownVO.dart';
-import 'package:sales_pipeline/app/models/lead_status.dart';
 import 'package:sales_pipeline/app/modules/BusinessDetail/controllers/business_detail_controller.dart';
-import 'package:sales_pipeline/app/modules/Dashboard/controllers/dashboard_controller.dart';
 import 'package:sales_pipeline/components/drop_down_button_component.dart';
 import 'package:sales_pipeline/components/lead_status_drop_down_button_component.dart';
 import 'package:sales_pipeline/components/text_field_component.dart';
 import 'package:sales_pipeline/res/colors.dart';
 
 import '../../../../components/contracted_detail_package_drop_down_button_component.dart';
-import '../../../routes/app_pages.dart';
 
 class BusinessDetailView extends GetView<BusinessDetailController> {
   @override
@@ -139,7 +135,7 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
               label,
               style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
-            (label == 'Estimate Flight Date' || label == "Est.Contract Date" || label == "Est.Start Date" || label == "Est.Follow Up Date")
+            (label == 'Estimate Flight Date')
                 ? const Icon(
                     Icons.calendar_month,
                     color: Colors.white,
@@ -169,32 +165,44 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                                         '*',
                                         style: TextStyle(color: Colors.red),
                                       )
-                                    : const SizedBox()
+                                    :
+                label == 'Est.Contract Date' ? const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                ) :  label == 'Est.Start Date' ? const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                ) : label == 'Est.Follow Up Date' ? const Text(
+                  '*',
+                  style: TextStyle(color: Colors.red),
+                ) :
+                const SizedBox()
           ],
         ),
         InkWell(
           child: Container(
             color: Colors.white,
-            height: 35,
+            height:label == "Meeting Notes" || label == "Next Step" ? null : 35,
             width: Get.width,
-            child: Center(
-              child: TextFieldComponent(
-                hintText: hintText,
-                enable: (label == "Estimate Flight Date" ||
-                        label == "Remind Me on Date/Time" ||
-                        label == 'Amount' ||
-                        label == 'Current Package' ||
-                        label == 'Installation Appointment Date' ||
-                        label == 'Contracted Date' ||
-                        label == "Current Plan" ||
-                    label == "Est.Contract Date" || label == "Est.Start Date" || label == "Est.Follow Up Date")
-                    ? false
-                    : true,
-                errorText: '',
-                label: label,
-                controller: textEditingController,
-                onTextDataChange: (String value) {},
-              ),
+            child: TextFieldComponent(
+              hintText: hintText,
+              enable: (label == "Estimate Flight Date" ||
+                      label == "Remind Me on Date/Time" ||
+                      label == 'Amount' ||
+                      label == 'Current Package' ||
+                      label == 'Installation Appointment Date' ||
+                      label == 'Contracted Date' ||
+                      label == "Current Plan" ||
+                      label == "Est.Contract Date" ||
+                      label == "Est.Start Date" ||
+                      label == "Est.Follow Up Date" ||
+                      label == 'Weighted%')
+                  ? false
+                  : true,
+              errorText: '',
+              label: label,
+              controller: textEditingController,
+              onTextDataChange: (String value) {},
             ),
           ),
         )
@@ -317,10 +325,10 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                     'Next Step',
                     controller.activityDetailData.value.nextStep ??
                         'xxxxxxxxxx'),
-
                 InkWell(
-                  onTap: (){
-                    controller.selectDate(controller.estContractDateTextController);
+                  onTap: () {
+                    controller
+                        .selectDate(controller.estContractDateTextController);
                   },
                   child: makeTextFormField(
                       controller.estContractDateTextController,
@@ -329,8 +337,9 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                           'xxxxxxxxxx'),
                 ),
                 InkWell(
-                  onTap: (){
-                    controller.selectDate(controller.estStartDateTextController);
+                  onTap: () {
+                    controller
+                        .selectDate(controller.estStartDateTextController);
                   },
                   child: makeTextFormField(
                       controller.estStartDateTextController,
@@ -339,8 +348,9 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                           'xxxxxxxxxx'),
                 ),
                 InkWell(
-                  onTap: (){
-                    controller.selectDate(controller.estFollowUpDateTextController);
+                  onTap: () {
+                    controller
+                        .selectDate(controller.estFollowUpDateTextController);
                   },
                   child: makeTextFormField(
                       controller.estFollowUpDateTextController,
@@ -348,7 +358,6 @@ class BusinessDetailView extends GetView<BusinessDetailController> {
                       controller.activityDetailData.value.estFollowUpDate ??
                           'xxxxxxxxxx'),
                 ),
-
                 (controller.leadStatusName == 'Keep Follow Up' ||
                         controller.leadStatusName == 'Proposal Follow Up' ||
                         controller.leadStatusName == 'Appointment' ||

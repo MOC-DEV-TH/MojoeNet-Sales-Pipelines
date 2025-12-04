@@ -79,6 +79,7 @@ class Details {
     this.creationDate,
     this.modifiedDate,
     this.status,
+    this.statusKey,
     this.packageTotal,
     this.referrelId,
     this.leadAssign,
@@ -132,6 +133,7 @@ class Details {
   String? creationDate;
   String? modifiedDate;
   String? status;
+  String? statusKey;
   String? packageTotal;
   dynamic referrelId;
   dynamic leadAssign;
@@ -187,6 +189,7 @@ class Details {
     creationDate:json["creation_date"],
     modifiedDate: json["modified_date"],
     status: json["status"],
+    statusKey: json["status_key"],
     packageTotal: json["package_total"],
     referrelId: json["referrel_id"],
     leadAssign: json["lead_assign"],
