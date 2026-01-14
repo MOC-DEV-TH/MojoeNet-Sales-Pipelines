@@ -52,6 +52,7 @@ class Detail {
     this.status,
     this.firstname,
     this.followupDate,
+    this.estContractDate
   });
 
   String? lid;
@@ -59,6 +60,7 @@ class Detail {
   String? status;
   String? firstname;
   String? followupDate;
+  String? estContractDate;
 
   factory Detail.fromJson(Map<String, dynamic> json) => Detail(
     lid: json["lid"],
@@ -66,6 +68,7 @@ class Detail {
     status: json["status"],
     firstname: json["firstname"],
     followupDate: json["followup_date"],
+    estContractDate: json["est_contract_date"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -74,6 +77,7 @@ class Detail {
     "status": status,
     "firstname": firstname,
     "followup_date": followupDate ,
+    "est_contract_date": estContractDate ,
   };
 }
 

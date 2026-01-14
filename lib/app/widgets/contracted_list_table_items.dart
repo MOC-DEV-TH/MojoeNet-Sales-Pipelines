@@ -32,8 +32,8 @@ class ContractedListTableItems extends StatelessWidget {
         for (var i = 0; i < contractedLead!.length; i++)
           TableRow(children: [
             _createTableCell(label: (i+1).toString()),
-            _createTableCell(label: contractedLead![i].businessName.toString()),
-            _createTableCell(label: contractedLead![i].status.toString()),
+            _createTableCell(label: contractedLead![i].businessName),
+            _createTableCell(label: contractedLead![i].status),
             _createActionTableCell(
                 label1: 'Edit',
                 label2: 'Signed',
@@ -55,7 +55,7 @@ class ContractedListTableItems extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                label,
+                label ?? '-----',
                 style: const TextStyle(color: Colors.white, fontSize: 12),
               ),
             ),

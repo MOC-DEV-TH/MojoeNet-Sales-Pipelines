@@ -67,56 +67,114 @@ class LeadListingView extends GetView<LeadListingController> {
                             ),
 
                             /**
-                             * Search with business name
+                             * Search with business name and est contract date
                              */
-                            Container(
-                              width: 160,
-                              height: 35,
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(6))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Expanded(
-                                    child: TextFieldComponent(
-                                      hintText: 'BusinessName',
-                                      errorText: '',
-                                      controller:
-                                          controller.businessNameTextController,
-                                      onTextDataChange: (String value){
-                                        if(value==''){
-                                          controller.fetchLeadListByFilterName('');
-                                        }
-                                      },
+                            Row(
+                              children: [
+                                Container(
+                                  width: 160,
+                                  height: 35,
+                                  decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(6))),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: TextFieldComponent(
+                                          hintText: 'BusinessName',
+                                          errorText: '',
+                                          controller:
+                                              controller.businessNameTextController,
+                                          onTextDataChange: (String value){
+                                            if(value==''){
+                                              controller.fetchLeadListByFilterName('');
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      Container(
+                                          width: 35,
+                                          height: Get.height,
+                                          decoration: BoxDecoration(
+                                              color: Color(
+                                                  int.parse(AppColors.buttonColor)),
+                                              borderRadius: const BorderRadius.only(
+                                                  topRight: Radius.circular(6),
+                                                  bottomRight: Radius.circular(6))),
+                                          child: InkWell(
+                                            onTap: () {
+                                              controller.fetchLeadListByFilterName(
+                                                  BUSINESS_NAME_PARAM +
+                                                      controller
+                                                          .businessNameTextController
+                                                          .text);
+                                            },
+                                            child: Icon(
+                                              Icons.search,
+                                              color: Colors.white,
+                                            ),
+                                          ))
+                                    ],
+                                  ),
+                                ),
+
+                                Spacer(),
+
+                                InkWell(
+                                  onTap: () => controller.pickEstContractDate(context: context),
+                                  child: Container(
+                                    width: 160,
+                                    height: 35,
+                                    decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(6))),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: TextFieldComponent(
+                                            enable: false,
+                                            hintText: 'Est Contract Date',
+                                            errorText: '',
+                                            controller:
+                                            controller.estContractTextController,
+                                            onTextDataChange: (String value){
+                                              if(value==''){
+                                              }
+                                            },
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 35,
+                                          height: double.infinity,
+                                          decoration: BoxDecoration(
+                                            color: Color(int.parse(AppColors.buttonColor)),
+                                            borderRadius: const BorderRadius.only(
+                                              topRight: Radius.circular(6),
+                                              bottomRight: Radius.circular(6),
+                                            ),
+                                          ),
+                                          child: InkWell(
+                                            onTap: controller.clearEstContractDate,
+                                            child: Obx(() => Icon(
+                                                controller.hasEstDate.value
+                                                    ? Icons.clear
+                                                    : Icons.search,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
                                     ),
                                   ),
-                                  Container(
-                                      width: 35,
-                                      height: Get.height,
-                                      decoration: BoxDecoration(
-                                          color: Color(
-                                              int.parse(AppColors.buttonColor)),
-                                          borderRadius: const BorderRadius.only(
-                                              topRight: Radius.circular(6),
-                                              bottomRight: Radius.circular(6))),
-                                      child: InkWell(
-                                        onTap: () {
-                                          controller.fetchLeadListByFilterName(
-                                              BUSINESS_NAME_PARAM +
-                                                  controller
-                                                      .businessNameTextController
-                                                      .text);
-                                        },
-                                        child: Icon(
-                                          Icons.search,
-                                          color: Colors.white,
-                                        ),
-                                      ))
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                             const SizedBox(
                               height: 20,
