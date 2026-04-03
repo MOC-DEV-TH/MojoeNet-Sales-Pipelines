@@ -28,6 +28,7 @@ class NLRStepSixController extends GetxController {
   var potentialStatusValue = "1";
   var statusValue = "";
   var statusKey = "";
+  var customerTypeKey = "";
   bool checkBoxValue = false;
   bool referalCheckBoxValue = false;
   final dataStorage = GetStorage();
@@ -71,10 +72,13 @@ class NLRStepSixController extends GetxController {
   void increment() => count.value++;
 
   bool checkEmptyData() {
-    final mainValid = potentialStatusValue == "1"
+    final isPotential = potentialStatusValue == "1";
+
+    final mainValid = isPotential
         ? statusValue.isNotEmpty &&
         planValue.isNotEmpty &&
         amountTextController.text.isNotEmpty &&
+        customerTypeKey.isNotEmpty &&
         packageValue.isNotEmpty
         : statusValue.isNotEmpty;
 
@@ -111,6 +115,10 @@ class NLRStepSixController extends GetxController {
 
   void onPressContinue(BuildContext context) {
     isLoading(true);
+    if (!checkEmptyDataWithError()) {
+      isLoading(false);
+      return;
+    }
     if (statusValue == "Contracted") {
       if (!checkLatLongLength(latTextController.text.toString())) {
         isLoading(false);
@@ -127,6 +135,53 @@ class NLRStepSixController extends GetxController {
       Get.offNamed(Routes.N_L_R_STEP_SEVEN);
     }
   }
+
+  bool checkEmptyDataWithError() {
+    final isPotential = potentialStatusValue == "1";
+
+    if (statusValue.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select status');
+      return false;
+    }
+
+    if (isPotential && customerTypeKey.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select customer type');
+      return false;
+    }
+
+    if (isPotential && planValue.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select plan');
+      return false;
+    }
+
+    if (isPotential && packageValue.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select package');
+      return false;
+    }
+
+    if (isPotential && amountTextController.text.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please enter amount');
+      return false;
+    }
+
+    if (estContractDateTextController.text.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select estimated contract date');
+      return false;
+    }
+
+    if (estStartDateTextController.text.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select estimated start date');
+      return false;
+    }
+
+    if (estFollowUpDateTextController.text.isEmpty) {
+      AppUtils.showErrorSnackBar('Fail', 'Please select estimated follow up date');
+      return false;
+    }
+
+    return true;
+  }
+
 
   void onPressSkipForNow(){
     resetStepSixData();
@@ -216,12 +271,21 @@ class NLRStepSixController extends GetxController {
     discountValue = "";
     checkBoxValue = false;
     referalCheckBoxValue = false;
+    update(['continue_btn']);
     update();
   }
+
+
 
   void updateStatus(String status, String key) {
     statusValue = status;
     statusKey = key;
+    update();
+  }
+
+  void updateCustomerType(String status, String key) {
+    customerTypeKey = key;
+    update(['continue_btn']);
     update();
   }
 
@@ -259,6 +323,7 @@ class NLRStepSixController extends GetxController {
     statusKey = "";
     planValue = "";
     packageValue = "";
+    customerTypeKey = "";
     discountValue = "0%";
 
     /// Reset checkbox state

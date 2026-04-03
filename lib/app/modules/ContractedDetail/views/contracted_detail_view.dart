@@ -224,6 +224,7 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                                 "null")
                         ? 'xxxxxxxxxx'
                         : controller.contractedDetail.value.email.toString()),
+                makeCustomerTypeDropDownContainer(),
                 makeTextFormField(controller.latTextController, 'Lat',
                     controller.contractedDetail.value.latitude ?? 'xxxxxxxxxx'),
                 makeTextFormField(
@@ -457,6 +458,47 @@ class ContractedDetailView extends GetView<ContractedDetailController> {
                 ),
               ],
             ));
+  }
+
+  Widget makeCustomerTypeDropDownContainer() {
+    return GetBuilder<ContractedDetailController>(
+        builder: (controller) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Customer Type",
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                Container(
+                  color: Colors.white,
+                  height: 38,
+                  width: Get.width,
+                  child: Center(
+                    child: DropDownButtonComponent(
+                      itemsList: controller.saleStatusData.customerTypes,
+                      onChangedData: (CustomerType value) {
+                        controller.updateCustomerTypeKey(value.key.toString());
+                      },
+                      hintText:
+                      controller.contractedDetail.value.customerType?.capitalizeFirst ??
+                          'Select Customer Type',
+                      hintColor: Colors.grey,
+                      color: Colors.white,
+                      selectedItemColor: Colors.grey,
+                      iconColor: Color(int.parse(AppColors.bgColor)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 
   void onPressBack() {

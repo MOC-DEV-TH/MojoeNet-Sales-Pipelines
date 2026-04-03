@@ -58,7 +58,8 @@ class Details {
     this.notes,
     this.phone2,
     this.businessName,
-    this.packageTotal
+    this.packageTotal,
+    this.customerType
   });
 
   String? profileId;
@@ -78,6 +79,7 @@ class Details {
   String? notes;
   dynamic businessName;
   dynamic packageTotal;
+  String? customerType;
 
 
   factory Details.fromJson(Map<String, dynamic> json) => Details(
@@ -98,6 +100,7 @@ class Details {
     notes: json["notes"],
     businessName: json["business_name"],
     packageTotal: json["package_total"],
+    customerType: json["customer_type"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -118,6 +121,7 @@ class Details {
     "notes": notes,
     "business_name": businessName,
     "package_total": packageTotal,
+    "customer_type": customerType,
 
   };
 }

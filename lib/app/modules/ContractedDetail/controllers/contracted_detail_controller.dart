@@ -36,6 +36,7 @@ class ContractedDetailController extends GetxController {
   var packageValue = "";
   var townshipStatus = "";
   var divisionStatus = "";
+  var customerTypeKey = "";
   dynamic saleStatusData;
 
   @override
@@ -77,6 +78,11 @@ class ContractedDetailController extends GetxController {
 
   void updateTownshipStatus(String status) {
     townshipStatus = status;
+    update();
+  }
+
+  void updateCustomerTypeKey(String value) {
+    customerTypeKey = value;
     update();
   }
 
@@ -204,6 +210,7 @@ class ContractedDetailController extends GetxController {
       'name': nameTextController.text.toString(),
       'business_name': businessNameTextController.text.toString(),
       'contact_number': contactNoTextController.text.toString(),
+      'customer_type' : customerTypeKey,
       'secondary_contact_number':
           secondaryContactNoTextController.text.toString(),
       'email': emailTextController.text.toString(),
@@ -219,6 +226,12 @@ class ContractedDetailController extends GetxController {
       'long': longTextController.text.toString(),
       'amount': amountTextController.text,
     };
+
+    map.removeWhere(
+          (key, value) =>
+      value == null ||
+          (value is String && value.trim().isEmpty),
+    );
 
     if (checkLatLongLength(latTextController.text.toString()) == false) {
       isLoading(false);

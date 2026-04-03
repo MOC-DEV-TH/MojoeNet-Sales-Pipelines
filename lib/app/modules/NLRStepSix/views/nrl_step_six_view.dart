@@ -86,6 +86,7 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
+                                ///potential dropdown
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -113,6 +114,47 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
                                     ),
                                   ],
                                 ),
+
+                                const SizedBox(
+                                  height: 30,
+                                ),
+                                ///Customer type
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        child: Row(
+                                          children: [
+                                            LabelTextComponent(
+                                                text: 'Customer\nType',
+                                                color: Colors.white,
+                                                padding: 0.0),
+                                            const SizedBox(width: 4,),
+                                            const Text(
+                                              '*',
+                                              style: TextStyle(color: Colors.red),
+                                            )
+                                          ],
+                                        )),
+                                    Flexible(
+                                      flex: 2,
+                                      child: DropDownButtonComponent(
+                                        itemsList: controller.saleStatusData.customerTypes,
+                                        onChangedData: (CustomerType value) {
+                                          controller.updateCustomerType(value.value.toString(),value.key.toString());
+                                        },
+                                        hintText: 'Select Customer Type',
+                                        hintColor: Colors.grey,
+                                        color: Colors.white,
+                                        selectedItemColor: Colors.grey,
+                                        iconColor:
+                                        Color(int.parse(AppColors.bgColor)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                ///bottom dropdown list
                                 GetBuilder<NLRStepSixController>(
                                   builder: (controller) =>
                                       controller.potentialStatusValue == '0'
@@ -154,7 +196,9 @@ class NLRStepSixView extends GetView<NLRStepSixController> {
   }
 
   onPressContinue(BuildContext context) {
-    controller.checkEmptyData() != false  ? controller.onPressContinue(context) : null;
+    // controller.checkEmptyData() != false  ? controller.onPressContinue(context) : null;
+    if (!controller.checkEmptyDataWithError()) return;
+          controller.onPressContinue(context);
   }
 
   void onPressBack() {

@@ -81,6 +81,7 @@ class NLRStepSevenController extends GetxController {
       'plan': s6.potentialStatusValue == '0' ? "" : s6.planValue,
       'package': s6.potentialStatusValue == '0' ? "" : s6.packageValue,
       'discount': s6.potentialStatusValue == '0' ? "" : s6.discountValue,
+      'customer_type': s6.customerTypeKey,
 
       ///new field
       'meeting_notes': meetingNoteController.text,

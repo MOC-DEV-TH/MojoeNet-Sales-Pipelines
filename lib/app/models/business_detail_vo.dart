@@ -97,7 +97,8 @@ class Details {
     this.nextStep,
     this.estContractDate,
     this.estStartDate,
-    this.estFollowUpDate
+    this.estFollowUpDate,
+    this.customerType
   });
 
   String? lid;
@@ -113,6 +114,7 @@ class Details {
   dynamic notes;
   dynamic installation;
   String? leadSource;
+  String? customerType;
   String? businessType;
   dynamic businessCategory;
   String? township;
@@ -162,6 +164,7 @@ class Details {
     firstname: json["firstname"],
     lastname: json["lastname"],
     email: json["email"],
+    customerType: json["customer_type"],
     address: json["address"],
     contactInformation: json["contact_information"],
     package: json["package"],
@@ -217,6 +220,7 @@ class Details {
     "firstname": firstname,
     "lastname": lastname,
     "email": email,
+    "customer_type": customerType,
     "address": address,
     "contact_information": contactInformation,
     "package": package,

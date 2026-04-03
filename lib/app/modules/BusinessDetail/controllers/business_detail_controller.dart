@@ -65,6 +65,7 @@ class BusinessDetailController extends GetxController {
   var businessTypeStatus = "";
   var divisionStatus = "";
   var designationStatus = "";
+  var customerTypeKey = "";
 
   @override
   void onInit() {
@@ -520,6 +521,7 @@ class BusinessDetailController extends GetxController {
       'potential': activityDetailData.value.potential,
       'address': addressTextController.text.trim(),
       'status': leadStatusKey,
+      'customer_type' : customerTypeKey,
       'followup_via': followUpViaStatusName.toString() == 'null'
           ? ""
           : followUpViaStatusName.toString(),
@@ -672,6 +674,11 @@ class BusinessDetailController extends GetxController {
 
   void updateLeadSource(String value) {
     leadSourceStatus = value;
+    update();
+  }
+
+  void updateCustomerTypeKey(String value) {
+    customerTypeKey = value;
     update();
   }
 

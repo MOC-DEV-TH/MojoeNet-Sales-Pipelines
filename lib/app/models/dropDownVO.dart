@@ -24,7 +24,8 @@ class DropDownVO {
       this.followUpVia,
       this.discount,
       this.plan,
-      this.package});
+      this.package,
+      this.customerTypes});
 
   String? status;
   String? responseCode;
@@ -40,6 +41,7 @@ class DropDownVO {
   List<Discount>? discount;
   List<Plan>? plan;
   List<Package>? package;
+  List<CustomerType>? customerTypes;
 
   factory DropDownVO.fromJson(Map<String, dynamic> json) => DropDownVO(
         status: json["status"],
@@ -63,6 +65,8 @@ class DropDownVO {
         discount: List<Discount>.from(
             json["discount"].map((x) => Discount.fromJson(x))),
         plan: List<Plan>.from(json["plan"].map((x) => Plan.fromJson(x))),
+        customerTypes: List<CustomerType>.from(
+            json["customer_type"].map((x) => CustomerType.fromJson(x))),
         package:
             List<Package>.from(json["package"].map((x) => Package.fromJson(x))),
       );
@@ -84,6 +88,8 @@ class DropDownVO {
         "discount": List<dynamic>.from(discount!.map((x) => x.toJson())),
         "plan": List<dynamic>.from(plan!.map((x) => x.toJson())),
         "package": List<dynamic>.from(package!.map((x) => x.toJson())),
+        "customer_type":
+            List<dynamic>.from(customerTypes!.map((x) => x.toJson())),
       };
 }
 
@@ -226,5 +232,25 @@ class Package {
         "key": key,
         "value": value,
         "plan": plan,
+      };
+}
+
+class CustomerType {
+  CustomerType({
+    this.key,
+    this.value,
+  });
+
+  dynamic key;
+  String? value;
+
+  factory CustomerType.fromJson(Map<String, dynamic> json) => CustomerType(
+        key: json["key"],
+        value: json["value"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "key": key,
+        "value": value,
       };
 }
